@@ -1,5 +1,6 @@
 # Assessment A2 - The General Practitioner
-
-#Test Pull
-Hello
--Filip
+# Members 
+* Milovan
+* Andrei
+* Filip
+* Wenbo
