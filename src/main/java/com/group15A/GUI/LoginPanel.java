@@ -3,14 +3,15 @@ package com.group15A.GUI;
 import javax.swing.*;
 
 public class LoginPanel extends basePanel {
-    private JPanel pagePanel;
+    private JPanel loginPanel;
 
-    public LoginPanel(String windowTitle, JFrame windowController) {
-        super(windowTitle, windowController);
+    public LoginPanel(String windowTitle, multiPanelWindow panelController) {
+        super(windowTitle, panelController);
     }
 
     public JPanel getPagePanel() {
-        return pagePanel;
+        return this.loginPanel;
     }
 
+    public void createActionListeners() {}
 }

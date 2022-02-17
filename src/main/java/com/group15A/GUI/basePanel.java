@@ -4,11 +4,11 @@ import javax.swing.*;
 
 public abstract class basePanel {
     private String windowTitle;
-    protected JFrame windowController;
+    protected multiPanelWindow panelController;
 
-    public basePanel(String windowTitle, JFrame windowController) {
+    public basePanel(String windowTitle, multiPanelWindow panelController) {
         this.windowTitle = windowTitle;
-        this.windowController = windowController;
+        this.panelController = panelController;
     }
 
     public String getWindowTitle() {
@@ -16,4 +16,7 @@ public abstract class basePanel {
     }
 
     public abstract JPanel getPagePanel();
+
+    public abstract void createActionListeners();
 }
+
