@@ -7,9 +7,20 @@ package com.group15A.DataModel;
  * @author Wenbo Wu
  */
 public class Certification {
+    private Integer doctorID;
+    private Integer certID;
     private String name;
     private String field;
     private String dateObtained;
+
+    // Constructor
+    public Certification(Integer doctorID, Integer certID, String name, String field, String dateObtained) {
+        this.doctorID = doctorID;
+        this.certID = certID;
+        this.name = name;
+        this.field = field;
+        this.dateObtained = dateObtained;
+    }
 
     // All getters and setters for attributes below
 
@@ -35,5 +46,17 @@ public class Certification {
 
     public void setDateObtained(String dateObtained) {
         this.dateObtained = dateObtained;
+    }
+
+    public Integer getCertID() {
+        return certID;
+    }
+
+    public Integer getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(Integer doctorID) {
+        this.doctorID = doctorID;
     }
 }
