@@ -13,12 +13,11 @@ public interface IDataAccess
 {
     Patient getPatient(String email, String password);
 
-    boolean registerPatient(Patient patient);
+    Patient registerPatient(Patient patient);
 
-    boolean updatePatient(Patient patient);
+    Patient updatePatient(Patient patient);
 
     List<Doctor> getDoctors();
 
     List<Certification> getCertifications(Doctor doctor);
-
 }
