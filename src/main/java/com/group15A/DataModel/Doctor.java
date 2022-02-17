@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.util.Date;
+
 /**
  * Used to represent a doctor within the system, will be used to pass and change
  * information between the business logic and data access layer.
@@ -13,13 +15,13 @@ public class Doctor {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String dob;
+    private Date dob;
     private String gender;
     private String phoneNo;
 
     // Constructor
 
-    public Doctor(Integer doctorID, String email, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo) {
+    public Doctor(Integer doctorID, String email, String firstName, String middleName, String lastName, Date dob, String gender, String phoneNo) {
         this.doctorID = doctorID;
         this.email = email;
         this.firstName = firstName;
@@ -69,11 +71,11 @@ public class Doctor {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
