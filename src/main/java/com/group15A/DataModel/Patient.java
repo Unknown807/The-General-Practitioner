@@ -17,8 +17,20 @@ public class Patient {
     private String gender;
     private String phoneNo;
 
-    // Constructor
+    public static final Integer UNKNOWN_PATIENT_ID = -1;
 
+    /**
+     * Constructor for a patient
+     * @param patientID The ID
+     * @param email The email address
+     * @param passHash The hashed password
+     * @param firstName The first name
+     * @param middleName The middle name
+     * @param lastName The last name
+     * @param dob The date of birth
+     * @param gender The gender
+     * @param phoneNo The phone number
+     */
     public Patient(Integer patientID, String email, String passHash, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo) {
         this.patientID = patientID;
         this.email = email;
@@ -29,6 +41,22 @@ public class Patient {
         this.dob = dob;
         this.gender = gender;
         this.phoneNo = phoneNo;
+    }
+
+    /**
+     * Constructor for a patient with an unknown id
+     * @param email The email address
+     * @param passHash The hashed password
+     * @param firstName The first name
+     * @param middleName The middle name
+     * @param lastName The last name
+     * @param dob The date of birth
+     * @param gender The gender
+     * @param phoneNo The phone number
+     */
+    public Patient(String email, String passHash, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo)
+    {
+        this(UNKNOWN_PATIENT_ID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
     }
 
 
@@ -45,7 +73,6 @@ public class Patient {
     public Integer getPatientID() {
         return patientID;
     }
-
 
     public String getPassHash() {
         return passHash;
