@@ -10,14 +10,26 @@ package com.group15A.DataModel;
 public class Doctor {
     private Integer doctorID;
     private String email;
-    private String passHash;
     private String firstName;
     private String middleName;
     private String lastName;
     private String dob;
     private String gender;
     private String phoneNo;
-    private String certification;
+
+    // Constructor
+
+    public Doctor(Integer doctorID, String email, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo) {
+        this.doctorID = doctorID;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.gender = gender;
+        this.phoneNo = phoneNo;
+    }
+
 
     // All getters and setters for attributes below
 
@@ -31,18 +43,6 @@ public class Doctor {
 
     public Integer getDoctorID() {
         return doctorID;
-    }
-
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
-    }
-
-    public String getPassHash() {
-        return passHash;
-    }
-
-    public void setPassHash(String passHash) {
-        this.passHash = passHash;
     }
 
     public String getFirstName() {
@@ -91,13 +91,5 @@ public class Doctor {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
-    }
-
-    public String getCertification() {
-        return certification;
-    }
-
-    public void setCertification(String certification) {
-        this.certification = certification;
     }
 }
