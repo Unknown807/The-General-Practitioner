@@ -17,6 +17,21 @@ public class Patient {
     private String gender;
     private String phoneNo;
 
+    // Constructor
+
+    public Patient(Integer patientID, String email, String passHash, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo) {
+        this.patientID = patientID;
+        this.email = email;
+        this.passHash = passHash;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.gender = gender;
+        this.phoneNo = phoneNo;
+    }
+
+
     // All getters and setters for attributes below
 
     public String getEmail() {
