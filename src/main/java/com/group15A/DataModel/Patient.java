@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.util.Date;
+
 /**
  * Used to represent a patient within the system, will be used to pass and change
  * information between the business logic and data access layer.
@@ -13,7 +15,7 @@ public class Patient {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String dob;
+    private Date dob;
     private String gender;
     private String phoneNo;
 
@@ -31,7 +33,7 @@ public class Patient {
      * @param gender The gender
      * @param phoneNo The phone number
      */
-    public Patient(Integer patientID, String email, String passHash, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo) {
+    public Patient(Integer patientID, String email, String passHash, String firstName, String middleName, String lastName, Date dob, String gender, String phoneNo) {
         this.patientID = patientID;
         this.email = email;
         this.passHash = passHash;
@@ -54,7 +56,7 @@ public class Patient {
      * @param gender The gender
      * @param phoneNo The phone number
      */
-    public Patient(String email, String passHash, String firstName, String middleName, String lastName, String dob, String gender, String phoneNo)
+    public Patient(String email, String passHash, String firstName, String middleName, String lastName, Date dob, String gender, String phoneNo)
     {
         this(UNKNOWN_PATIENT_ID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
     }
@@ -106,11 +108,11 @@ public class Patient {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 

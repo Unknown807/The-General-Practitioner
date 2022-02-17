@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface IDataAccess
 {
-    Patient getPatient(String email, String password);
+    Patient getPatient(String email, String password) throws Exception;
 
-    Patient registerPatient(Patient patient);
+    Patient registerPatient(Patient patient) throws Exception;
 
-    Patient updatePatient(Patient patient);
+    Patient updatePatient(Patient patient) throws Exception;
 
-    List<Doctor> getDoctors();
+    List<Doctor> getDoctors() throws Exception;
 
-    List<Certification> getCertifications(Doctor doctor);
+    List<Certification> getCertifications(Doctor doctor) throws Exception;
 }
