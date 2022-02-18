@@ -1,5 +1,6 @@
 package com.group15A.DataAccess;
 
+import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataModel.*;
 
 import java.sql.*;
@@ -20,10 +21,43 @@ public class DataAccess implements IDataAccess
         setupConnection();
     }
 
+    /**
+     * Get the patient with the given email and password
+     * @param email The patient's email
+     * @param password The patient's password
+     * @return The patient
+     * @throws PatientNotFoundException if the user was not found
+     * @throws Exception if there was a problem querying the database
+     */
     @Override
-    public Patient getPatient(String email, String password) throws Exception
+    public Patient getPatient(String email, String password) throws PatientNotFoundException, Exception
     {
-        return null;
+        String query = "CALL find_patient(?, ?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setString(1, email);
+        statement.setString(2, password);
+
+        Patient patient = null;
+        ResultSet result = statement.executeQuery();
+        try {
+            result.next();
+            patient = new Patient(
+                    result.getInt("id_patient"),
+                    result.getString("email"),
+                    result.getString("password"),
+                    result.getString("first_name"),
+                    result.getString("middle_name"),
+                    result.getString("last_name"),
+                    result.getDate("date_of_birth"),
+                    result.getString("gender"),
+                    result.getString("telephone_number")
+            );
+        } catch(Exception ex)
+        {
+            throw new PatientNotFoundException();
+        }
+
+        return patient;
     }
 
     @Override
