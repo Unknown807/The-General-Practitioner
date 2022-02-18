@@ -24,7 +24,9 @@ public class HomePanel extends BasePanel {
         super(windowTitle, panelController);
     }
 
-    public JPanel getPagePanel() {
+    public JPanel getPagePanel()
+    {
+        System.err.println(this.homePanel.getClass());
         return this.homePanel;
     }
 

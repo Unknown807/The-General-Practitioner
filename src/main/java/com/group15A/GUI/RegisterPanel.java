@@ -28,7 +28,9 @@ public class RegisterPanel extends BasePanel {
         super(windowTitle, panelController);
     }
 
-    public JPanel getPagePanel() {
+    public JPanel getPagePanel()
+    {
+        System.err.println(this.registerPanel.getClass());
         return this.registerPanel;
     }
 

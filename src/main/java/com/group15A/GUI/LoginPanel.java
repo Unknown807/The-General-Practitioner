@@ -34,7 +34,9 @@ public class LoginPanel extends BasePanel {
         super(windowTitle, panelController);
     }
 
-    public JPanel getPagePanel() {
+    public JPanel getPagePanel()
+    {
+        System.err.println(this.logInPanel.getClass());
         return this.logInPanel;
     }
 
