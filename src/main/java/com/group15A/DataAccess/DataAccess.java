@@ -120,7 +120,6 @@ public class DataAccess implements IDataAccess
     {
         String query = "CALL get_doctors();";
         CallableStatement statement = connection.prepareCall(query);
-        //statement.setString(1, "smth");
         ResultSet result = statement.executeQuery();
         var doctors = new ArrayList<Doctor>();
         while(result.next())
@@ -140,11 +139,32 @@ public class DataAccess implements IDataAccess
         return doctors;
     }
 
-
+    /**
+     * Get the certifications of the specified doctor
+     * @param doctor The doctor
+     * @return The certifications
+     * @throws Exception if there was a problem querying the database
+     */
     @Override
     public List<Certification> getCertifications(Doctor doctor) throws Exception
     {
-        return null;
+        String query = "CALL get_certifications_doctor(?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setInt(1, doctor.getDoctorID());
+        ResultSet result = statement.executeQuery();
+        var certifications = new ArrayList<Certification>();
+        while(result.next())
+        {
+            certifications.add(new Certification(
+                    result.getInt("id_doctor"),
+                    result.getInt("id_cert"),
+                    result.getString("name"),
+                    result.getString("field"),
+                    result.getDate("dateObtained")
+            ));
+        }
+
+        return certifications;
     }
 
     /**
