@@ -27,7 +27,6 @@ public class multiPanelWindow extends JFrame {
      */
     public multiPanelWindow() {
         this.cards = new BasePanel[]{
-                //TODO: Can't add more than two panels
                 new LoginPanel("Log in", this),
                 new RegisterPanel("Register", this),
                 new HomePanel("Home", this)
