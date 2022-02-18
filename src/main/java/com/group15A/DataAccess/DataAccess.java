@@ -60,10 +60,29 @@ public class DataAccess implements IDataAccess
         return patient;
     }
 
+    /**
+     * Registers a new patient
+     * @param patient The new patient
+     * @return The corresponding patient from the database
+     * @throws Exception if there was a problem querying the database
+     */
     @Override
     public Patient registerPatient(Patient patient) throws Exception
     {
-        return null;
+        String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setString(1, patient.getEmail());
+        statement.setString(2, patient.getPassHash());
+        statement.setString(3, patient.getFirstName());
+        statement.setString(4, patient.getMiddleName());
+        statement.setString(5, patient.getLastName());
+        statement.setDate(6, new Date(patient.getDob().getTime()));
+        statement.setString(7, patient.getGender());
+        statement.setString(8, patient.getPhoneNo());
+
+        statement.executeQuery();
+
+        return getPatient(patient.getEmail(), patient.getPassHash());
     }
 
     @Override
