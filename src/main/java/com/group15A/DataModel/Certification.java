@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.util.Date;
+
 /**
  * Used to represent a doctor certification within the system, will be used to pass and change
  * information between the business logic and data access layer.
@@ -11,10 +13,10 @@ public class Certification {
     private Integer certID;
     private String name;
     private String field;
-    private String dateObtained;
+    private Date dateObtained;
 
     // Constructor
-    public Certification(Integer doctorID, Integer certID, String name, String field, String dateObtained) {
+    public Certification(Integer doctorID, Integer certID, String name, String field, Date dateObtained) {
         this.doctorID = doctorID;
         this.certID = certID;
         this.name = name;
@@ -40,11 +42,11 @@ public class Certification {
         this.field = field;
     }
 
-    public String getDateObtained() {
+    public Date getDateObtained() {
         return dateObtained;
     }
 
-    public void setDateObtained(String dateObtained) {
+    public void setDateObtained(Date dateObtained) {
         this.dateObtained = dateObtained;
     }
 

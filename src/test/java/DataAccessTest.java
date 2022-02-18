@@ -1,4 +1,5 @@
 import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import org.junit.Test;
@@ -61,6 +62,21 @@ public class DataAccessTest{
             patient.setMiddleName("Christopher");
             patient = access.updatePatient(patient);
             assertEquals(patient.getMiddleName(), access.getPatient(patient.getEmail(), patient.getPassHash()).getMiddleName());
+        }catch (Exception ex)
+        {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void getCertificationsTest()
+    {
+        try{
+            DataAccess access = new DataAccess();
+            Doctor doctor = access.getDoctors().get(0);
+            var certs = access.getCertifications(doctor);
+            for(var cert: certs)
+                System.out.println(cert.getName() + " " + cert.getField());
         }catch (Exception ex)
         {
             System.err.println(ex.getMessage());
