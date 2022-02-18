@@ -85,10 +85,30 @@ public class DataAccess implements IDataAccess
         return getPatient(patient.getEmail(), patient.getPassHash());
     }
 
+    /**
+     * Update the given patient with the new information provided in the object
+     * @param patient The modified patient
+     * @return The corresponding patient from the database
+     * @throws Exception if there was a problem querying the database
+     */
     @Override
     public Patient updatePatient(Patient patient) throws Exception
     {
-        return null;
+        String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setInt(1, patient.getPatientID());
+        statement.setString(2, patient.getEmail());
+        statement.setString(3, patient.getPassHash());
+        statement.setString(4, patient.getFirstName());
+        statement.setString(5, patient.getMiddleName());
+        statement.setString(6, patient.getLastName());
+        statement.setDate(7, new Date(patient.getDob().getTime()));
+        statement.setString(8, patient.getGender());
+        statement.setString(9, patient.getPhoneNo());
+
+        statement.executeQuery();
+
+        return getPatient(patient.getEmail(), patient.getPassHash());
     }
 
     /**
@@ -119,6 +139,7 @@ public class DataAccess implements IDataAccess
 
         return doctors;
     }
+
 
     @Override
     public List<Certification> getCertifications(Doctor doctor) throws Exception
