@@ -29,27 +29,27 @@ public class multiPanelWindow extends JFrame {
         this.cards = new BasePanel[]{
                 //TODO: Can't add more than two panels
                 new LoginPanel("Log in", this),
-                new HomePanel("Log in", this),
-                new RegisterPanel("Log in", this)
+                new RegisterPanel("Register", this),
+                new HomePanel("Home", this)
                 // pages get stored and added to the card layout in here
         };
 
+        this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (BasePanel card : cards) {
-            this.panelCards.add(card.getPagePanel());
+            this.panelCards.add(card.getPagePanel(),card.getPanelFieldName());
             // TODO: `this.cardLayout.show(panelCards, pageName)` doesn't show the specified page.
             // TODO: To fix the above issue, replace "registerPanel" below with the JPanel field name of the current card.
             //       Must create getPanelFieldName in basePanel or in each sub-panel.
-            //this.cardLayout.addLayoutComponent(card.getPagePanel(),"registerPanel");
+           // this.cardLayout.addLayoutComponent(card.getPagePanel(),card.getPanelFieldName());
         }
-        this.cardLayout = (CardLayout) (panelCards.getLayout());
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(panelCards);
         this.setSize(640, 480);
 
 
-        // first page shown is the login page (loginPanel)
-        this.showPage("Please Sign In", "registerPanel");
+        // first page shown is the login page (`loginPanel`)
+        this.showPage("Please Sign In", "loginPanel");
         //TODO: WindowTitle is repeated.
     }
 

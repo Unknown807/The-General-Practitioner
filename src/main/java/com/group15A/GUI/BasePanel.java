@@ -17,6 +17,7 @@ import javax.swing.*;
 public abstract class BasePanel {
     private String windowTitle;
     protected multiPanelWindow panelController;
+    private final String panelFieldName;
 
     /**
      * Constructor.
@@ -25,19 +26,29 @@ public abstract class BasePanel {
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */
-    public BasePanel(String windowTitle, multiPanelWindow panelController)
+    public BasePanel(String windowTitle, multiPanelWindow panelController, String panelFieldName)
     {
         this.windowTitle = windowTitle;
         this.panelController = panelController;
+        this.panelFieldName = panelFieldName;
+    }
+
+    /**
+     * Returns the name of the field storing a page's JPanel object.
+     * @return panelFieldName The name of the field storing a page's JPanel object.
+     * @author Filip Fois
+     */
+    public String getPanelFieldName()
+    {
+        return this.panelFieldName;
     }
 
     public String getWindowTitle()
     {
-        return windowTitle;
+        return this.windowTitle;
     }
 
     public abstract JPanel getPagePanel();
 
     public abstract void createActionListeners();
 }
-

@@ -14,7 +14,8 @@ import javax.swing.*;
  */
 public class LoginPanel extends BasePanel {
     private JPanel logInPanel;
-    private JLabel titleLabel;
+
+    private JLabel logInTitleLabel;
 
     private JLabel emailLabel;
     private JTextField emailField;
@@ -23,17 +24,21 @@ public class LoginPanel extends BasePanel {
 
     private JButton registerButton;
     private JButton logInButton;
-    private JLabel invalidEmailAddressAndLabel;
+    private JLabel logInErrorLabel;
+    private JPanel textFieldsPanel;
+    private JButton resetPasswordButton;
 
     /**
      * @param windowTitle     The title of the log in panel, usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public LoginPanel(String windowTitle, multiPanelWindow panelController) {
-        super(windowTitle, panelController);
+    public LoginPanel(String windowTitle, multiPanelWindow panelController)
+    {
+        super(windowTitle, panelController,"logInPanel");
     }
 
+    @Override
     public JPanel getPagePanel()
     {
         System.err.println(this.logInPanel.getClass());
@@ -45,6 +50,7 @@ public class LoginPanel extends BasePanel {
      * To create all event handlers, which will point
      * to other methods in the class
      */
+    @Override
     public void createActionListeners() {
     }
 
