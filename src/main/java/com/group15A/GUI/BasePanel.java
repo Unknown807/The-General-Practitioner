@@ -14,21 +14,25 @@ import javax.swing.*;
  * @author Milovan Gveric
  * @author Filip Fois
  */
-public abstract class basePanel {
+public abstract class BasePanel {
     private String windowTitle;
     protected multiPanelWindow panelController;
 
     /**
-     * @param windowTitle The title of the login panel, usually the same.
+     * Constructor.
+     *
+     * @param windowTitle The title of the login panel; usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */
-    public basePanel(String windowTitle, multiPanelWindow panelController) {
+    public BasePanel(String windowTitle, multiPanelWindow panelController)
+    {
         this.windowTitle = windowTitle;
         this.panelController = panelController;
     }
 
-    public String getWindowTitle() {
+    public String getWindowTitle()
+    {
         return windowTitle;
     }
 
