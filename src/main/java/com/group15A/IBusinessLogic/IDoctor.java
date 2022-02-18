@@ -5,4 +5,5 @@ import java.util.ArrayList;
 
 public interface IDoctor {
     public ArrayList<Doctor> getDoctors();
+
 }
