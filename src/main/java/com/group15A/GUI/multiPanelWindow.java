@@ -37,10 +37,6 @@ public class multiPanelWindow extends JFrame {
         this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (BasePanel card : cards) {
             this.panelCards.add(card.getPagePanel(),card.getPanelFieldName());
-            // TODO: `this.cardLayout.show(panelCards, pageName)` doesn't show the specified page.
-            // TODO: To fix the above issue, replace "registerPanel" below with the JPanel field name of the current card.
-            //       Must create getPanelFieldName in basePanel or in each sub-panel.
-           // this.cardLayout.addLayoutComponent(card.getPagePanel(),card.getPanelFieldName());
         }
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
