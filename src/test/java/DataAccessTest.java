@@ -4,6 +4,7 @@ import com.group15A.DataModel.Patient;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -31,6 +32,19 @@ public class DataAccessTest{
             DataAccess access = new DataAccess();
             Patient patient = access.getPatient("superemail@hotmail.com", "superPass");
             System.out.println(patient.getFirstName());
+        }catch (Exception ex)
+        {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void registerPatientTest()
+    {
+        try{
+            DataAccess access = new DataAccess();
+            Patient patient = access.registerPatient(new Patient("test@test.com", "testPass", "Johhny", null, "Depp", new Date(), "Male", "0859565785"));
+            assertEquals(patient.getPatientID(), access.getPatient(patient.getEmail(), patient.getPassHash()).getPatientID());
         }catch (Exception ex)
         {
             System.err.println(ex.getMessage());
