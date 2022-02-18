@@ -38,13 +38,29 @@ public class DataAccessTest{
         }
     }
 
-    @Test
+
+    /*@Test
     public void registerPatientTest()
     {
         try{
             DataAccess access = new DataAccess();
             Patient patient = access.registerPatient(new Patient("test@test.com", "testPass", "Johhny", null, "Depp", new Date(), "Male", "0859565785"));
             assertEquals(patient.getPatientID(), access.getPatient(patient.getEmail(), patient.getPassHash()).getPatientID());
+        }catch (Exception ex)
+        {
+            System.err.println(ex.getMessage());
+        }
+    }*/
+
+    @Test
+    public void updatePatientTest()
+    {
+        try{
+            DataAccess access = new DataAccess();
+            Patient patient = access.getPatient("test@test.com", "testPass");
+            patient.setMiddleName("Christopher");
+            patient = access.updatePatient(patient);
+            assertEquals(patient.getMiddleName(), access.getPatient(patient.getEmail(), patient.getPassHash()).getMiddleName());
         }catch (Exception ex)
         {
             System.err.println(ex.getMessage());
