@@ -17,6 +17,7 @@ public class HomePanel extends BasePanel {
 
     private JLabel greetingLabel;
     private JPanel messagesPanel;
+    private JLabel messageTitleLabel;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
