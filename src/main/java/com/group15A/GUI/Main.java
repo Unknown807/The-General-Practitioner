@@ -11,7 +11,7 @@ public class Main {
      * Entry into the GUI
      */
     public static void main(String[] args) {
-        JFrame panelHandler = new multiPanelWindow();
+        JFrame panelHandler = new MultiPanelWindow();
         panelHandler.setVisible(true);
     }
 

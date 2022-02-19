@@ -22,7 +22,7 @@ public class HomePanel extends BasePanel {
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public HomePanel(multiPanelWindow panelController) {
+    public HomePanel(MultiPanelWindow panelController) {
         super("Welcome!", panelController,"homePanel");
     }
 
