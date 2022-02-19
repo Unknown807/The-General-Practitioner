@@ -29,7 +29,8 @@ public class MultiPanelWindow extends JFrame {
         this.cards = new BasePanel[]{
                 new LogInPanel(this),
                 new RegisterPanel(this),
-                new HomePanel(this)
+                new HomePanel(this),
+                new ChooseDoctorPanel(this)
                 // pages get stored and added to the card layout in here
         };
 
@@ -43,7 +44,7 @@ public class MultiPanelWindow extends JFrame {
         this.setSize(640, 480);
 
         // first page shown is the login page (`loginPanel`)
-        showPage(this.cards[0]);
+        showPage(this.cards[3]);
     }
 
 
