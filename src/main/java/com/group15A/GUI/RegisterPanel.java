@@ -69,6 +69,7 @@ public class RegisterPanel extends BasePanel {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
+        createActionListeners();
     }
 
     @Override
@@ -83,7 +84,9 @@ public class RegisterPanel extends BasePanel {
      * to other methods in the class
      */
     @Override
-    public void createActionListeners() {
+    public void createActionListeners()
+    {
+        logInButton.addActionListener( e -> {panelController.showPage(new LogInPanel(panelController));});
     }
 
 }

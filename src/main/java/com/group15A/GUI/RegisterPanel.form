@@ -432,7 +432,7 @@
       </component>
       <component id="dd73a" class="javax.swing.JButton" binding="logInButton">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <borderPainted value="false"/>
@@ -440,7 +440,7 @@
           <font size="16" style="1"/>
           <foreground color="-13355980"/>
           <horizontalAlignment value="2"/>
-          <horizontalTextPosition value="11"/>
+          <horizontalTextPosition value="2"/>
           <text value="Already have an account?"/>
         </properties>
       </component>
