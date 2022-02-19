@@ -29,19 +29,17 @@ public class LoginPanel extends BasePanel {
     private JButton resetPasswordButton;
 
     /**
-     * @param windowTitle     The title of the log in panel, usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public LoginPanel(String windowTitle, multiPanelWindow panelController)
+    public LoginPanel(multiPanelWindow panelController)
     {
-        super(windowTitle, panelController,"logInPanel");
+        super("Please Sign In", panelController,"logInPanel");
     }
 
     @Override
     public JPanel getPagePanel()
     {
-        System.err.println(this.logInPanel.getClass());
         return this.logInPanel;
     }
 

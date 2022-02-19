@@ -19,18 +19,16 @@ public class HomePanel extends BasePanel {
     private JPanel messagesPanel;
 
     /**
-     * @param windowTitle     The title of the register panel, usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public HomePanel(String windowTitle, multiPanelWindow panelController) {
-        super(windowTitle, panelController,"homePanel");
+    public HomePanel(multiPanelWindow panelController) {
+        super("Welcome!", panelController,"homePanel");
     }
 
     @Override
     public JPanel getPagePanel()
     {
-        System.err.println(this.homePanel.getClass());
         return this.homePanel;
     }
 

@@ -27,9 +27,9 @@ public class multiPanelWindow extends JFrame {
      */
     public multiPanelWindow() {
         this.cards = new BasePanel[]{
-                new LoginPanel("Log in", this),
-                new RegisterPanel("Register", this),
-                new HomePanel("Home", this)
+                new LoginPanel(this),
+                new RegisterPanel(this),
+                new HomePanel(this)
                 // pages get stored and added to the card layout in here
         };
 
@@ -42,23 +42,20 @@ public class multiPanelWindow extends JFrame {
         this.setContentPane(panelCards);
         this.setSize(640, 480);
 
-
         // first page shown is the login page (`loginPanel`)
-        this.showPage("Please Sign In", "loginPanel");
-        //TODO: WindowTitle is repeated.
+        this.showPage(this.cards[0]);
     }
 
 
     /**
      * Switches to a given JPanel that is in the card layout
      *
-     * @param newWindowTitle to set the title of the window
-     * @param pageName       the page to switch to (i.e., another JPanel)
+     * @param page       the page to switch to, contains window title and the required JPanel
      * @author Milovan Gveric
      */
-    public void showPage(String newWindowTitle, String pageName) {
-        this.setTitle(newWindowTitle);
-        this.cardLayout.show(panelCards, pageName);
+    public void showPage(BasePanel page) {
+        this.setTitle(page.getWindowTitle());
+        this.cardLayout.show(panelCards, page.getPanelFieldName());
     }
 
 }
