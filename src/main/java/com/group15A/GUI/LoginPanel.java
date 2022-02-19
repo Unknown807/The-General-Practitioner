@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * To allow for communication to the business layer and to
@@ -35,6 +36,8 @@ public class LoginPanel extends BasePanel {
     public LoginPanel(multiPanelWindow panelController)
     {
         super("Please Sign In", panelController,"logInPanel");
+        resetPasswordButton.setMargin(new Insets(0,0,0,0));
+        registerButton.setMargin(new Insets(0,0,0,0));
     }
 
     @Override
