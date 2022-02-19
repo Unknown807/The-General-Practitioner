@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Milovan Gveric
  * @author Filip Fois
  */
-public class LoginPanel extends BasePanel {
+public class LogInPanel extends BasePanel {
     private JPanel logInPanel;
 
     private JLabel logInTitleLabel;
@@ -33,9 +33,10 @@ public class LoginPanel extends BasePanel {
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public LoginPanel(multiPanelWindow panelController)
+    public LogInPanel(MultiPanelWindow panelController)
     {
         super("Please Sign In", panelController,"logInPanel");
+        // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
     }

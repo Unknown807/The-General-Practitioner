@@ -17,7 +17,7 @@ import java.awt.*;
  * @author Milovan Gveric
  * @author Filip Fois
  */
-public class multiPanelWindow extends JFrame {
+public class MultiPanelWindow extends JFrame {
     private CardLayout cardLayout;
     private BasePanel[] cards;
     private JPanel panelCards;
@@ -25,9 +25,9 @@ public class multiPanelWindow extends JFrame {
     /**
      * Constructor
      */
-    public multiPanelWindow() {
+    public MultiPanelWindow() {
         this.cards = new BasePanel[]{
-                new LoginPanel(this),
+                new LogInPanel(this),
                 new RegisterPanel(this),
                 new HomePanel(this)
                 // pages get stored and added to the card layout in here
@@ -43,7 +43,7 @@ public class multiPanelWindow extends JFrame {
         this.setSize(640, 480);
 
         // first page shown is the login page (`loginPanel`)
-        this.showPage(this.cards[0]);
+        this.setTitle(this.cards[0].getWindowTitle());
     }
 
 

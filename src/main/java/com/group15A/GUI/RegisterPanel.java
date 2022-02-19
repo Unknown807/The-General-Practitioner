@@ -64,7 +64,7 @@ public class RegisterPanel extends BasePanel {
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public RegisterPanel(multiPanelWindow panelController) {
+    public RegisterPanel(MultiPanelWindow panelController) {
         super("Enter Your Details", panelController,"registerPanel");
     }
 
