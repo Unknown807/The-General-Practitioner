@@ -39,6 +39,7 @@ public class LogInPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
+        createActionListeners();
     }
 
     @Override
@@ -54,6 +55,7 @@ public class LogInPanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
+        registerButton.addActionListener( e -> {panelController.showPage(new RegisterPanel(panelController));});
     }
 
 }
