@@ -14,10 +14,10 @@ import javax.swing.*;
  */
 public class ChooseDoctorPanel extends BasePanel {
     private JPanel chooseDoctorPanel;
-    private JPanel doctorListPanel;
     private JPanel contentPanel;
     private JButton logInButton;
     private JButton registerButton;
+    private JButton registerButton2;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
