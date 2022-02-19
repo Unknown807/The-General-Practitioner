@@ -43,7 +43,7 @@ public class MultiPanelWindow extends JFrame {
         this.setSize(640, 480);
 
         // first page shown is the login page (`loginPanel`)
-        this.setTitle(this.cards[0].getWindowTitle());
+        showPage(this.cards[1]);
     }
 
 

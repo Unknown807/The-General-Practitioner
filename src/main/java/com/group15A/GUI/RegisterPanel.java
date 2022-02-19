@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * To allow for communication to the business layer and to
@@ -66,6 +67,8 @@ public class RegisterPanel extends BasePanel {
      */
     public RegisterPanel(MultiPanelWindow panelController) {
         super("Enter Your Details", panelController,"registerPanel");
+        // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
+        logInButton.setMargin(new Insets(0,0,0,0));
     }
 
     @Override
