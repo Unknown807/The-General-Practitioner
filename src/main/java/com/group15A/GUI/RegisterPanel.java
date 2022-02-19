@@ -17,7 +17,7 @@ public class RegisterPanel extends BasePanel {
     private JPanel registerPanel;
 
     private JLabel registerTitleLabel;
-    private JButton registerButton;
+    private JButton continueButton;
     private JTextField firstNameField;
     private JTextArea passwordDescriptionTextArea;
     private JButton logInButton;
