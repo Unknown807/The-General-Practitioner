@@ -61,12 +61,11 @@ public class RegisterPanel extends BasePanel {
     private JPasswordField confirmPasswordField;
 
     /**
-     * @param windowTitle     The title of the register panel, usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public RegisterPanel(String windowTitle, multiPanelWindow panelController) {
-        super(windowTitle, panelController,"registerPanel");
+    public RegisterPanel(multiPanelWindow panelController) {
+        super("Enter Your Details", panelController,"registerPanel");
     }
 
     @Override

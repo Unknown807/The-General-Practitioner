@@ -15,22 +15,21 @@ import javax.swing.*;
  * @author Filip Fois
  */
 public abstract class BasePanel {
-    private String windowTitle;
     protected multiPanelWindow panelController;
+    protected String windowTitle;
     private final String panelFieldName;
 
     /**
      * Constructor.
      *
-     * @param windowTitle The title of the login panel; usually the same.
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */
     public BasePanel(String windowTitle, multiPanelWindow panelController, String panelFieldName)
     {
-        this.windowTitle = windowTitle;
         this.panelController = panelController;
         this.panelFieldName = panelFieldName;
+        this.windowTitle = windowTitle;
     }
 
     /**
