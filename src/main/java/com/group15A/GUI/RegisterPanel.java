@@ -71,7 +71,6 @@ public class RegisterPanel extends BasePanel {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
-        contentScrollPane.setBorder(BorderFactory.createEmptyBorder());
         createActionListeners();
     }
 
