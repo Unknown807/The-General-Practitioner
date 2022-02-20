@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.util.Objects;
+
 /**
  * Used to represent a doctor certification within the system, will be used to pass and change
  * information between the business logic and data access layer.
@@ -20,6 +22,30 @@ public class Certification {
         this.name = name;
         this.field = field;
         this.dateObtained = dateObtained;
+    }
+
+    @Override
+    public String toString() {
+        return "Certification{" +
+                "doctorID=" + doctorID +
+                ", certID=" + certID +
+                ", name='" + name + '\'' +
+                ", field='" + field + '\'' +
+                ", dateObtained='" + dateObtained + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Certification that = (Certification) o;
+        return doctorID.equals(that.doctorID) && certID.equals(that.certID) && name.equals(that.name) && field.equals(that.field) && dateObtained.equals(that.dateObtained);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(doctorID, certID, name, field, dateObtained);
     }
 
     // All getters and setters for attributes below
