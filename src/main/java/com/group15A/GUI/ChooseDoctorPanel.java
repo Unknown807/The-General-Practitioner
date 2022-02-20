@@ -18,6 +18,8 @@ public class ChooseDoctorPanel extends BasePanel {
     private JButton logInButton;
     private JButton registerButton;
     private JButton completeRegisterButton;
+    private JPanel doctorListPanel;
+    private JScrollPane doctorListScrollPane;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
