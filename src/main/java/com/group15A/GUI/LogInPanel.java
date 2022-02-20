@@ -41,7 +41,7 @@ public class LogInPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
-        contentScrollPane.setBorder(BorderFactory.createEmptyBorder());
+       // contentScrollPane.setBorder(BorderFactory.createEmptyBorder());
         createActionListeners();
     }
 
