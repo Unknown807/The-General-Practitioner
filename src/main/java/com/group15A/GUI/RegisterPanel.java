@@ -19,7 +19,7 @@ public class RegisterPanel extends BasePanel {
     private JLabel registerTitleLabel;
     private JButton continueButton;
     private JTextField firstNameField;
-    private JTextArea passwordDescriptionTextArea;
+    private JTextArea passwordTextArea;
     private JButton logInButton;
     private JLabel personlSectionLabel;
     private JLabel accountSectionLabel;
@@ -43,7 +43,6 @@ public class RegisterPanel extends BasePanel {
     private JLabel confirmEmailErrorLabel;
     private JLabel passwordErrorLabel;
     private JLabel confirmPasswordErrorLabel;
-    private JSeparator sectionSeparator;
     private JSeparator leftSeparator;
     private JSeparator topSeparator;
     private JSeparator bottomSeparator;
@@ -60,6 +59,9 @@ public class RegisterPanel extends BasePanel {
     private JTextField confirmEmailField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
+    private JPanel contentPanel;
+    private JScrollPane contentScrollPane;
+    private JPanel formPanel;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
@@ -69,6 +71,7 @@ public class RegisterPanel extends BasePanel {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
+        contentScrollPane.setBorder(BorderFactory.createEmptyBorder());
         createActionListeners();
     }
 
