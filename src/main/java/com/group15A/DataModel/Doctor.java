@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.util.Objects;
+
 /**
  * Used to represent a doctor within the system, will be used to pass and change
  * information between the business logic and data access layer.
@@ -30,6 +32,32 @@ public class Doctor {
         this.phoneNo = phoneNo;
     }
 
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "doctorID=" + doctorID +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNo='" + phoneNo + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return doctorID.equals(doctor.doctorID) && email.equals(doctor.email) && firstName.equals(doctor.firstName) && Objects.equals(middleName, doctor.middleName) && lastName.equals(doctor.lastName) && dob.equals(doctor.dob) && gender.equals(doctor.gender) && phoneNo.equals(doctor.phoneNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(doctorID, email, firstName, middleName, lastName, dob, gender, phoneNo);
+    }
 
     // All getters and setters for attributes below
 
