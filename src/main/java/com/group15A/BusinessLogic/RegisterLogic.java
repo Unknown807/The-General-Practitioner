@@ -10,9 +10,74 @@ public class RegisterLogic implements IRegister {
     }
 
     @Override
-    public Boolean register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
-        System.out.println("Clicked Register");
-        return null;
+    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
+        this.verifyFirstName(fName);
+        this.verifyMiddleName(mName);
+        this.verifyLastName(lName);
+        //TODO register new patient
+        //this.verifyLogin(fName, mName, lName, DoB, gender, phoneNo, email, confirmEmail, password, confirmPassword);
+
+    }
+
+//    private void verifyLogin(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) {
+//
+//    }
+
+    private Boolean isAlpha(String str) {
+        return str.chars().allMatch(Character::isLetter);
+    }
+
+    private Boolean verifyName(String name) {
+        return (name.isBlank() || !this.isAlpha(name));
+    }
+
+    private void verifyFirstName(String fName) throws IllegalArgumentException {
+        if (verifyName(fName)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void verifyMiddleName(String mName) throws IllegalArgumentException {
+        if (!this.isAlpha(mName)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void verifyLastName(String lName) throws IllegalArgumentException {
+        if (verifyName(lName)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void verifyDoB(String DoB) {
+
+    }
+
+    private void verifyGender(String gender) {
+
+    }
+
+    private void verifyPhoneNo(String phoneNo) {
+
+    }
+
+    private void verifyEmail(String email) {
+
+    }
+
+    private void verifyMatchingEmails(String email, String emailConfirmation) {
+
+    }
+
+    private void verifyPassword(String password) {
+
+    }
+
+    private void verifyMatchingPasswords(String password, String passwordConfirmation) {
+
     }
 
 }

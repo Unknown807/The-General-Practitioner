@@ -111,7 +111,7 @@ public class RegisterPanel extends BasePanel {
                 confirmPasswordField.getPassword().toString()
             );
         } catch (Exception e) {
-
+            System.out.println("Encountered error");
         }
     }
 

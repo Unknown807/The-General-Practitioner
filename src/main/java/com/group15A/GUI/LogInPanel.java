@@ -73,7 +73,7 @@ public class LogInPanel extends BasePanel {
                     passwordField.getPassword().toString()
             );
         } catch (Exception e) {
-
+            
         }
     }
 
