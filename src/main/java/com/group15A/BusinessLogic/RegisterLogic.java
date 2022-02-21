@@ -19,22 +19,20 @@ public class RegisterLogic implements IRegister {
 
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
-//        this.verifyFirstName(fName);
-//        this.verifyMiddleName(mName);
-//        this.verifyLastName(lName);
-//        this.verifyDoB(DoB);
-//        this.verifyGender(gender);
-//        this.verifyPhoneNo(phoneNo);
-//        this.verifyEmail(email);
+        this.verifyFirstName(fName);
+        this.verifyMiddleName(mName);
+        this.verifyLastName(lName);
+        this.verifyDoB(DoB);
+        this.verifyGender(gender);
+        this.verifyPhoneNo(phoneNo);
+        this.verifyEmail(email);
         this.verifyPassword(password);
+        this.verifyMatchingEmails(email, confirmEmail);
+        this.verifyMatchingPasswords(password, confirmPassword);
+
         //TODO register new patient
-        //this.verifyLogin(fName, mName, lName, DoB, gender, phoneNo, email, confirmEmail, password, confirmPassword);
 
     }
-
-//    private void verifyLogin(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) {
-//
-//    }
 
     private Boolean isAlpha(String str) {
         return str.chars().allMatch(Character::isLetter);
@@ -109,11 +107,17 @@ public class RegisterLogic implements IRegister {
     }
 
     private void verifyMatchingEmails(String email, String emailConfirmation) {
-
+        if (!email.equals(emailConfirmation)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyMatchingPasswords(String password, String passwordConfirmation) {
-
+        if (!password.equals(passwordConfirmation)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
     }
 
 }
