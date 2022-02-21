@@ -73,9 +73,14 @@ public class RegisterPanel extends BasePanel {
     public RegisterPanel(MultiPanelWindow panelController) {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
-        registerLogic = new RegisterLogic(this);
         logInButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
+
+        try {
+            registerLogic = new RegisterLogic(this);
+        } catch (Exception e) {
+            //TODO show popup dialog to user, they must restart program, connection to db not made
+        }
     }
 
     @Override
