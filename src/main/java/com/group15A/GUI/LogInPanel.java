@@ -57,7 +57,7 @@ public class LogInPanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
-        registerButton.addActionListener( e -> {panelController.showPage(new RegisterPanel(panelController));});
+        registerButton.addActionListener( e -> panelController.showPage(new RegisterPanel(panelController)));
     }
 
 }

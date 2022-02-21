@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.RegisterLogic;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -63,6 +65,7 @@ public class RegisterPanel extends BasePanel {
     private JScrollPane contentScrollPane;
     private JPanel formPanel;
 
+    private RegisterLogic registerLogic;
     /**
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -70,6 +73,7 @@ public class RegisterPanel extends BasePanel {
     public RegisterPanel(MultiPanelWindow panelController) {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
+        registerLogic = new RegisterLogic(this);
         logInButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
     }
@@ -88,7 +92,27 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> {panelController.showPage(new LogInPanel(panelController));});
+        logInButton.addActionListener( e -> panelController.showPage(new LogInPanel(panelController)));
+        continueButton.addActionListener(e -> this.registerNewPatient());
+    }
+
+    private void registerNewPatient() {
+        try {
+            registerLogic.register(
+                firstNameField.getText(),
+                middleNameField.getText(),
+                lastNameField.getText(),
+                dateOfBirthField.getText(),
+                sexCombo.getSelectedItem().toString(),
+                phoneField.getText(),
+                emailField.getText(),
+                confirmEmailField.getText(),
+                passwordField.getPassword().toString(),
+                confirmPasswordField.getPassword().toString()
+            );
+        } catch (Exception e) {
+
+        }
     }
 
 }
