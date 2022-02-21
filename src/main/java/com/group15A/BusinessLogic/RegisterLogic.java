@@ -3,7 +3,14 @@ package com.group15A.BusinessLogic;
 import com.group15A.GUI.RegisterPanel;
 import org.apache.commons.validator.GenericValidator;
 
+import java.util.regex.Pattern;
+
 public class RegisterLogic implements IRegister {
+    private final Pattern containsUpperCase = Pattern.compile("^(?=.*[a-z]).+$");
+    private final Pattern containsLowerCase = Pattern.compile("^(?=.*[A-Z]).+$");
+    private final Pattern containsDigit = Pattern.compile("^(?=.*\\d).+$");
+    private final Pattern containsSpecials = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+
     private RegisterPanel registerPanel;
 
     public RegisterLogic(RegisterPanel registerPanel) {
@@ -12,9 +19,14 @@ public class RegisterLogic implements IRegister {
 
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
-        this.verifyFirstName(fName);
-        this.verifyMiddleName(mName);
-        this.verifyLastName(lName);
+//        this.verifyFirstName(fName);
+//        this.verifyMiddleName(mName);
+//        this.verifyLastName(lName);
+//        this.verifyDoB(DoB);
+//        this.verifyGender(gender);
+//        this.verifyPhoneNo(phoneNo);
+//        this.verifyEmail(email);
+        this.verifyPassword(password);
         //TODO register new patient
         //this.verifyLogin(fName, mName, lName, DoB, gender, phoneNo, email, confirmEmail, password, confirmPassword);
 
@@ -68,18 +80,35 @@ public class RegisterLogic implements IRegister {
     }
 
     private void verifyPhoneNo(String phoneNo) {
-
+        if (!GenericValidator.isInt(phoneNo) || !GenericValidator.isInRange(phoneNo.length(), 5, 15) || phoneNo.isBlank()) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyEmail(String email) {
+        if (!GenericValidator.isEmail(email)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private void verifyPassword(String password) {
+        // must have min 8 chars, 1 upper, 1 lower, 1 digit, 1 special character
+        Boolean invalidLength = password.length() < 8;
+        Boolean noUpperCase = !containsUpperCase.matcher(password).matches();
+        Boolean noLowerCase = !containsLowerCase.matcher(password).matches();
+        Boolean noDigit = !containsDigit.matcher(password).matches();
+        Boolean noSpecials = !containsSpecials.matcher(password).find();
+
+        if (invalidLength || noUpperCase || noLowerCase || noDigit || noSpecials) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
 
     }
 
     private void verifyMatchingEmails(String email, String emailConfirmation) {
-
-    }
-
-    private void verifyPassword(String password) {
 
     }
 

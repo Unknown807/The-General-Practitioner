@@ -107,8 +107,8 @@ public class RegisterPanel extends BasePanel {
                 phoneField.getText(),
                 emailField.getText(),
                 confirmEmailField.getText(),
-                passwordField.getPassword().toString(),
-                confirmPasswordField.getPassword().toString()
+                new String(passwordField.getPassword()),
+                new String(confirmPasswordField.getPassword())
             );
         } catch (Exception e) {
             System.out.println("Encountered error");
