@@ -1,6 +1,7 @@
 package com.group15A.BusinessLogic;
 
 import com.group15A.GUI.RegisterPanel;
+import org.apache.commons.validator.GenericValidator;
 
 public class RegisterLogic implements IRegister {
     private RegisterPanel registerPanel;
@@ -53,11 +54,17 @@ public class RegisterLogic implements IRegister {
     }
 
     private void verifyDoB(String DoB) {
-
+        if (!GenericValidator.isDate(DoB, "yyyy-MM-dd", true)) {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyGender(String gender) {
-
+        if (gender != "M" || gender != "F" || gender != "Other") {
+            //TODO set error labels in UI to visible
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyPhoneNo(String phoneNo) {
