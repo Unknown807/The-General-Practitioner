@@ -23,7 +23,7 @@ public class RegisterLogic implements IRegister {
     }
 
     @Override
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws Exception {
+    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception {
         this.verifyFirstName(fName);
         this.verifyMiddleName(mName);
         this.verifyLastName(lName);
@@ -46,7 +46,7 @@ public class RegisterLogic implements IRegister {
         Patient newPatient = this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
                 //TODO change the line below to use the doctor selected in the user interface
-                dataAccessLayer.getDoctors().get(0)
+                dataAccessLayer.getDoctors().get(chosenDoctor)
         );
     }
 
