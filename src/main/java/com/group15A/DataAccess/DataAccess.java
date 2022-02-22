@@ -142,7 +142,7 @@ public class DataAccess implements IDataAccess
      * @throws DoctorNotFoundException if the doctor was not found
      * @throws Exception if there was a problem querying the database
      */
-    private Doctor getDoctor(Patient patient) throws Exception
+    public Doctor getDoctor(Patient patient) throws Exception
     {
         String query = "CALL find_doctor(?);";
         CallableStatement statement = connection.prepareCall(query);
@@ -306,6 +306,4 @@ public class DataAccess implements IDataAccess
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost/TheGeneralPractitioner?user=Andrei&password=lZWzuM3fuz5okeUSwE");
     }
-
-
 }

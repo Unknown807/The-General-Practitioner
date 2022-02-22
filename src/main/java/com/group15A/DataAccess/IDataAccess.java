@@ -23,6 +23,8 @@ public interface IDataAccess
 
     List<Doctor> getDoctors() throws Exception;
 
+    Doctor getDoctor(Patient patient) throws Exception;
+
     Doctor getDoctor(int doctorID) throws Exception;
 
     List<Certification> getCertifications(Doctor doctor) throws Exception;
