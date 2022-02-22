@@ -68,7 +68,6 @@ public class RegisterPanel extends BasePanel {
     private JComboBox yearCombo;
     private JPanel datePanel;
     private JLabel doctorLabel;
-    private JTextField dateOfBirthField;
 
     private RegisterLogic registerLogic;
     /**
@@ -81,11 +80,11 @@ public class RegisterPanel extends BasePanel {
         logInButton.setMargin(new Insets(0,0,0,0));
         addNumbersToCombo(dayCombo,1,31,"Day");
         addNumbersToCombo(monthCombo,1,12,"Month");
-        addNumbersToCombo(yearCombo,2022,1700,"Year");
+        addNumbersToCombo(yearCombo,2022,1900,"Year");
         createActionListeners();
 
         try {
-            registerLogic = new RegisterLogic(this);
+            registerLogic = new RegisterLogic();
         } catch (Exception e) {
             //TODO show popup dialog to user, they must restart program, connection to db not made
         }
@@ -115,7 +114,9 @@ public class RegisterPanel extends BasePanel {
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
-                "pretendDateValue", // A temporary value, to be replaced by combo box values.
+                yearCombo.getSelectedItem().toString()+"-"+
+                    monthCombo.getSelectedItem().toString()+"-"+
+                    dayCombo.getSelectedItem().toString(), // A temporary value, to be replaced by combo box values.
                 //TODO: Pass date using new DD-MM-YYYY combo boxes.
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
