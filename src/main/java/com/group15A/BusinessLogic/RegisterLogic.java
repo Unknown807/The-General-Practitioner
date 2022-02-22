@@ -6,9 +6,7 @@ import com.group15A.GUI.RegisterPanel;
 import org.apache.commons.validator.GenericValidator;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -18,38 +16,36 @@ public class RegisterLogic implements IRegister {
     private final Pattern containsDigit = Pattern.compile("^(?=.*\\d).+$");
     private final Pattern containsSpecials = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
 
-    private RegisterPanel registerPanel;
     private DataAccess dataAccessLayer;
 
-    public RegisterLogic(RegisterPanel registerPanel) throws Exception {
-        this.registerPanel = registerPanel;
+    public RegisterLogic() throws Exception {
         this.dataAccessLayer = new DataAccess();
     }
 
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
-        this.verifyFirstName(fName);
-        this.verifyMiddleName(mName);
-        this.verifyLastName(lName);
-        this.verifyDoB(DoB);
-        this.verifyGender(gender);
-        this.verifyPhoneNo(phoneNo);
-        this.verifyEmail(email);
-        this.verifyPassword(password);
-        this.verifyMatchingEmails(email, confirmEmail);
-        this.verifyMatchingPasswords(password, confirmPassword);
-
-        //TODO make methods for hashing password
-        String passHash = password;
-
-        //TODO register new patient
-
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateConv = df.parse(DoB);
-
-        Patient newPatient = this.dataAccessLayer.registerPatient(
-                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo)
-        );
+//        this.verifyFirstName(fName);
+//        this.verifyMiddleName(mName);
+//        this.verifyLastName(lName);
+//        this.verifyDoB(DoB);
+//        this.verifyGender(gender);
+//        this.verifyPhoneNo(phoneNo);
+//        this.verifyEmail(email);
+//        this.verifyPassword(password);
+//        this.verifyMatchingEmails(email, confirmEmail);
+//        this.verifyMatchingPasswords(password, confirmPassword);
+//
+//        //TODO make methods for hashing password
+//        String passHash = password;
+//
+//        //TODO register new patient
+//
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        Date dateConv = df.parse(DoB);
+//
+//        Patient newPatient = this.dataAccessLayer.registerPatient(
+//                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo)
+//        );
     }
 
     private Boolean isAlpha(String str) {
@@ -82,7 +78,7 @@ public class RegisterLogic implements IRegister {
     }
 
     private void verifyDoB(String DoB) throws IllegalArgumentException {
-        if (!GenericValidator.isDate(DoB, "yyyy-MM-dd", true)) {
+        if (!GenericValidator.isDate(DoB, "yyyy-MM-dd", false)) {
             //TODO set error labels in UI to visible
             throw new IllegalArgumentException();
         }
