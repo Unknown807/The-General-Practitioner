@@ -1,6 +1,7 @@
 package com.group15A.DataModel;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Used to represent a patient within the system, will be used to pass and change
@@ -61,6 +62,33 @@ public class Patient {
         this(UNKNOWN_PATIENT_ID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
     }
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patientID=" + patientID +
+                ", email='" + email + '\'' +
+                ", passHash='" + passHash + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dob='" + dob + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNo='" + phoneNo + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return patientID.equals(patient.patientID) && email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && dob.equals(patient.dob) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(patientID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
+    }
 
     // All getters and setters for attributes below
 
