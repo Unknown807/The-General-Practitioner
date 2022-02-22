@@ -50,7 +50,13 @@ public class LogInPanel extends BasePanel {
         try {
             logInLogic = new LogInLogic();
         } catch (Exception e) {
-            //TODO show popup dialog to user, they must restart program, connection to db not made
+            JOptionPane.showMessageDialog(
+                    null,
+                    "\nDatabase connection could not be made." +
+                            "\nPlease connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
