@@ -23,7 +23,7 @@ public class RegisterPanel extends BasePanel {
     private JTextField firstNameField;
     private JTextArea passwordTextArea;
     private JButton logInButton;
-    private JLabel personlSectionLabel;
+    private JLabel personalSectionLabel;
     private JLabel accountSectionLabel;
     private JLabel firstNameLabel;
     private JLabel middleNameLabel;
@@ -55,7 +55,6 @@ public class RegisterPanel extends BasePanel {
     private JTextField middleNameField;
     private JTextField lastNameField;
     private JComboBox sexCombo;
-    private JTextField dateOfBirthField;
     private JTextField phoneField;
     private JTextField emailField;
     private JTextField confirmEmailField;
@@ -64,6 +63,11 @@ public class RegisterPanel extends BasePanel {
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
     private JPanel formPanel;
+    private JComboBox dayCombo;
+    private JComboBox monthCombo;
+    private JComboBox yearCombo;
+    private JPanel datePanel;
+    private JTextField dateOfBirthField;
 
     private RegisterLogic registerLogic;
     /**
@@ -74,6 +78,9 @@ public class RegisterPanel extends BasePanel {
         super("Enter Your Details", panelController,"registerPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
+        addNumbersToCombo(dayCombo,1,31,"Day");
+        addNumbersToCombo(monthCombo,1,12,"Month");
+        addNumbersToCombo(yearCombo,2022,1700,"Year");
         createActionListeners();
 
         try {
@@ -107,7 +114,8 @@ public class RegisterPanel extends BasePanel {
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
-                dateOfBirthField.getText(),
+                "pretendDateValue", // A temporary value, to be replaced by combo box values.
+                //TODO: Pass date using new DD-MM-YYYY combo boxes.
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
                 emailField.getText(),
@@ -117,6 +125,24 @@ public class RegisterPanel extends BasePanel {
             );
         } catch (Exception e) {
             System.out.println("Encountered error");
+        }
+    }
+
+    public void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
+    {
+        comboBox.addItem(unchosenValue);
+        if(first < last) {
+            System.out.println("yes");
+            for(int i = first; i <= last; i++){
+                comboBox.addItem(i);
+            }
+        }
+        else {
+            System.out.println("no");
+            for(int i = first; i >= last; i--){
+                System.out.println(i);
+                comboBox.addItem(i);
+            }
         }
     }
 
