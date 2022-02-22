@@ -98,13 +98,13 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
         } catch (Exception e) {
-            //TODO show popup dialog to user, they must restart program, connection to db not made
             JOptionPane.showMessageDialog(
                       null,
                 "\nAvailable doctors cannot be shown." +
                         "\nPlease connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                                    JOptionPane.ERROR_MESSAGE);
+                   "ERROR: Database not connected",
+                        JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
