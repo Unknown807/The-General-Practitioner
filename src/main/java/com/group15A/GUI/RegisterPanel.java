@@ -76,7 +76,6 @@ public class RegisterPanel extends BasePanel {
 
     private RegisterLogic registerLogic;
     private DoctorLogic doctorLogic;
-    private List<Doctor> doctorsList;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
@@ -96,7 +95,6 @@ public class RegisterPanel extends BasePanel {
             doctorLogic = new DoctorLogic();
 
             for (Doctor d : doctorLogic.getDoctors()) {
-                doctorsList.add(d);
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
         } catch (Exception e) {
@@ -138,7 +136,7 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                doctorsList.get(doctorCombo.getSelectedIndex())
+                doctorCombo.getSelectedIndex()
             );
         } catch (Exception e) {
             System.out.println("Encountered error");

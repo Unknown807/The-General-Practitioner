@@ -14,6 +14,6 @@ public class DoctorLogic implements IDoctor {
 
     @Override
     public List<Doctor> getDoctors() throws Exception {
-        return null;
+        return dataAccessLayer.getDoctors();
     }
 }
