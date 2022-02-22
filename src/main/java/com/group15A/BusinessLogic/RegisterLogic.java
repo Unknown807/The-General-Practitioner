@@ -48,7 +48,9 @@ public class RegisterLogic implements IRegister {
         Date dateConv = df.parse(DoB);
 
         Patient newPatient = this.dataAccessLayer.registerPatient(
-                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo)
+                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
+                //TODO change the line below to use the doctor selected in the user interface
+                dataAccessLayer.getDoctors().get(0)
         );
     }
 

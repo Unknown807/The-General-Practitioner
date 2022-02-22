@@ -13,11 +13,17 @@ public interface IDataAccess
 {
     Patient getPatient(String email, String password) throws Exception;
 
-    Patient registerPatient(Patient patient) throws Exception;
+    Patient getPatient(int patientID) throws Exception;
+
+    Patient registerPatient(Patient patient, Doctor doctor) throws Exception;
 
     Patient updatePatient(Patient patient) throws Exception;
 
+    Patient changeDoctor(Patient patient, Doctor doctor) throws Exception;
+
     List<Doctor> getDoctors() throws Exception;
+
+    Doctor getDoctor(int doctorID) throws Exception;
 
     List<Certification> getCertifications(Doctor doctor) throws Exception;
 }
