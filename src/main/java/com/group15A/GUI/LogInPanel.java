@@ -52,11 +52,11 @@ public class LogInPanel extends BasePanel {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                     null,
-                    "\nDatabase connection could not be made." +
                             "\nPlease connect to the database and restart the program.",
                     "ERROR: Database not connected",
                     JOptionPane.ERROR_MESSAGE
             );
+            System.exit(0);
         }
     }
 

@@ -100,12 +100,12 @@ public class RegisterPanel extends BasePanel {
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(
-                      null,
-                "\nAvailable doctors cannot be shown." +
-                        "\nPlease connect to the database and restart the program.",
+                      registerPanel,
+                        "Please connect to the database and restart the program.",
                    "ERROR: Database not connected",
                         JOptionPane.ERROR_MESSAGE
             );
+            System.exit(0);
         }
     }
 
