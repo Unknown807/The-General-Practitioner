@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.LoginLogic;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,6 +33,8 @@ public class LogInPanel extends BasePanel {
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
 
+    private LoginLogic logInLogic;
+
     /**
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -39,6 +43,7 @@ public class LogInPanel extends BasePanel {
     {
         super("Please Sign In", panelController,"logInPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
+        logInLogic = new LoginLogic(this);
         resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
@@ -57,7 +62,19 @@ public class LogInPanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
-        registerButton.addActionListener( e -> {panelController.showPage(new RegisterPanel(panelController));});
+        registerButton.addActionListener( e -> panelController.showPage(new RegisterPanel(panelController)));
+        logInButton.addActionListener(e -> this.logInPatient());
+    }
+
+    private void logInPatient() {
+        try {
+            logInLogic.login(
+                    emailField.getText(),
+                    passwordField.getPassword().toString()
+            );
+        } catch (Exception e) {
+            
+        }
     }
 
 }

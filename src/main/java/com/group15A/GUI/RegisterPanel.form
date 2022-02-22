@@ -126,6 +126,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid name"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="b7bb" class="javax.swing.JTextField" binding="firstNameField">
@@ -157,6 +158,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid name"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="4aa4c" class="javax.swing.JTextField" binding="middleNameField">
@@ -188,6 +190,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid name"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="7e770" class="javax.swing.JTextField" binding="lastNameField">
@@ -219,6 +222,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="No sex chosen"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="7fb94" class="javax.swing.JLabel" binding="dateOfBirth">
@@ -240,16 +244,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid date"/>
-                        </properties>
-                      </component>
-                      <component id="29b89" class="javax.swing.JTextField" binding="dateOfBirthField">
-                        <constraints>
-                          <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <font size="22" style="0"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="896c7" class="javax.swing.JLabel" binding="phoneLabel">
@@ -271,6 +266,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid phone number"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="dfee2" class="javax.swing.JTextField" binding="phoneField">
@@ -296,7 +292,7 @@
                           </model>
                         </properties>
                       </component>
-                      <component id="1260d" class="javax.swing.JLabel" binding="personlSectionLabel">
+                      <component id="1260d" class="javax.swing.JLabel" binding="personalSectionLabel">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -305,6 +301,46 @@
                           <text value="Personal details"/>
                         </properties>
                       </component>
+                      <grid id="4a3c4" binding="datePanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="10" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="3eea4" class="javax.swing.JComboBox" binding="dayCombo">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <preferred-size width="50" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <font size="22" style="0"/>
+                            </properties>
+                          </component>
+                          <component id="744b5" class="javax.swing.JComboBox" binding="yearCombo">
+                            <constraints>
+                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <preferred-size width="50" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <font size="22" style="0"/>
+                            </properties>
+                          </component>
+                          <component id="cc426" class="javax.swing.JComboBox" binding="monthCombo">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                                <preferred-size width="50" height="-1"/>
+                              </grid>
+                            </constraints>
+                            <properties>
+                              <font size="22" style="0"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
                     </children>
                   </grid>
                   <grid id="9eede" binding="accountPanel" layout-manager="GridLayoutManager" row-count="10" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -334,6 +370,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid email"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="fee6f" class="javax.swing.JTextField" binding="emailField">
@@ -365,6 +402,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Emails don't match"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="a17c7" class="javax.swing.JTextField" binding="confirmEmailField">
@@ -396,6 +434,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Invalid password"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="413a9" class="javax.swing.JPasswordField" binding="passwordField">
@@ -427,6 +466,7 @@
                           <horizontalAlignment value="4"/>
                           <horizontalTextPosition value="4"/>
                           <text value="Passwords don't match"/>
+                          <visible value="false"/>
                         </properties>
                       </component>
                       <component id="cbd66" class="javax.swing.JPasswordField" binding="confirmPasswordField">
