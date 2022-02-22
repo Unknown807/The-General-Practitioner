@@ -149,6 +149,16 @@ public class RegisterPanel extends BasePanel {
         }
     }
 
+    /**
+     * Adds a range of numbers as items in a given combobox,
+     * in order of `first` to `last`.
+     * @param comboBox The combobox which will have values added to it.
+     * @param first The first value to added (after `unchosenValue`).
+     * @param last The last value to added.
+     * @param unchosenValue The first value to be shown.
+     *                      The value usually indicates a valid item has not been chosen.
+     * @author Filip Fois.
+     */
     public void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
     {
         comboBox.addItem(unchosenValue);
