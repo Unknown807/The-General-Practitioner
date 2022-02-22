@@ -14,21 +14,20 @@ public class DataAccessTest{
 
     //TODO Mock database for proper unit testing
     @Test
-    public void getDoctorsTest()
-    {
+    public void getDoctorsTest() throws Exception {
         try {
             DataAccess access = new DataAccess();
             var doctors = access.getDoctors();
             for(var doctor: doctors)
                 System.out.println(doctor.getFirstName()+" "+doctor.getLastName());
-        } catch (Exception e) {
+        } catch (Exception ex) {
             System.err.println("Failed to query the database.");
+            
         }
     }
 
     @Test
-    public void getPatientTest()
-    {
+    public void getPatientTest() throws Exception {
         try{
             DataAccess access = new DataAccess();
             Patient patient = access.getPatient("superemail@hotmail.com", "superPass");
@@ -36,24 +35,11 @@ public class DataAccessTest{
         }catch (Exception ex)
         {
             System.err.println(ex.getMessage());
+            
         }
     }
 
-
     /*@Test
-    public void registerPatientTest()
-    {
-        try{
-            DataAccess access = new DataAccess();
-            Patient patient = access.registerPatient(new Patient("test@test.com", "testPass", "Johhny", null, "Depp", new Date(), "Male", "0859565785"));
-            assertEquals(patient.getPatientID(), access.getPatient(patient.getEmail(), patient.getPassHash()).getPatientID());
-        }catch (Exception ex)
-        {
-            System.err.println(ex.getMessage());
-        }
-    }*/
-
-    @Test
     public void updatePatientTest()
     {
         try{
@@ -66,11 +52,10 @@ public class DataAccessTest{
         {
             System.err.println(ex.getMessage());
         }
-    }
+    }*/
 
     @Test
-    public void getCertificationsTest()
-    {
+    public void getCertificationsTest() throws Exception {
         try{
             DataAccess access = new DataAccess();
             Doctor doctor = access.getDoctors().get(0);
@@ -78,6 +63,23 @@ public class DataAccessTest{
             for(var cert: certs)
                 System.out.println(cert.getName() + " " + cert.getField());
         }catch (Exception ex)
+        {
+            System.err.println(ex.getMessage());
+            
+        }
+    }
+
+    @Test
+    public void changeDoctorTest() throws Exception {
+        try
+        {
+            DataAccess access = new DataAccess();
+            Patient patient = access.getPatient(1);
+            Doctor doctor = access.getDoctor(3);
+            System.out.println(access.getDoctor(patient).getFirstName());
+            access.changeDoctor(patient, doctor);
+            System.out.println(access.getDoctor(patient).getFirstName());
+        }catch(Exception ex)
         {
             System.err.println(ex.getMessage());
         }

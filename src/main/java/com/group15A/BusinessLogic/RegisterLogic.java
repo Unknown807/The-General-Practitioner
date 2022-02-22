@@ -24,28 +24,30 @@ public class RegisterLogic implements IRegister {
 
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
-//        this.verifyFirstName(fName);
-//        this.verifyMiddleName(mName);
-//        this.verifyLastName(lName);
-//        this.verifyDoB(DoB);
-//        this.verifyGender(gender);
-//        this.verifyPhoneNo(phoneNo);
-//        this.verifyEmail(email);
-//        this.verifyPassword(password);
-//        this.verifyMatchingEmails(email, confirmEmail);
-//        this.verifyMatchingPasswords(password, confirmPassword);
-//
-//        //TODO make methods for hashing password
-//        String passHash = password;
-//
-//        //TODO register new patient
-//
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//        Date dateConv = df.parse(DoB);
-//
-//        Patient newPatient = this.dataAccessLayer.registerPatient(
-//                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo)
-//        );
+        this.verifyFirstName(fName);
+        this.verifyMiddleName(mName);
+        this.verifyLastName(lName);
+        this.verifyDoB(DoB);
+        this.verifyGender(gender);
+        this.verifyPhoneNo(phoneNo);
+        this.verifyEmail(email);
+        this.verifyPassword(password);
+        this.verifyMatchingEmails(email, confirmEmail);
+        this.verifyMatchingPasswords(password, confirmPassword);
+
+        //TODO make methods for hashing password
+        String passHash = password;
+
+        //TODO register new patient
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateConv = df.parse(DoB);
+
+        Patient newPatient = this.dataAccessLayer.registerPatient(
+                new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
+                //TODO change the line below to use the doctor selected in the user interface
+                dataAccessLayer.getDoctors().get(0)
+        );
     }
 
     private Boolean isAlpha(String str) {

@@ -1,5 +1,6 @@
 package com.group15A.DataAccess;
 
+import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataModel.*;
 
@@ -37,8 +38,21 @@ public class DataAccess implements IDataAccess
         statement.setString(1, email);
         statement.setString(2, password);
 
-        Patient patient = null;
         ResultSet result = statement.executeQuery();
+        Patient patient = getPatientFromDB(result);
+
+        return patient;
+    }
+
+    /**
+     * Get the patient from the given result set
+     * @param result The result set from the database
+     * @return The patient
+     * @throws PatientNotFoundException if the patient was not found
+     */
+    private Patient getPatientFromDB(ResultSet result) throws PatientNotFoundException
+    {
+        Patient patient;
         try {
             result.next();
             patient = new Patient(
@@ -56,6 +70,25 @@ public class DataAccess implements IDataAccess
         {
             throw new PatientNotFoundException();
         }
+        return patient;
+    }
+
+    /**
+     * Get the patient with the given id
+     * @param patientID the patient's id
+     * @return The patient
+     * @throws PatientNotFoundException if the user was not found
+     * @throws Exception if there was a problem querying the database
+     */
+    @Override
+    public Patient getPatient(int patientID) throws Exception
+    {
+        String query = "CALL get_patient(?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setInt(1, patientID);
+
+        ResultSet result = statement.executeQuery();
+        Patient patient = getPatientFromDB(result);
 
         return patient;
     }
@@ -63,13 +96,14 @@ public class DataAccess implements IDataAccess
     /**
      * Registers a new patient
      * @param patient The new patient
+     * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
      * @throws Exception if there was a problem querying the database
      */
     @Override
-    public Patient registerPatient(Patient patient) throws Exception
+    public Patient registerPatient(Patient patient, Doctor doctor) throws Exception
     {
-        String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?);";
+        String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
         CallableStatement statement = connection.prepareCall(query);
         statement.setString(1, patient.getEmail());
         statement.setString(2, patient.getPassHash());
@@ -79,6 +113,7 @@ public class DataAccess implements IDataAccess
         statement.setDate(6, new Date(patient.getDob().getTime()));
         statement.setString(7, patient.getGender());
         statement.setString(8, patient.getPhoneNo());
+        statement.setInt(9, doctor.getDoctorID());
 
         statement.executeQuery();
 
@@ -94,7 +129,88 @@ public class DataAccess implements IDataAccess
     @Override
     public Patient updatePatient(Patient patient) throws Exception
     {
-        String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        updatePatientFull(patient, getDoctor(patient));
+
+        return getPatient(patient.getEmail(), patient.getPassHash());
+    }
+
+
+    /**
+     * Get the corresponding doctor for the given patient
+     * @param patient The patient
+     * @return The patient's doctor
+     * @throws DoctorNotFoundException if the doctor was not found
+     * @throws Exception if there was a problem querying the database
+     */
+    public Doctor getDoctor(Patient patient) throws Exception
+    {
+        String query = "CALL find_doctor(?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setInt(1, patient.getPatientID());
+
+        ResultSet result = statement.executeQuery();
+        Doctor doctor = getDoctorFromDB(result);
+
+        return doctor;
+    }
+
+    /**
+     * Get the doctor with the given id
+     * @param doctorID The id of the doctor
+     * @return The doctor
+     * @throws DoctorNotFoundException if the doctor was not found
+     * @throws Exception if there was a problem querying the database
+     */
+    @Override
+    public Doctor getDoctor(int doctorID) throws Exception {
+        String query = "CALL get_doctor(?);";
+        CallableStatement statement = connection.prepareCall(query);
+        statement.setInt(1, doctorID);
+
+        ResultSet result = statement.executeQuery();
+        Doctor doctor = getDoctorFromDB(result);
+
+        return doctor;
+    }
+
+    /**
+     * Get the doctor from the given result set
+     * @param result The result set from the database
+     * @return The doctor
+     * @throws DoctorNotFoundException if the doctor was not found
+     */
+    private Doctor getDoctorFromDB(ResultSet result) throws DoctorNotFoundException
+    {
+        Doctor doctor;
+        try {
+            result.next();
+            doctor = new Doctor(
+                    result.getInt("id_doctor"),
+                    result.getString("email"),
+                    result.getString("first_name"),
+                    result.getString("middle_name"),
+                    result.getString("last_name"),
+                    result.getDate("date_of_birth"),
+                    result.getString("gender"),
+                    result.getString("telephone_number")
+            );
+        } catch(Exception ex)
+        {
+            throw new DoctorNotFoundException();
+        }
+
+        return doctor;
+    }
+
+    /**
+     * Update the given patient with the new information, including a new doctor
+     * @param patient The modified patient
+     * @param doctor The new doctor
+     * @throws Exception if there was a problem querying the database
+     */
+    private void updatePatientFull(Patient patient, Doctor doctor) throws Exception
+    {
+        String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         CallableStatement statement = connection.prepareCall(query);
         statement.setInt(1, patient.getPatientID());
         statement.setString(2, patient.getEmail());
@@ -105,10 +221,24 @@ public class DataAccess implements IDataAccess
         statement.setDate(7, new Date(patient.getDob().getTime()));
         statement.setString(8, patient.getGender());
         statement.setString(9, patient.getPhoneNo());
+        statement.setInt(10, doctor.getDoctorID());
 
         statement.executeQuery();
+    }
 
-        return getPatient(patient.getEmail(), patient.getPassHash());
+    /**
+     * Change the doctor of the given patient
+     * @param patient The patient
+     * @param doctor The new doctor
+     * @return The corresponding patient from the database
+     * @throws Exception if there was a problem querying the database
+     */
+    @Override
+    public Patient changeDoctor(Patient patient, Doctor doctor) throws Exception
+    {
+        updatePatientFull(patient, doctor);
+
+        return getPatient(patient.getPatientID());
     }
 
     /**
@@ -176,6 +306,4 @@ public class DataAccess implements IDataAccess
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost/TheGeneralPractitioner?user=Andrei&password=lZWzuM3fuz5okeUSwE");
     }
-
-
 }
