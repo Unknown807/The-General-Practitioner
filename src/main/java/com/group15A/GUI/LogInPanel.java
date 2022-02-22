@@ -78,13 +78,14 @@ public class LogInPanel extends BasePanel {
     }
 
     private void logInPatient() {
+        logInErrorLabel.setVisible(false);
         try {
-            logInLogic.login(
-                    emailField.getText(),
-                    new String(passwordField.getPassword())
+            logInLogic.login(emailField.getText(),
+                             new String(passwordField.getPassword())
             );
         } catch (Exception e) {
-            System.out.println("Error Encountered");
+            System.out.println("Error Encountered: Log in unsuccessful.");
+            logInErrorLabel.setVisible(true);
         }
     }
 

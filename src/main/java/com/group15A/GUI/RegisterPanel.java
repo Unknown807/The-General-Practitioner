@@ -97,7 +97,8 @@ public class RegisterPanel extends BasePanel {
             for (Doctor d : doctorLogic.getDoctors()) {
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             JOptionPane.showMessageDialog(
                       null,
                 "\nAvailable doctors cannot be shown." +
@@ -145,13 +146,14 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.getSelectedIndex()
             );
         } catch (Exception e) {
-            System.out.println("Encountered error");
+            System.out.println("Encountered error: Register unsuccessful.");
         }
     }
 
     /**
      * Adds a range of numbers as items in a given combobox,
      * in order of `first` to `last`.
+     *
      * @param comboBox The combobox which will have values added to it.
      * @param first The first value to added (after `unchosenValue`).
      * @param last The last value to added.
