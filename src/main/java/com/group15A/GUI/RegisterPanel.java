@@ -67,6 +67,7 @@ public class RegisterPanel extends BasePanel {
     private JComboBox monthCombo;
     private JComboBox yearCombo;
     private JPanel datePanel;
+    private JLabel doctorLabel;
     private JTextField dateOfBirthField;
 
     private RegisterLogic registerLogic;
@@ -132,15 +133,12 @@ public class RegisterPanel extends BasePanel {
     {
         comboBox.addItem(unchosenValue);
         if(first < last) {
-            System.out.println("yes");
             for(int i = first; i <= last; i++){
                 comboBox.addItem(i);
             }
         }
         else {
-            System.out.println("no");
             for(int i = first; i >= last; i--){
-                System.out.println(i);
                 comboBox.addItem(i);
             }
         }
