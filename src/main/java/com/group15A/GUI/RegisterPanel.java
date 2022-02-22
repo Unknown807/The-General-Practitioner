@@ -1,9 +1,13 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.DataModel.Doctor;
 
 import javax.swing.*;
 import java.awt.*;
+
+import java.util.List;
 
 /**
  * To allow for communication to the business layer and to
@@ -68,8 +72,12 @@ public class RegisterPanel extends BasePanel {
     private JComboBox yearCombo;
     private JPanel datePanel;
     private JLabel doctorLabel;
+    private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
+    private DoctorLogic doctorLogic;
+    private List<Doctor> doctorsList;
+
     /**
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -85,6 +93,12 @@ public class RegisterPanel extends BasePanel {
 
         try {
             registerLogic = new RegisterLogic();
+            doctorLogic = new DoctorLogic();
+
+            for (Doctor d : doctorLogic.getDoctors()) {
+                doctorsList.add(d);
+                doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
+            }
         } catch (Exception e) {
             //TODO show popup dialog to user, they must restart program, connection to db not made
         }
@@ -123,7 +137,8 @@ public class RegisterPanel extends BasePanel {
                 emailField.getText(),
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
-                new String(confirmPasswordField.getPassword())
+                new String(confirmPasswordField.getPassword()),
+                doctorsList.get(doctorCombo.getSelectedIndex())
             );
         } catch (Exception e) {
             System.out.println("Encountered error");

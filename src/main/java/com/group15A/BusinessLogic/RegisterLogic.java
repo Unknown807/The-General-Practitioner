@@ -1,8 +1,8 @@
 package com.group15A.BusinessLogic;
 
 import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
-import com.group15A.GUI.RegisterPanel;
 import org.apache.commons.validator.GenericValidator;
 
 import java.text.DateFormat;
@@ -23,7 +23,7 @@ public class RegisterLogic implements IRegister {
     }
 
     @Override
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword) throws Exception {
+    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws Exception {
         this.verifyFirstName(fName);
         this.verifyMiddleName(mName);
         this.verifyLastName(lName);

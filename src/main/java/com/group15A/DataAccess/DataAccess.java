@@ -304,6 +304,6 @@ public class DataAccess implements IDataAccess
     private void setupConnection() throws Exception
     {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/TheGeneralPractitioner?user=Andrei&password=lZWzuM3fuz5okeUSwE");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user=root&password=root");
     }
 }
