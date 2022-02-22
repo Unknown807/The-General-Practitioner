@@ -1,6 +1,6 @@
 package com.group15A.GUI;
 
-import com.group15A.BusinessLogic.LoginLogic;
+import com.group15A.BusinessLogic.LogInLogic;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +33,7 @@ public class LogInPanel extends BasePanel {
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
 
-    private LoginLogic logInLogic;
+    private LogInLogic logInLogic;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
@@ -43,10 +43,15 @@ public class LogInPanel extends BasePanel {
     {
         super("Please Sign In", panelController,"logInPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
-        logInLogic = new LoginLogic(this);
         resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
+
+        try {
+            logInLogic = new LogInLogic();
+        } catch (Exception e) {
+            //TODO show popup dialog to user, they must restart program, connection to db not made
+        }
     }
 
     @Override
@@ -70,10 +75,10 @@ public class LogInPanel extends BasePanel {
         try {
             logInLogic.login(
                     emailField.getText(),
-                    passwordField.getPassword().toString()
+                    new String(passwordField.getPassword())
             );
         } catch (Exception e) {
-            
+            System.out.println("Error Encountered");
         }
     }
 
