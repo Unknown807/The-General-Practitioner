@@ -14,10 +14,11 @@ import javax.swing.*;
  */
 public class HomePanel extends BasePanel {
     private JPanel homePanel;
-
-    private JLabel greetingLabel;
-    private JPanel messageListPanel;
-    private JScrollPane messageListScrollPane;
+    private JButton logOutButton;
+    private JPanel contentScrollPane;
+    private JScrollPane messageScrollPane;
+    private JLabel messageLabel;
+    private JLabel titleLabel;
 
     /**
      * @param panelController the instance of multiPanelWindow in order for
@@ -44,4 +45,7 @@ public class HomePanel extends BasePanel {
     public void createActionListeners() {
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

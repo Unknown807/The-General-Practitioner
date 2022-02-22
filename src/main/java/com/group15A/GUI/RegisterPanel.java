@@ -157,7 +157,7 @@ public class RegisterPanel extends BasePanel {
      * @param last The last value to added.
      * @param unchosenValue The first value to be shown.
      *                      The value usually indicates a valid item has not been chosen.
-     * @author Filip Fois.
+     * @author Filip Fois
      */
     public void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
     {
