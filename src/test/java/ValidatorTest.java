@@ -33,6 +33,21 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
+    public void testIsNumContainsChars() {
+        assertFalse(this.validator.isNum("12345a"));
+    }
+
+    @Test
+    public void testIsNumContainsSpecialChars() {
+        assertFalse(this.validator.isNum("123^42&34"));
+    }
+
+    @Test
+    public void testIsAlphaAllDigits() {
+        assertTrue(this.validator.isNum("12345"));
+    }
+
+    @Test
     public void testVerifyNameFailure() {
         assertTrue(this.validator.verifyName("    "));
     }
@@ -77,7 +92,76 @@ public class ValidatorTest extends TestCase {
         assertEquals(this.validator.verifyLastName("John2"), ErrorCode.WRONG_LAST_NAME);
     }
 
-    
+    @Test
+    public void testVerifyDoBIncorrectFormatAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDoB("03-03-2002"), ErrorCode.WRONG_DATE);
+    }
+
+    @Test
+    public void testVerifyDoBFailureAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDoB("not_a_date_at_all"), ErrorCode.WRONG_DATE);
+    }
+
+    @Test
+    public void testVerifyDoBCorrectFormatNoZeroPadding() {
+        assertNull(this.validator.verifyDoB("2002-1-5"));
+    }
+
+    @Test
+    public void testVerifyDoBCorrectFormat() {
+        assertNull(this.validator.verifyDoB("2002-01-05"));
+    }
+
+    @Test
+    public void testVerifyGenderMale() {
+        assertNull(this.validator.verifyGender("M"));
+    }
+
+    @Test
+    public void testVerifyGenderFemale() {
+        assertNull(this.validator.verifyGender("F"));
+    }
+
+    @Test
+    public void testVerifyGenderOther() {
+        assertNull(this.validator.verifyGender("Other"));
+    }
+
+    @Test
+    public void testVerifyGenderFailreAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyGender("X"), ErrorCode.WRONG_GENDER);
+    }
+
+    @Test
+    public void testVerifyPhoneNoNotIntAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPhoneNo("079234a234"), ErrorCode.WRONG_PHONE_NO);
+    }
+
+    @Test
+    public void testVerifyPhoneNoCorrectButTooShort() {
+        assertEquals(this.validator.verifyPhoneNo("1234"), ErrorCode.WRONG_PHONE_NO);
+    }
+
+    @Test
+    public void testVerifyPhoneNoCorrectButTooLong() {
+        assertEquals(this.validator.verifyPhoneNo("1234567891234567"), ErrorCode.WRONG_PHONE_NO);
+    }
+
+    @Test
+    public void testVerifyPhoneNoBlankAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPhoneNo(""), ErrorCode.WRONG_PHONE_NO);
+    }
+
+    @Test
+    public void testVerifyPhoneNoCorrectExactMinimum() {
+        assertNull(this.validator.verifyPhoneNo("12345"));
+    }
+
+    @Test
+    public void testVerifyPhoneNoCorrectExactMaximum() {
+        assertNull(this.validator.verifyPhoneNo("123451234512345"));
+    }
+
 
 
 }

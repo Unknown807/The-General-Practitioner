@@ -16,6 +16,10 @@ public class Validator {
         return str.chars().allMatch(Character::isLetter);
     }
 
+    public Boolean isNum(String str) {
+        return str.chars().allMatch(Character::isDigit);
+    }
+
     public Boolean verifyName(String name) {
         return (name.isBlank() || !this.isAlpha(name));
     }
@@ -56,7 +60,7 @@ public class Validator {
     }
 
     public ErrorCode verifyPhoneNo(String phoneNo) {
-        if (!GenericValidator.isInt(phoneNo) || !GenericValidator.isInRange(phoneNo.length(), 5, 15) || phoneNo.isBlank()) {
+        if (!this.isNum(phoneNo) || !GenericValidator.isInRange(phoneNo.length(), 5, 15) || phoneNo.isBlank()) {
             return ErrorCode.WRONG_PHONE_NO;
         }
         return null;
