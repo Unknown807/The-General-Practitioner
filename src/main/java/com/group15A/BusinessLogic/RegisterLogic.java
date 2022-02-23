@@ -1,12 +1,18 @@
 package com.group15A.BusinessLogic;
 
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
+import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Contains backend functionality that relates to registering
@@ -49,16 +55,23 @@ public class RegisterLogic implements IRegister {
      */
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception {
-        this.validator.verifyFirstName(fName);
-        this.validator.verifyMiddleName(mName);
-        this.validator.verifyLastName(lName);
-        this.validator.verifyDoB(DoB);
-        this.validator.verifyGender(gender);
-        this.validator.verifyPhoneNo(phoneNo);
-        this.validator.verifyEmail(email);
-        this.validator.verifyPassword(password);
-        this.validator.verifyMatchingEmails(email, confirmEmail);
-        this.validator.verifyMatchingPasswords(password, confirmPassword);
+        Stream<ErrorCode> errorsStream = Stream.of(
+                this.validator.verifyFirstName(fName),
+                this.validator.verifyMiddleName(mName),
+                this.validator.verifyLastName(lName),
+                this.validator.verifyDoB(DoB),
+                this.validator.verifyGender(gender),
+                this.validator.verifyPhoneNo(phoneNo),
+                this.validator.verifyEmail(email),
+                this.validator.verifyPassword(password),
+                this.validator.verifyMatchingEmails(email, confirmEmail),
+                this.validator.verifyMatchingPasswords(password, confirmPassword)
+            );
+
+        List<ErrorCode> errorsList = errorsStream.filter(x -> x!=null).collect(Collectors.toList());
+        if (errorsList.size() > 0) {
+            throw new CustomException("Invalid Form Details", errorsList);
+        }
 
         //TODO make methods for hashing password
         String passHash = password;
