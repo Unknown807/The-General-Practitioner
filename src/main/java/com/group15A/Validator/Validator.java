@@ -10,11 +10,11 @@ public class Validator {
     private final Pattern containsDigit = Pattern.compile("^(?=.*\\d).+$");
     private final Pattern containsSpecials = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
 
-    private Boolean isAlpha(String str) {
+    public Boolean isAlpha(String str) {
         return str.chars().allMatch(Character::isLetter);
     }
 
-    private Boolean verifyName(String name) {
+    public Boolean verifyName(String name) {
         return (name.isBlank() || !this.isAlpha(name));
     }
 
