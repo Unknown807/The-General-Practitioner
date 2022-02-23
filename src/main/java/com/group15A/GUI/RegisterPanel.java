@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 
 import javax.swing.*;
@@ -98,7 +99,7 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
         }
-        catch (Exception e) {
+        catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                       registerPanel,
                         "Please connect to the database and restart the program.",
