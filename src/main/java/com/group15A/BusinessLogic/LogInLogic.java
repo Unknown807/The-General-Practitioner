@@ -3,6 +3,7 @@ package com.group15A.BusinessLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Validator.Validator;
 
 /**
@@ -43,6 +44,8 @@ public class LogInLogic implements ILogIn {
 
         //TODO login user with a Session instance or something
         Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
+        Session session = new Session(loggedInPatient,stayLoggedIn);
+        session.saveToFile();
     }
 }
 
