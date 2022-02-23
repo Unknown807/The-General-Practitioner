@@ -163,12 +163,9 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.getSelectedIndex()
             );
         } catch (CustomException e) {
-            //TODO: Make the error labels of invalid inputs visible,
-            //      and those for valid inputs invisible.
             System.err.println(e.getMessage());
             List<ErrorCode> errorCodes = e.getErrorList();
-            errorLabelCodes.values();
-            Boolean visibleValue = false;
+            boolean visibleValue;
             for (ErrorCode errorCode : errorLabelCodes.keySet()) {
                 if(errorCodes.contains(errorCode)){
                     visibleValue = true;
