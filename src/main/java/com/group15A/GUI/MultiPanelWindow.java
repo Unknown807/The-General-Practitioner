@@ -41,10 +41,14 @@ public class MultiPanelWindow extends JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(panelCards);
-        this.setSize(640, 480);
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(
+                (int)(dimension.getWidth()*0.6), // Make window width 60% that of the screen
+                (int)(dimension.getHeight()*0.8) // Make window height 80% that of the screen
+        );
 
         // first page shown is the login page (`loginPanel`)
-        showPage(this.cards[1]);
+        showPage(this.cards[0]);
     }
 
 
