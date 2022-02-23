@@ -2,12 +2,15 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
+import com.group15A.Utils.ErrorCode;
 
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -78,6 +81,8 @@ public class RegisterPanel extends BasePanel {
     private RegisterLogic registerLogic;
     private DoctorLogic doctorLogic;
 
+    private HashMap<ErrorCode,JLabel> errorLabelCodes;
+
     /**
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -89,6 +94,18 @@ public class RegisterPanel extends BasePanel {
         addNumbersToCombo(dayCombo,1,31,"Day");
         addNumbersToCombo(monthCombo,1,12,"Month");
         addNumbersToCombo(yearCombo,2022,1900,"Year");
+        errorLabelCodes = new HashMap<>(){{
+            put(ErrorCode.WRONG_FIRST_NAME, firstNameErrorLabel);
+            put(ErrorCode.WRONG_MIDDLE_NAME, middleNameErrorLabel);
+            put(ErrorCode.WRONG_LAST_NAME, lastNameErrorLabel);
+            put(ErrorCode.WRONG_GENDER, sexErrorLabel);
+            put(ErrorCode.WRONG_DATE, dateOfBirthErrorLabel);
+            put(ErrorCode.WRONG_PHONE_NO, phoneErrorLabel);
+            put(ErrorCode.WRONG_EMAIL, emailErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
+            put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
+        }};
         createActionListeners();
 
         try {
@@ -145,10 +162,23 @@ public class RegisterPanel extends BasePanel {
                 new String(confirmPasswordField.getPassword()),
                 doctorCombo.getSelectedIndex()
             );
-        } catch (Exception e) {
+        } catch (CustomException e) {
             //TODO: Make the error labels of invalid inputs visible,
             //      and those for valid inputs invisible.
-            System.out.println("Encountered error: Register unsuccessful.");
+            System.err.println(e.getMessage());
+            List<ErrorCode> errorCodes = e.getErrorList();
+            errorLabelCodes.values();
+            Boolean visibleValue = false;
+            for (ErrorCode errorCode : errorLabelCodes.keySet()) {
+                if(errorCodes.contains(errorCode)){
+                    visibleValue = true;
+                }
+                else{
+                    visibleValue = false;
+                }
+                errorLabelCodes.get(errorCode).setVisible(visibleValue);
+            }
+            //System.err.println("Encountered error: Register unsuccessful.");
 
         }
     }

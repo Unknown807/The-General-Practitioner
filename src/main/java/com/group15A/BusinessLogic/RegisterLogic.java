@@ -8,6 +8,7 @@ import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,7 @@ public class RegisterLogic implements IRegister {
      * @throws Exception if any verification method fails or when inserting a patient into the database
      */
     @Override
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception {
+    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws CustomException {
         Stream<ErrorCode> errorsStream = Stream.of(
                 this.validator.verifyFirstName(fName),
                 this.validator.verifyMiddleName(mName),
@@ -76,8 +77,14 @@ public class RegisterLogic implements IRegister {
         //TODO make methods for hashing password
         String passHash = password;
 
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateConv = df.parse(DoB);
+        Date dateConv = null;
+        try {
+            dateConv = df.parse(DoB);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Patient newPatient = this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
