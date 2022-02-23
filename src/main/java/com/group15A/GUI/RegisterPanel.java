@@ -136,8 +136,7 @@ public class RegisterPanel extends BasePanel {
                 lastNameField.getText(),
                 yearCombo.getSelectedItem().toString()+"-"+
                     monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(), // A temporary value, to be replaced by combo box values.
-                //TODO: Pass date using new DD-MM-YYYY combo boxes.
+                    dayCombo.getSelectedItem().toString(),
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
                 emailField.getText(),

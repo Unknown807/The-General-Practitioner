@@ -30,9 +30,9 @@ public class LogInPanel extends BasePanel {
     private JButton logInButton;
     private JLabel logInErrorLabel;
     private JPanel textFieldsPanel;
-    private JButton resetPasswordButton;
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
+    private JCheckBox rememberMeCheckBox;
 
     private LogInLogic logInLogic;
 
@@ -44,7 +44,6 @@ public class LogInPanel extends BasePanel {
     {
         super("Please Sign In", panelController,"logInPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
-        resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
 
