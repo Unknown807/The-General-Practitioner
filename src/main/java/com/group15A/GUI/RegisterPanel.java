@@ -163,21 +163,10 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.getSelectedIndex()
             );
         } catch (CustomException e) {
-            System.err.println(e.getMessage());
-            List<ErrorCode> errorCodes = e.getErrorList();
-            boolean visibleValue;
-            for (ErrorCode errorCode : errorLabelCodes.keySet()) {
-                if(errorCodes.contains(errorCode)){
-                    visibleValue = true;
-                }
-                else{
-                    visibleValue = false;
-                }
-                errorLabelCodes.get(errorCode).setVisible(visibleValue);
-            }
+            setErrorLabels(e);
             //System.err.println("Encountered error: Register unsuccessful.");
-
         }
+
     }
 
     /**
@@ -203,6 +192,24 @@ public class RegisterPanel extends BasePanel {
             for(int i = first; i >= last; i--){
                 comboBox.addItem(i);
             }
+        }
+    }
+
+    /**
+     * Sets the visibility of each error label
+     * depending on if its respective error code is
+     * in the list that is returned by the CustomException.
+     *
+     * @param e The customException, containing a list of error codes.
+     * @author Filip Fois
+     */
+    public void setErrorLabels(CustomException e)
+    {
+        List<ErrorCode> errorCodes = e.getErrorList();
+        Boolean visibleValue;
+        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
+            visibleValue = errorCodes.contains(errorCode);
+            errorLabelCodes.get(errorCode).setVisible(visibleValue);
         }
     }
 
