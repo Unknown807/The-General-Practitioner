@@ -353,7 +353,7 @@ public class DataAccess implements IDataAccess
     }
 
     /**
-     * Setup the connection to the database
+     * Set up the connection to the database
      * @throws DatabaseException if the connection could not be established
      */
     private void setupConnection() throws DatabaseException

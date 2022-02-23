@@ -43,7 +43,7 @@ public class Validator {
     }
 
     public void verifyGender(String gender) throws IllegalArgumentException {
-        if (!gender.equals("M") && !gender.equals("F") && !gender.equals("Other")) {
+        if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")) {
             throw new IllegalArgumentException();
         }
     }
