@@ -1,5 +1,6 @@
 package com.group15A.DataAccess;
 
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.*;
 
 import java.util.List;
@@ -11,21 +12,21 @@ import java.util.List;
  */
 public interface IDataAccess
 {
-    Patient getPatient(String email, String password) throws Exception;
+    Patient getPatient(String email, String password) throws CustomException;
 
-    Patient getPatient(int patientID) throws Exception;
+    Patient getPatient(int patientID) throws CustomException;
 
-    Patient registerPatient(Patient patient, Doctor doctor) throws Exception;
+    Patient registerPatient(Patient patient, Doctor doctor) throws CustomException;
 
-    Patient updatePatient(Patient patient) throws Exception;
+    Patient updatePatient(Patient patient) throws CustomException;
 
-    Patient changeDoctor(Patient patient, Doctor doctor) throws Exception;
+    Patient changeDoctor(Patient patient, Doctor doctor) throws CustomException;
 
-    List<Doctor> getDoctors() throws Exception;
+    List<Doctor> getDoctors() throws CustomException;
 
-    Doctor getDoctor(Patient patient) throws Exception;
+    Doctor getDoctor(Patient patient) throws CustomException;
 
-    Doctor getDoctor(int doctorID) throws Exception;
+    Doctor getDoctor(int doctorID) throws CustomException;
 
-    List<Certification> getCertifications(Doctor doctor) throws Exception;
+    List<Certification> getCertifications(Doctor doctor) throws CustomException;
 }
