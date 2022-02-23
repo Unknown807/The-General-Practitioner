@@ -43,6 +43,8 @@ public class HomePanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
+        //TODO: Implement this action listener.
+        logOutButton.addActionListener(e -> {});
     }
 
     private void createUIComponents() {
