@@ -20,7 +20,7 @@ public class DataAccess implements IDataAccess
 {
     private Connection connection;
 
-    public DataAccess() throws CustomException
+    public DataAccess() throws DatabaseException
     {
         setupConnection();
     }
@@ -360,7 +360,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user=root&password=lZWzuM3fuz5okeUSwE");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user=root&password=root");
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not connect to the database");

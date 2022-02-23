@@ -1,5 +1,6 @@
 package com.group15A.BusinessLogic;
 
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
 import com.group15A.Validator.Validator;
@@ -22,9 +23,9 @@ public class RegisterLogic implements IRegister {
     /**
      * Constructor
      *
-     * @throws Exception if issue connecting to the database
+     * @throws DatabaseException if issue connecting to the database
      */
-    public RegisterLogic() throws Exception {
+    public RegisterLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
         this.validator = new Validator();
     }

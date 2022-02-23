@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
+import com.group15A.CustomExceptions.DatabaseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class LogInPanel extends BasePanel {
 
         try {
             logInLogic = new LogInLogic();
-        } catch (Exception e) {
+        } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                     null,
                             "\nPlease connect to the database and restart the program.",

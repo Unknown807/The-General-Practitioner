@@ -1,5 +1,6 @@
 package com.group15A.BusinessLogic;
 
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
 import com.group15A.Validator.Validator;
@@ -19,9 +20,9 @@ public class LogInLogic implements ILogIn {
      * Creates connection to DAL and has a validator class to
      * validate the user's email and password
      *
-     * @throws Exception if issue with connecting to database
+     * @throws DatabaseException if issue with connecting to database
      */
-    public LogInLogic() throws Exception {
+    public LogInLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
         this.validator = new Validator();
     }
