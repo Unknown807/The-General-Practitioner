@@ -7,5 +7,5 @@ package com.group15A.BusinessLogic;
  * @author Wenbo Wu
  */
 public interface ILogIn {
-    public void login(String email, String password) throws Exception;
+    public void login(String email, String password, Boolean stayLoggedIn) throws Exception;
 }

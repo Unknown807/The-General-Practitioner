@@ -146,7 +146,10 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.getSelectedIndex()
             );
         } catch (Exception e) {
+            //TODO: Make the error labels of invalid inputs visible,
+            //      and those for valid inputs invisible.
             System.out.println("Encountered error: Register unsuccessful.");
+
         }
     }
 

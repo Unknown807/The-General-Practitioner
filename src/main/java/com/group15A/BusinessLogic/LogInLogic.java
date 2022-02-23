@@ -37,7 +37,7 @@ public class LogInLogic implements ILogIn {
      * patient from the database
      */
     @Override
-    public void login(String email, String password) throws Exception {
+    public void login(String email, String password, Boolean stayLoggedIn) throws Exception {
         this.validator.verifyEmail(email);
         this.validator.verifyPassword(password);
 

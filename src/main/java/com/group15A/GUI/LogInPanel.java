@@ -32,7 +32,7 @@ public class LogInPanel extends BasePanel {
     private JPanel textFieldsPanel;
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
-    private JCheckBox rememberMeCheckBox;
+    private JCheckBox stayLoggedInCheckBox;
 
     private LogInLogic logInLogic;
 
@@ -78,10 +78,12 @@ public class LogInPanel extends BasePanel {
     }
 
     private void logInPatient() {
+        Boolean stayLoggedIn = stayLoggedInCheckBox.isSelected();
         logInErrorLabel.setVisible(false);
         try {
             logInLogic.login(emailField.getText(),
-                             new String(passwordField.getPassword())
+                             new String(passwordField.getPassword()),
+                             stayLoggedIn
             );
         } catch (Exception e) {
             System.out.println("Error Encountered: Log in unsuccessful.");
