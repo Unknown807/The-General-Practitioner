@@ -187,4 +187,34 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyEmail("user@mail.com"));
     }
 
+    @Test
+    public void testVerifyPasswordTooShortAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12eA5s!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoUppercaseAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12ea5s!!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoLowercaesAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12EA5S!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoDigitsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("aBcDeFgH!JKLm"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoSpecialsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12eA5s898588997866"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordSuccess() {
+        assertNull(this.validator.verifyPassword("12345678Aa!"));
+    }
+
 }

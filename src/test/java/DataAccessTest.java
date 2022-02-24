@@ -2,6 +2,7 @@ import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
+import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DataAccessTest{
+public class DataAccessTest extends TestCase {
 
     //TODO Mock database for proper unit testing
     @Test
