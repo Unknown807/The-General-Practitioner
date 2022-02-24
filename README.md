@@ -12,8 +12,8 @@
 * Java SDK (version 16)
 
 ## Installation ##
-* Run/import the `TheGP_Database_22_Feb.sql` with MySQL to create the local database  
 * Unzip the project
+* Run/import the `TheGP_Database_22_Feb.sql` with MySQL to create the local database  
 
 ## Set up ##
 
