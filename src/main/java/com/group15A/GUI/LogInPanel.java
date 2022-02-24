@@ -7,9 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * To allow for communication to the business layer and to
- * take care of event handling
- * <p>
+ * To allow for communication to the business layer and to take care of event handling
+ *
  * loginPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
@@ -37,6 +36,10 @@ public class LogInPanel extends BasePanel {
     private LogInLogic logInLogic;
 
     /**
+     * Constructor for the LogInPanel class
+     *
+     * Creates action listeners
+     *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
@@ -48,6 +51,9 @@ public class LogInPanel extends BasePanel {
         createActionListeners();
     }
 
+    /**
+     * @return logInPanel
+     */
     @Override
     public JPanel getPagePanel()
     {
@@ -55,9 +61,7 @@ public class LogInPanel extends BasePanel {
     }
 
     /**
-     * TODO: Add action listeners
-     * To create all event handlers, which will point
-     * to other methods in the class
+     * To create all event handlers, which will point to other methods in the class
      */
     @Override
     public void createActionListeners() {
@@ -65,6 +69,12 @@ public class LogInPanel extends BasePanel {
         logInButton.addActionListener(e -> this.logInPatient());
     }
 
+    /**
+     * Pass email and password for LogInLogic to attempt a login
+     *
+     * If successful, go to the home page,
+     * otherwise, stay on log in page and show error label
+     */
     private void logInPatient() {
         Boolean stayLoggedIn = stayLoggedInCheckBox.isSelected();
         logInErrorLabel.setVisible(false);
@@ -77,16 +87,16 @@ public class LogInPanel extends BasePanel {
             panelController.showPage(new HomePanel(panelController));
         }
         catch (DatabaseException e) {
+            // Show error pop up if database is not connected and close program
             JOptionPane.showMessageDialog(
                     null,
-                            "\nPlease connect to the database and restart the program.",
+                            "Please connect to the database and restart the program.",
                     "ERROR: Database not connected",
                     JOptionPane.ERROR_MESSAGE
             );
             System.exit(0);
         }
         catch (Exception e) {
-            //System.err.println("Error Encountered: Log in unsuccessful.");
             logInErrorLabel.setVisible(true);
         }
     }

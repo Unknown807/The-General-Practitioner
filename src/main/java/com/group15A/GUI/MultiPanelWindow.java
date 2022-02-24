@@ -1,7 +1,5 @@
 package com.group15A.GUI;
 
-import com.group15A.Session;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -10,12 +8,12 @@ import java.io.File;
 
 /**
  * The window which will be shown, consists of a card layout
- * which can switch between different JPanels (pages).
- * <p>
+ * which can switch between different JPanels (pages)
+ *
  * cardLayout is needed to add pages to be switched between
- * <p>
+ *
  * cards is the list of JPanels to be stored
- * <p>
+ *
  * panelCards is the parent that holds all JPanels, of which
  * its layout is cardLayout
  *
@@ -27,7 +25,11 @@ public class MultiPanelWindow extends JFrame {
     private JPanel panelCards;
 
     /**
-     * Constructor
+     * Constructor for the MultiPanelWindow class
+     *
+     * Stores all pages,
+     * sets default window size,
+     * and to a certain page if the session file is still stored
      */
     public MultiPanelWindow() {
         BasePanel[] cards = new BasePanel[]{
@@ -65,15 +67,14 @@ public class MultiPanelWindow extends JFrame {
         if(file.exists()) {
             pageToShow = 2; // home page
         }
-        showPage(new LogInPanel(this));
+        showPage(cards[pageToShow]);
     }
 
 
     /**
      * Switches to a given JPanel that is in the card layout
      *
-     * @param page       the page to switch to, contains window title and the required JPanel
-     * @author Milovan Gveric
+     * @param page the page to switch to, contains window title and the required JPanel
      */
     public void showPage(BasePanel page) {
         this.setTitle(page.getWindowTitle());
@@ -82,9 +83,8 @@ public class MultiPanelWindow extends JFrame {
 
     /**
      * When the close window button is clicked,
-     * the user will be logged out (if they choose to be),
+     * the user will be logged out (if they don't want to stay logged in),
      * and the program will terminate.
-     * @author Filip Fois
      */
     public void closeProgram()
     {
@@ -109,6 +109,7 @@ public class MultiPanelWindow extends JFrame {
 //            }
 //        }
         //---
+
 
         // Exit program
         System.exit(0);

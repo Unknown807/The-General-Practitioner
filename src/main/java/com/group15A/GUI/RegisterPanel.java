@@ -6,7 +6,6 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.ErrorCode;
-import com.mysql.cj.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * To allow for communication to the business layer and to
- * take care of event handling
- * <p>
+ * To allow for communication to the business layer and to take care of event handling
+
  * registerPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
@@ -85,29 +83,26 @@ public class RegisterPanel extends BasePanel {
     private HashMap<ErrorCode,JLabel> errorLabelCodes;
 
     /**
+     * Constructor for RegisterPanel class
+     *
+     * Adds items to date combo boxes,
+     * adds doctors to combo box,
+     * displays error pop up if database isn't connected then closes the program
+     *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
         super("Enter Your Details", panelController,"registerPanel");
+
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
+
         addNumbersToCombo(dayCombo,1,31,"Day");
         addNumbersToCombo(monthCombo,1,12,"Month");
         addNumbersToCombo(yearCombo,2022,1900,"Year");
-        errorLabelCodes = new HashMap<>(){{
-            put(ErrorCode.WRONG_FIRST_NAME, firstNameErrorLabel);
-            put(ErrorCode.WRONG_MIDDLE_NAME, middleNameErrorLabel);
-            put(ErrorCode.WRONG_LAST_NAME, lastNameErrorLabel);
-            put(ErrorCode.WRONG_GENDER, sexErrorLabel);
-            put(ErrorCode.WRONG_DATE, dateOfBirthErrorLabel);
-            put(ErrorCode.WRONG_PHONE_NO, phoneErrorLabel);
-            put(ErrorCode.WRONG_EMAIL, emailErrorLabel);
-            put(ErrorCode.EMAIL_IN_USE, emailErrorLabel);
-            put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
-            put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
-            put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
-        }};
+
+        createErrorMap();
         createActionListeners();
 
         try {
@@ -129,6 +124,30 @@ public class RegisterPanel extends BasePanel {
         }
     }
 
+    /**
+     * Adds error codes : error label key-value pairs to hash map
+     *
+     * Error labels can be accessed by giving their respective error code
+     */
+    private void createErrorMap() {
+        errorLabelCodes = new HashMap<>(){{
+            put(ErrorCode.WRONG_FIRST_NAME, firstNameErrorLabel);
+            put(ErrorCode.WRONG_MIDDLE_NAME, middleNameErrorLabel);
+            put(ErrorCode.WRONG_LAST_NAME, lastNameErrorLabel);
+            put(ErrorCode.WRONG_GENDER, sexErrorLabel);
+            put(ErrorCode.WRONG_DATE, dateOfBirthErrorLabel);
+            put(ErrorCode.WRONG_PHONE_NO, phoneErrorLabel);
+            put(ErrorCode.WRONG_EMAIL, emailErrorLabel);
+            put(ErrorCode.EMAIL_IN_USE, emailErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
+            put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
+        }};
+    }
+
+    /**
+     * @return return registerPanel
+     */
     @Override
     public JPanel getPagePanel()
     {
@@ -136,9 +155,7 @@ public class RegisterPanel extends BasePanel {
     }
 
     /**
-     * TODO: Add action listeners
-     * To create all event handlers, which will point
-     * to other methods in the class
+     * To create all event handlers, which will point to other methods in the class
      */
     @Override
     public void createActionListeners()
@@ -147,6 +164,13 @@ public class RegisterPanel extends BasePanel {
         continueButton.addActionListener(e -> this.registerNewPatient());
     }
 
+    /**
+     * Try to register patient by passing given inputs to
+     * registerLogic.register method
+     *
+     * If registration is successful, go to the home panel,
+     * otherwise, show relevant error labels for invalid inputs
+     */
     private void registerNewPatient() {
         try {
             registerLogic.register(
@@ -164,24 +188,23 @@ public class RegisterPanel extends BasePanel {
                 new String(confirmPasswordField.getPassword()),
                 doctorCombo.getSelectedIndex()
             );
+
             panelController.showPage(new HomePanel(panelController));
         } catch (CustomException e) {
             setErrorLabels(e);
-            //System.err.println(e.getMessage());
         }
 
     }
 
     /**
      * Adds a range of numbers as items in a given combobox,
-     * in order of `first` to `last`.
+     * in order of first to last.
      *
-     * @param comboBox The combobox which will have values added to it.
-     * @param first The first value to added (after `unchosenValue`).
-     * @param last The last value to added.
-     * @param unchosenValue The first value to be shown.
-     *                      The value usually indicates a valid item has not been chosen.
-     * @author Filip Fois
+     * @param comboBox The combobox which will have values added to it
+     * @param first The first value to added (after unchosenValue)
+     * @param last The last value to be added
+     * @param unchosenValue The first value to be shown
+     *                      (unchosenValue usually indicates a valid item has not been chosen)
      */
     public void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
     {
@@ -200,15 +223,16 @@ public class RegisterPanel extends BasePanel {
 
     /**
      * Sets the visibility of each error label
-     * depending on if its respective error code is
-     * in the list that is returned by the CustomException.
      *
-     * @param e The customException, containing a list of error codes.
-     * @author Filip Fois
+     * Will do so depending on if its respective error code is
+     * in the list that is returned by the CustomException
+     *
+     * @param e The customException, contains a list of error codes.
      */
     public void setErrorLabels(CustomException e)
     {
         List<ErrorCode> errorCodes = e.getErrorList();
+
         Boolean visibleValue;
         for (ErrorCode errorCode : errorLabelCodes.keySet()) {
             visibleValue = errorCodes.contains(errorCode);
