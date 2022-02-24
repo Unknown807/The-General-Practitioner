@@ -208,10 +208,8 @@ public class RegisterPanel extends BasePanel {
     public void setErrorLabels(CustomException e)
     {
         List<ErrorCode> errorCodes = e.getErrorList();
-        Boolean visibleValue;
-        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
-            visibleValue = errorCodes.contains(errorCode);
-            errorLabelCodes.get(errorCode).setVisible(visibleValue);
+        for(ErrorCode errorCode : errorCodes){
+            errorLabelCodes.get(errorCode).setVisible(true);
         }
     }
 

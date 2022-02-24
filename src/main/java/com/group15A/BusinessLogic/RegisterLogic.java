@@ -11,6 +11,7 @@ import com.group15A.Validator.Validator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class RegisterLogic implements IRegister {
         try {
             dateConv = df.parse(DoB);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new CustomException("Invalid date", Arrays.asList(ErrorCode.WRONG_DATE));
         }
 
         Patient newPatient = this.dataAccessLayer.registerPatient(
