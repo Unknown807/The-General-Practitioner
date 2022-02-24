@@ -1,5 +1,6 @@
 package com.group15A.DataModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -71,7 +72,7 @@ public class Patient {
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", dob='" + dob + '\'' +
+                ", dob='" + getSimpleDate(dob) + '\'' +
                 ", gender='" + gender + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 '}';
@@ -82,7 +83,7 @@ public class Patient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && dob.equals(patient.dob) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
+        return email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && getSimpleDate(dob).equals(getSimpleDate(patient.dob)) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
     }
 
     @Override
@@ -158,5 +159,10 @@ public class Patient {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    private static String getSimpleDate(Date date)
+    {
+        return (new SimpleDateFormat("yyyy-MM-dd")).format(date);
     }
 }
