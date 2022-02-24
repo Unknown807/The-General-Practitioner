@@ -217,4 +217,24 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyPassword("12345678Aa!"));
     }
 
+    @Test
+    public void testMismatchingEmailsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyMatchingEmails("email1@mail.com", "email2@mail.com"), ErrorCode.WRONG_CONFIRMED_EMAIL);
+    }
+
+    @Test
+    public void testMismatchingPasswordsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyMatchingPasswords("password1", "password2"), ErrorCode.WRONG_CONFIRMED_PASSWORD);
+    }
+
+    @Test
+    public void testMatchingEmails() {
+        assertNull(this.validator.verifyMatchingEmails("email1@mail.com", "email1@mail.com"));
+    }
+
+    @Test
+    public void testMatchingPasswords() {
+        assertNull(this.validator.verifyMatchingPasswords("password1", "password1"));
+    }
+
 }
