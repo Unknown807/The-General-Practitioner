@@ -1,3 +1,4 @@
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Certification;
@@ -112,6 +113,29 @@ public class DataAccessTest extends TestCase {
         }
     }
 
+    @Test
+    public void testChangeDoctor()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+            Doctor originalDoctor = dataAccess.getDoctor(patient);
 
+            //Change the doctor
+            doctor = dataAccess.getDoctors().get(1);
+            patient = dataAccess.changeDoctor(patient, doctor);
 
+            //Check that the new doctor is different from the original doctor
+            assertNotEquals(doctor, originalDoctor);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
 }
