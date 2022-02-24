@@ -1,9 +1,6 @@
 package com.group15A.DataAccess;
 
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.DoctorNotFoundException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataModel.*;
 
 import javax.xml.crypto.Data;
@@ -120,7 +117,7 @@ public class DataAccess implements IDataAccess
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient registerPatient(Patient patient, Doctor doctor) throws DatabaseException
+    public Patient registerPatient(Patient patient, Doctor doctor) throws EmailInUseException, DatabaseException
     {
         try {
             String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -138,8 +135,11 @@ public class DataAccess implements IDataAccess
             statement.executeQuery();
 
             return getPatient(patient.getEmail(), patient.getPassHash());
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException("Email already in use");
         } catch (Exception ex)
         {
+            System.err.println(ex);
             throw new DatabaseException("Could not register patient in the database");
         }
     }
