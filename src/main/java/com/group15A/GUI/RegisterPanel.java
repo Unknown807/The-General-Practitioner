@@ -2,12 +2,16 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
+import com.group15A.Utils.ErrorCode;
+import com.mysql.cj.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -78,6 +82,8 @@ public class RegisterPanel extends BasePanel {
     private RegisterLogic registerLogic;
     private DoctorLogic doctorLogic;
 
+    private HashMap<ErrorCode,JLabel> errorLabelCodes;
+
     /**
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -89,6 +95,18 @@ public class RegisterPanel extends BasePanel {
         addNumbersToCombo(dayCombo,1,31,"Day");
         addNumbersToCombo(monthCombo,1,12,"Month");
         addNumbersToCombo(yearCombo,2022,1900,"Year");
+        errorLabelCodes = new HashMap<>(){{
+            put(ErrorCode.WRONG_FIRST_NAME, firstNameErrorLabel);
+            put(ErrorCode.WRONG_MIDDLE_NAME, middleNameErrorLabel);
+            put(ErrorCode.WRONG_LAST_NAME, lastNameErrorLabel);
+            put(ErrorCode.WRONG_GENDER, sexErrorLabel);
+            put(ErrorCode.WRONG_DATE, dateOfBirthErrorLabel);
+            put(ErrorCode.WRONG_PHONE_NO, phoneErrorLabel);
+            put(ErrorCode.WRONG_EMAIL, emailErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
+            put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
+            put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
+        }};
         createActionListeners();
 
         try {
@@ -145,9 +163,12 @@ public class RegisterPanel extends BasePanel {
                 new String(confirmPasswordField.getPassword()),
                 doctorCombo.getSelectedIndex()
             );
-        } catch (Exception e) {
-            System.out.println("Encountered error: Register unsuccessful.");
+            panelController.showPage(new HomePanel(panelController));
+        } catch (CustomException e) {
+            setErrorLabels(e);
+            //System.err.println(e.getMessage());
         }
+
     }
 
     /**
@@ -173,6 +194,24 @@ public class RegisterPanel extends BasePanel {
             for(int i = first; i >= last; i--){
                 comboBox.addItem(i);
             }
+        }
+    }
+
+    /**
+     * Sets the visibility of each error label
+     * depending on if its respective error code is
+     * in the list that is returned by the CustomException.
+     *
+     * @param e The customException, containing a list of error codes.
+     * @author Filip Fois
+     */
+    public void setErrorLabels(CustomException e)
+    {
+        List<ErrorCode> errorCodes = e.getErrorList();
+        Boolean visibleValue;
+        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
+            visibleValue = errorCodes.contains(errorCode);
+            errorLabelCodes.get(errorCode).setVisible(visibleValue);
         }
     }
 

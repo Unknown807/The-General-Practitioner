@@ -3,7 +3,12 @@ package com.group15A.BusinessLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
+import com.group15A.Session;
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
+
+import java.util.Arrays;
 
 /**
  * Contains backend functionality that relates to signing the
@@ -37,12 +42,18 @@ public class LogInLogic implements ILogIn {
      * patient from the database
      */
     @Override
-    public void login(String email, String password) throws Exception {
-        this.validator.verifyEmail(email);
-        this.validator.verifyPassword(password);
+    public void login(String email, String password, Boolean stayLoggedIn) throws Exception {
+        ErrorCode passError = this.validator.verifyEmail(email);
+        ErrorCode emailError = this.validator.verifyPassword(password);
 
-        //TODO login user with a Session instance or something
+        // doesn't matter if null is passed in as the same error is made visible in the ui if an error is caught regardless
+        if (passError != null || emailError != null) {
+            throw new CustomException("Invalid Email or Password in LogIn", Arrays.asList(passError, emailError));
+        }
+
         Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
+        Session session = new Session(loggedInPatient, stayLoggedIn);
+        session.saveToFile();
     }
 }
 

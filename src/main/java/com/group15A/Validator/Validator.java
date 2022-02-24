@@ -1,5 +1,7 @@
 package com.group15A.Validator;
 
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.Utils.ErrorCode;
 import org.apache.commons.validator.GenericValidator;
 
 import java.util.regex.Pattern;
@@ -10,57 +12,68 @@ public class Validator {
     private final Pattern containsDigit = Pattern.compile("^(?=.*\\d).+$");
     private final Pattern containsSpecials = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
 
-    private Boolean isAlpha(String str) {
+    public Boolean isAlpha(String str) {
         return str.chars().allMatch(Character::isLetter);
     }
 
-    private Boolean verifyName(String name) {
+    public Boolean isNum(String str) {
+        return str.chars().allMatch(Character::isDigit);
+    }
+
+    public Boolean verifyName(String name) {
         return (name.isBlank() || !this.isAlpha(name));
     }
 
-    public void verifyFirstName(String fName) throws IllegalArgumentException {
+    public ErrorCode verifyFirstName(String fName) {
         if (this.verifyName(fName)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_FIRST_NAME;
         }
+        return null;
     }
 
-    public void verifyMiddleName(String mName) throws IllegalArgumentException {
+    public ErrorCode verifyMiddleName(String mName){
         if (!this.isAlpha(mName)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_MIDDLE_NAME;
         }
+        return null;
     }
 
-    public void verifyLastName(String lName) throws IllegalArgumentException {
+    public ErrorCode verifyLastName(String lName) {
         if (this.verifyName(lName)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_LAST_NAME;
         }
+        return null;
     }
 
-    public void verifyDoB(String DoB) throws IllegalArgumentException {
+    public ErrorCode verifyDoB(String DoB) {
         if (!GenericValidator.isDate(DoB, "yyyy-MM-dd", false)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_DATE;
         }
+        return null;
     }
 
-    public void verifyGender(String gender) throws IllegalArgumentException {
+    public ErrorCode verifyGender(String gender) {
         if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_GENDER;
         }
+        return null;
     }
 
-    public void verifyPhoneNo(String phoneNo) throws IllegalArgumentException {
-        if (!GenericValidator.isInt(phoneNo) || !GenericValidator.isInRange(phoneNo.length(), 5, 15) || phoneNo.isBlank()) {
-            throw new IllegalArgumentException();
+    public ErrorCode verifyPhoneNo(String phoneNo) {
+        if (!this.isNum(phoneNo) || !GenericValidator.isInRange(phoneNo.length(), 5, 15) || phoneNo.isBlank()) {
+            return ErrorCode.WRONG_PHONE_NO;
         }
+        return null;
     }
 
-    public void verifyEmail(String email) throws IllegalArgumentException {
+    public ErrorCode verifyEmail(String email) {
         if (!GenericValidator.isEmail(email)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_EMAIL;
         }
+        return null;
     }
 
-    public void verifyPassword(String password) throws IllegalArgumentException {
+    public ErrorCode verifyPassword(String password) {
         // must have min 8 chars, 1 upper, 1 lower, 1 digit, 1 special character
         Boolean invalidLength = password.length() < 8;
         Boolean noUpperCase = !containsUpperCase.matcher(password).matches();
@@ -69,21 +82,26 @@ public class Validator {
         Boolean noSpecials = !containsSpecials.matcher(password).find();
 
         if (invalidLength || noUpperCase || noLowerCase || noDigit || noSpecials) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_PASSWORD;
         }
 
+        return null;
     }
 
-    public void verifyMatchingEmails(String email, String confirmEmail) throws IllegalArgumentException {
+    public ErrorCode verifyMatchingEmails(String email, String confirmEmail) {
         if (!email.equals(confirmEmail)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_CONFIRMED_EMAIL;
         }
+
+        return null;
     }
 
-    public void verifyMatchingPasswords(String password, String confirmPassword) throws IllegalArgumentException {
+    public ErrorCode verifyMatchingPasswords(String password, String confirmPassword) {
         if (!password.equals(confirmPassword)) {
-            throw new IllegalArgumentException();
+            return ErrorCode.WRONG_CONFIRMED_PASSWORD;
         }
+
+        return null;
     }
 
 }

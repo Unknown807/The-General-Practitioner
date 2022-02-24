@@ -527,7 +527,7 @@
                           <opaque value="true"/>
                           <requestFocusEnabled value="false"/>
                           <rows value="0"/>
-                          <text value="Password must contain:&#10; • 8 characters&#10; • An uppercase letter&#10; • A lowercase letter&#10; • A digit&#10; • A special character"/>
+                          <text value="Password must be 8 characters long, &#10;and contain: &#10; • An uppercase letter&#10; • A lowercase letter&#10; • A digit&#10; • A special character"/>
                         </properties>
                       </component>
                       <component id="ec2c6" class="javax.swing.JLabel" binding="accountSectionLabel">
