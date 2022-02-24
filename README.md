@@ -19,7 +19,7 @@
 
 * Open the project with IntelliJ (or the IDE of your choice)  
 * Inside the project, open the `/src/main/java/com/group15A/DataAccess/DataAccess.java` file  
-* Edit the `DB_USER` and `DB_PASSWORD` to your local database username and password respectively
+* Edit the `DB_USER` and `DB_PASSWORD` values to your local database username and password respectively
 
 ## Running the program ##
 In the IDE of your choice, run the `/src/main/java/com/group15A/Main.java` class
