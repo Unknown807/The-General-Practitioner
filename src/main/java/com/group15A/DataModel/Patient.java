@@ -7,6 +7,7 @@ import java.util.Objects;
 /**
  * Used to represent a patient within the system, will be used to pass and change
  * information between the business logic and data access layer.
+ *
  * @author Milovan Gveric
  * @author Wenbo Wu
  */
@@ -25,6 +26,7 @@ public class Patient {
 
     /**
      * Constructor for a patient
+     *
      * @param patientID The ID
      * @param email The email address
      * @param passHash The hashed password
@@ -49,6 +51,7 @@ public class Patient {
 
     /**
      * Constructor for a patient with an unknown id
+     *
      * @param email The email address
      * @param passHash The hashed password
      * @param firstName The first name
@@ -63,6 +66,11 @@ public class Patient {
         this(UNKNOWN_PATIENT_ID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
     }
 
+    /**
+     * toString method for Patient
+     *
+     * @return a textual representation of Patient and its data
+     */
     @Override
     public String toString() {
         return "Patient{" +
@@ -78,6 +86,12 @@ public class Patient {
                 '}';
     }
 
+    /**
+     * Method for equality testing
+     *
+     * @param o
+     * @return whether object 'o' is equal to Patient 'this'
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,6 +100,11 @@ public class Patient {
         return email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && getSimpleDate(dob).equals(getSimpleDate(patient.dob)) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
     }
 
+    /**
+     * Hashing for Patient object
+     *
+     * @return hashed object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(patientID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
