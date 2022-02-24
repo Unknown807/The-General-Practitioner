@@ -12,14 +12,14 @@
 * Java SDK (version 16)
 
 ## Installation ##
-* Run the TheGP_Database_22_Feb.sql with MySQL to create the local database  
+* Run/import the `TheGP_Database_22_Feb.sql` with MySQL to create the local database  
 * Unzip the project
 
 ## Set up ##
 
 * Open the project with IntelliJ (or the IDE of your choice)  
-* Inside the project, open the /src/main/java/com/group15A/DataAccess/DataAccess.java file  
-* Edit the DB_USER and DB_PASSWORD to your local database username and password respectively
+* Inside the project, open the `/src/main/java/com/group15A/DataAccess/DataAccess.java` file  
+* Edit the `DB_USER` and `DB_PASSWORD` to your local database username and password respectively
 
 ## Running the program ##
-In the IDE of your choice, run the /src/main/java/com/group15A/Main.java class
+In the IDE of your choice, run the `/src/main/java/com/group15A/Main.java` class
