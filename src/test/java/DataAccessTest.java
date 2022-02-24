@@ -30,18 +30,21 @@ public class DataAccessTest extends TestCase {
         }
     }
 
+
     @Test
     public void testCreatePatient()
     {
         try
         {
-            Patient patient = new Patient("mynewmail3@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
             Doctor doctor = dataAccess.getDoctors().get(0);
             Patient patientFromDb = dataAccess.registerPatient(patient, doctor);
+
+            //See if the patient in the database is the same as the one created earlier
             assertEquals(patient, patientFromDb);
 
-            var patientByEmailAndPass = dataAccess.getPatient(patient.getEmail(), patient.getPassHash());
-            assertEquals(patient, patientByEmailAndPass);
+            //Delete the dummy data from the database
             dataAccess.deletePatient(patientFromDb.getPatientID());
         }catch(Exception ex) {
             System.err.println(ex.getMessage());
@@ -49,5 +52,40 @@ public class DataAccessTest extends TestCase {
         }
     }
 
+    @Test
+    public void testGetPatient()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+
+            //Retrieve the patient from the database by id and by email
+            Patient patientById = dataAccess.getPatient(patient.getPatientID());
+            Patient patientByEmail = dataAccess.getPatient(patient.getEmail(), patient.getPassHash());
+
+            //Check if the patient retrieved by id is the same as the one retrieved by email and password
+            assertEquals(patientById, patientByEmail);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void testUpdatePatient()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            Patient originalPatient = dataAccess.registerPatient(patient, doctor);
+            patient = dataAccess.getPatient(originalPatient.getPatientID());
 
 }
