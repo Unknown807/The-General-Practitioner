@@ -27,6 +27,7 @@ public class HomePanel extends BasePanel {
      */
     public HomePanel(MultiPanelWindow panelController) {
         super("Welcome!", panelController,"homePanel");
+        //TODO: Read session file to get patient name.
         createActionListeners();
     }
 
