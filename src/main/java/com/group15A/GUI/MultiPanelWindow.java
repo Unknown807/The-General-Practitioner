@@ -24,19 +24,17 @@ import java.io.File;
  */
 public class MultiPanelWindow extends JFrame {
     private CardLayout cardLayout;
-    private BasePanel[] cards;
     private JPanel panelCards;
 
     /**
      * Constructor
      */
     public MultiPanelWindow() {
-        this.cards = new BasePanel[]{
+        BasePanel[] cards = new BasePanel[]{
                 new LogInPanel(this),
                 new RegisterPanel(this),
                 new HomePanel(this),
                 new ChooseDoctorPanel(this)
-                // pages get stored and added to the card layout in here
         };
 
         this.cardLayout = (CardLayout) (panelCards.getLayout());
@@ -67,7 +65,7 @@ public class MultiPanelWindow extends JFrame {
         if(file.exists()) {
             pageToShow = 2; // home page
         }
-        showPage(this.cards[pageToShow]);
+        showPage(new LogInPanel(this));
     }
 
 
