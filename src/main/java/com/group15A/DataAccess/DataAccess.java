@@ -14,7 +14,12 @@ import java.util.List;
  */
 public class DataAccess implements IDataAccess
 {
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "lZWzuM3fuz5okeUSwE";
+
+
     private Connection connection;
+
 
     /**
      * Constructor for the DataAccess class.
@@ -382,7 +387,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user=root&password=root");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not connect to the database");
