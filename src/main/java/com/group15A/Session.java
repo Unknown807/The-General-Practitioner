@@ -4,17 +4,21 @@ import com.group15A.DataModel.Patient;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.jar.JarFile;
 
 /**
  * The session stores the logged in patient and other useful information. It can be easily saved and loaded from a file.
  *
- * @author Andrei
+ * @author Andrei Constantin
  */
 public class Session implements Serializable {
     private Patient loggedInPatient = null;
     private boolean keepLoggedIn = false;
 
+    /**
+     * Constructor for the Session class.
+     * @param patient The logged in patient
+     * @param keepLoggedIn Whether to keep the user logged in
+     */
     public Session(Patient patient, boolean keepLoggedIn)
     {
         loggedInPatient = patient;
@@ -29,6 +33,9 @@ public class Session implements Serializable {
         return keepLoggedIn;
     }
 
+    /**
+     * Delete the session from disk
+     */
     public static void deleteSession()
     {
         new File(getFileName()).delete();
