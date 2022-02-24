@@ -114,12 +114,12 @@ public class ValidatorTest extends TestCase {
 
     @Test
     public void testVerifyGenderMale() {
-        assertNull(this.validator.verifyGender("M"));
+        assertNull(this.validator.verifyGender("Male"));
     }
 
     @Test
     public void testVerifyGenderFemale() {
-        assertNull(this.validator.verifyGender("F"));
+        assertNull(this.validator.verifyGender("Female"));
     }
 
     @Test
@@ -162,6 +162,29 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyPhoneNo("123451234512345"));
     }
 
+    @Test
+    public void testVerifyEmailSpecialCharsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("user@mail.c*om"), ErrorCode.WRONG_EMAIL);
+    }
 
+    @Test
+    public void testVerifyEmailMisplacedAtAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("usermail.c@om"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailNoDotAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("user@mailcom"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailMissingAtAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("usermail.com"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailSuccess() {
+        assertNull(this.validator.verifyEmail("user@mail.com"));
+    }
 
 }
