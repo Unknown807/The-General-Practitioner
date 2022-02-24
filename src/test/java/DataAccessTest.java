@@ -138,4 +138,29 @@ public class DataAccessTest extends TestCase {
             fail();
         }
     }
+
+    @Test
+    public void testGetDoctor()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+
+            //Retrieve the doctor from the database by patient and by id
+            Doctor doctorByPatient = dataAccess.getDoctor(patient);
+            Doctor doctorById = dataAccess.getDoctor(doctor.getDoctorID());
+
+            //Check if the patient retrieved by id is the same as the one retrieved by email and password
+            assertEquals(doctorById, doctorByPatient);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
 }
