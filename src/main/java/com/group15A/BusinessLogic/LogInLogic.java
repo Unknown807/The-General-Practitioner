@@ -51,7 +51,6 @@ public class LogInLogic implements ILogIn {
             throw new CustomException("Invalid Email or Password in LogIn", Arrays.asList(passError, emailError));
         }
 
-        //TODO login user with a Session instance or something
         Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
         Session session = new Session(loggedInPatient, stayLoggedIn);
         session.saveToFile();
