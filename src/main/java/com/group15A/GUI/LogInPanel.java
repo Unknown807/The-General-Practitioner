@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
+import com.group15A.CustomExceptions.DatabaseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,9 +30,9 @@ public class LogInPanel extends BasePanel {
     private JButton logInButton;
     private JLabel logInErrorLabel;
     private JPanel textFieldsPanel;
-    private JButton resetPasswordButton;
     private JPanel contentPanel;
     private JScrollPane contentScrollPane;
+    private JCheckBox stayLoggedInCheckBox;
 
     private LogInLogic logInLogic;
 
@@ -43,13 +44,12 @@ public class LogInPanel extends BasePanel {
     {
         super("Please Sign In", panelController,"logInPanel");
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
-        resetPasswordButton.setMargin(new Insets(0,0,0,0));
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
 
         try {
             logInLogic = new LogInLogic();
-        } catch (Exception e) {
+        } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                     null,
                             "\nPlease connect to the database and restart the program.",
@@ -78,10 +78,12 @@ public class LogInPanel extends BasePanel {
     }
 
     private void logInPatient() {
+        Boolean stayLoggedIn = stayLoggedInCheckBox.isSelected();
         logInErrorLabel.setVisible(false);
         try {
             logInLogic.login(emailField.getText(),
-                             new String(passwordField.getPassword())
+                             new String(passwordField.getPassword()),
+                             stayLoggedIn
             );
         } catch (Exception e) {
             System.out.println("Error Encountered: Log in unsuccessful.");

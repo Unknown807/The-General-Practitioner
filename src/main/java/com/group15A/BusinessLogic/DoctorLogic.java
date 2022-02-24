@@ -1,5 +1,6 @@
 package com.group15A.BusinessLogic;
 
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 
@@ -17,9 +18,9 @@ public class DoctorLogic implements IDoctor {
 
     /**
      * Constructor
-     * @throws Exception if issue connecting to the database
+     * @throws DatabaseException if issue connecting to the database
      */
-    public DoctorLogic() throws Exception {
+    public DoctorLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
     }
 
@@ -27,10 +28,10 @@ public class DoctorLogic implements IDoctor {
      * Retrieves all the doctors in the database
      *
      * @return a list of Doctor instances, each having data
-     * @throws Exception if issue in getting doctors from the database
+     * @throws DatabaseException if issue in getting doctors from the database
      */
     @Override
-    public List<Doctor> getDoctors() throws Exception {
+    public List<Doctor> getDoctors() throws DatabaseException {
         return dataAccessLayer.getDoctors();
     }
 }

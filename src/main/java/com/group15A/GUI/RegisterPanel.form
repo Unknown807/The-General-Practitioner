@@ -48,7 +48,7 @@
                       <contentAreaFilled value="true"/>
                       <font size="22" style="1"/>
                       <foreground color="-1"/>
-                      <text value="Continue"/>
+                      <text value="Register"/>
                     </properties>
                   </component>
                 </children>
@@ -284,11 +284,12 @@
                           <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
+                          <editable value="false"/>
                           <font size="22" style="0"/>
                           <model>
                             <item value=""/>
-                            <item value="M"/>
-                            <item value="F"/>
+                            <item value="Male"/>
+                            <item value="Female"/>
                           </model>
                         </properties>
                       </component>

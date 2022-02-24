@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 
 import javax.swing.*;
@@ -98,7 +99,7 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
         }
-        catch (Exception e) {
+        catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                       registerPanel,
                         "Please connect to the database and restart the program.",
@@ -135,8 +136,7 @@ public class RegisterPanel extends BasePanel {
                 lastNameField.getText(),
                 yearCombo.getSelectedItem().toString()+"-"+
                     monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(), // A temporary value, to be replaced by combo box values.
-                //TODO: Pass date using new DD-MM-YYYY combo boxes.
+                    dayCombo.getSelectedItem().toString(),
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
                 emailField.getText(),
@@ -146,7 +146,10 @@ public class RegisterPanel extends BasePanel {
                 doctorCombo.getSelectedIndex()
             );
         } catch (Exception e) {
+            //TODO: Make the error labels of invalid inputs visible,
+            //      and those for valid inputs invisible.
             System.out.println("Encountered error: Register unsuccessful.");
+
         }
     }
 
