@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * To allow for communication to the business layer and to
@@ -26,6 +27,7 @@ public class HomePanel extends BasePanel {
      */
     public HomePanel(MultiPanelWindow panelController) {
         super("Welcome!", panelController,"homePanel");
+        createActionListeners();
     }
 
     @Override
@@ -44,7 +46,19 @@ public class HomePanel extends BasePanel {
     @Override
     public void createActionListeners() {
         //TODO: Implement this action listener.
-        logOutButton.addActionListener(e -> {});
+        logOutButton.addActionListener(e -> {logOutUser();});
+    }
+
+    /**
+     * Delete the log-in session file and
+     * go to log in page.
+     */
+    private void logOutUser()
+    {
+        File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
+        sessionFile.delete();
+
+        panelController.showPage(new LogInPanel(panelController));
     }
 
     private void createUIComponents() {
