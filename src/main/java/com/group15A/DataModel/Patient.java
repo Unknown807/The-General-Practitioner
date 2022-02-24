@@ -82,7 +82,7 @@ public class Patient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return patientID.equals(patient.patientID) && email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && dob.equals(patient.dob) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
+        return email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && dob.equals(patient.dob) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
     }
 
     @Override
