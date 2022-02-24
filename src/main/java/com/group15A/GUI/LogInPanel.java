@@ -46,18 +46,6 @@ public class LogInPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
-
-        try {
-            logInLogic = new LogInLogic();
-        } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                            "\nPlease connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
-        }
     }
 
     @Override
@@ -81,12 +69,24 @@ public class LogInPanel extends BasePanel {
         Boolean stayLoggedIn = stayLoggedInCheckBox.isSelected();
         logInErrorLabel.setVisible(false);
         try {
+            logInLogic = new LogInLogic();
             logInLogic.login(emailField.getText(),
                              new String(passwordField.getPassword()),
                              stayLoggedIn
             );
-        } catch (Exception e) {
-            System.out.println("Error Encountered: Log in unsuccessful.");
+            panelController.showPage(new HomePanel(panelController));
+        }
+        catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                            "\nPlease connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
+        }
+        catch (Exception e) {
+            //System.err.println("Error Encountered: Log in unsuccessful.");
             logInErrorLabel.setVisible(true);
         }
     }

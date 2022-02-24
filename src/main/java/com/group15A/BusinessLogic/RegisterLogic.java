@@ -4,6 +4,7 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
@@ -90,6 +91,10 @@ public class RegisterLogic implements IRegister {
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
                 dataAccessLayer.getDoctors().get(chosenDoctor)
         );
+
+        Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password); // Does not use `passHash`
+        Session session = new Session(loggedInPatient, false);
+        session.saveToFile();
     }
 
 }

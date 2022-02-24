@@ -6,6 +6,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.ErrorCode;
+import com.mysql.cj.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -162,6 +163,7 @@ public class RegisterPanel extends BasePanel {
                 new String(confirmPasswordField.getPassword()),
                 doctorCombo.getSelectedIndex()
             );
+            panelController.showPage(new HomePanel(panelController));
         } catch (CustomException e) {
             setErrorLabels(e);
             //System.err.println("Encountered error: Register unsuccessful.");
