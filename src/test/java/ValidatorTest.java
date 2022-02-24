@@ -114,12 +114,12 @@ public class ValidatorTest extends TestCase {
 
     @Test
     public void testVerifyGenderMale() {
-        assertNull(this.validator.verifyGender("M"));
+        assertNull(this.validator.verifyGender("Male"));
     }
 
     @Test
     public void testVerifyGenderFemale() {
-        assertNull(this.validator.verifyGender("F"));
+        assertNull(this.validator.verifyGender("Female"));
     }
 
     @Test
@@ -162,6 +162,79 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyPhoneNo("123451234512345"));
     }
 
+    @Test
+    public void testVerifyEmailSpecialCharsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("user@mail.c*om"), ErrorCode.WRONG_EMAIL);
+    }
 
+    @Test
+    public void testVerifyEmailMisplacedAtAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("usermail.c@om"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailNoDotAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("user@mailcom"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailMissingAtAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyEmail("usermail.com"), ErrorCode.WRONG_EMAIL);
+    }
+
+    @Test
+    public void testVerifyEmailSuccess() {
+        assertNull(this.validator.verifyEmail("user@mail.com"));
+    }
+
+    @Test
+    public void testVerifyPasswordTooShortAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12eA5s!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoUppercaseAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12ea5s!!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoLowercaesAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12EA5S!"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoDigitsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("aBcDeFgH!JKLm"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordNoSpecialsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyPassword("12eA5s898588997866"), ErrorCode.WRONG_PASSWORD);
+    }
+
+    @Test
+    public void testVerifyPasswordSuccess() {
+        assertNull(this.validator.verifyPassword("12345678Aa!"));
+    }
+
+    @Test
+    public void testMismatchingEmailsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyMatchingEmails("email1@mail.com", "email2@mail.com"), ErrorCode.WRONG_CONFIRMED_EMAIL);
+    }
+
+    @Test
+    public void testMismatchingPasswordsAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyMatchingPasswords("password1", "password2"), ErrorCode.WRONG_CONFIRMED_PASSWORD);
+    }
+
+    @Test
+    public void testMatchingEmails() {
+        assertNull(this.validator.verifyMatchingEmails("email1@mail.com", "email1@mail.com"));
+    }
+
+    @Test
+    public void testMatchingPasswords() {
+        assertNull(this.validator.verifyMatchingPasswords("password1", "password1"));
+    }
 
 }
