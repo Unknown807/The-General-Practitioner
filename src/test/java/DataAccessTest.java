@@ -1,3 +1,5 @@
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
@@ -11,78 +13,154 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for the Data Access Layer
+ *
+ * @author Andrei
+ */
 public class DataAccessTest extends TestCase {
 
-    //TODO Mock database for proper unit testing
-    @Test
-    public void getDoctorsTest() throws Exception {
+    private DataAccess dataAccess;
+
+    @Override
+    protected void setUp() {
         try {
-            DataAccess access = new DataAccess();
-            var doctors = access.getDoctors();
-            for(var doctor: doctors)
-                System.out.println(doctor.getFirstName()+" "+doctor.getLastName());
-        } catch (Exception ex) {
-            System.err.println("Failed to query the database.");
-            
+            super.setUp();
+        } catch (Exception e) {
+            System.err.println("Error setting up the test");
+        }
+        try {
+            dataAccess = new DataAccess();
+        } catch (DatabaseException e) {
+            System.err.println(e.getMessage());
         }
     }
+
 
     @Test
-    public void getPatientTest() throws Exception {
-        try{
-            DataAccess access = new DataAccess();
-            Patient patient = access.getPatient("superemail@hotmail.com", "superPass");
-            System.out.println(patient.getFirstName());
-        }catch (Exception ex)
-        {
-            System.err.println(ex.getMessage());
-            
-        }
-    }
-
-    /*@Test
-    public void updatePatientTest()
+    public void testCreatePatient()
     {
-        try{
-            DataAccess access = new DataAccess();
-            Patient patient = access.getPatient("test@test.com", "testPass");
-            patient.setMiddleName("Christopher");
-            patient = access.updatePatient(patient);
-            assertEquals(patient.getMiddleName(), access.getPatient(patient.getEmail(), patient.getPassHash()).getMiddleName());
-        }catch (Exception ex)
-        {
-            System.err.println(ex.getMessage());
-        }
-    }*/
-
-    @Test
-    public void getCertificationsTest() throws Exception {
-        try{
-            DataAccess access = new DataAccess();
-            Doctor doctor = access.getDoctors().get(0);
-            var certs = access.getCertifications(doctor);
-            for(var cert: certs)
-                System.out.println(cert.getName() + " " + cert.getField());
-        }catch (Exception ex)
-        {
-            System.err.println(ex.getMessage());
-            
-        }
-    }
-
-    @Test
-    public void changeDoctorTest() throws Exception {
         try
         {
-            DataAccess access = new DataAccess();
-            Patient patient = access.getPatient(1);
-            Doctor doctor = access.getDoctor(3);
-            System.out.println(access.getDoctor(patient).getFirstName());
-            access.changeDoctor(patient, doctor);
-            System.out.println(access.getDoctor(patient).getFirstName());
-        }catch(Exception ex)
-        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            Patient patientFromDb = dataAccess.registerPatient(patient, doctor);
+
+            //See if the patient in the database is the same as the one created earlier
+            assertEquals(patient, patientFromDb);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patientFromDb.getPatientID());
+        }catch(Exception ex) {
             System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetPatient()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+
+            //Retrieve the patient from the database by id and by email
+            Patient patientById = dataAccess.getPatient(patient.getPatientID());
+            Patient patientByEmail = dataAccess.getPatient(patient.getEmail(), patient.getPassHash());
+
+            //Check if the patient retrieved by id is the same as the one retrieved by email and password
+            assertEquals(patientById, patientByEmail);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void testUpdatePatient()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            Patient originalPatient = dataAccess.registerPatient(patient, doctor);
+            patient = dataAccess.getPatient(originalPatient.getPatientID());
+
+            //Modify the patient
+            patient.setMiddleName("MiddleTest");
+            patient = dataAccess.updatePatient(patient);
+
+            //Check that the patient from the database is different from the original database
+            assertNotEquals(patient, originalPatient);
+
+            //Check if modifying the originalPatient to the new information will make the patient one and the same
+            originalPatient.setMiddleName("MiddleTest");
+            assertEquals(patient, originalPatient);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(originalPatient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void testChangeDoctor()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+            Doctor originalDoctor = dataAccess.getDoctor(patient);
+
+            //Change the doctor
+            doctor = dataAccess.getDoctors().get(1);
+            patient = dataAccess.changeDoctor(patient, doctor);
+
+            //Check that the new doctor is different from the original doctor
+            assertNotEquals(doctor, originalDoctor);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetDoctor()
+    {
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+
+            //Retrieve the doctor from the database by patient and by id
+            Doctor doctorByPatient = dataAccess.getDoctor(patient);
+            Doctor doctorById = dataAccess.getDoctor(doctor.getDoctorID());
+
+            //Check if the patient retrieved by id is the same as the one retrieved by email and password
+            assertEquals(doctorById, doctorByPatient);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(patient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
         }
     }
 }

@@ -29,6 +29,11 @@ public class Session implements Serializable {
         return keepLoggedIn;
     }
 
+    public static void deleteSession()
+    {
+        new File(getFileName()).delete();
+    }
+
     /**
      * Save the session to disk
      */
