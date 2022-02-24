@@ -20,7 +20,7 @@ public abstract class BasePanel {
     private final String panelFieldName;
 
     /**
-     * Constructor.
+     * Constructor for BasePanel class
      *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
@@ -33,9 +33,9 @@ public abstract class BasePanel {
     }
 
     /**
-     * Returns the name of the field storing a page's JPanel object.
-     * @return panelFieldName The name of the field storing a page's JPanel object.
-     * @author Filip Fois
+     * Returns the name of the field storing a page's JPanel object
+     *
+     * @return panelFieldName The name of the field storing a page's JPanel object
      */
     public String getPanelFieldName()
     {

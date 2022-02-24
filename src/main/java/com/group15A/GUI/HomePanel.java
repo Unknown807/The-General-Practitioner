@@ -3,13 +3,11 @@ package com.group15A.GUI;
 import com.group15A.Session;
 
 import javax.swing.*;
-import java.io.File;
 
 /**
- * To allow for communication to the business layer and to
- * take care of event handling
- * <p>
- * registerPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * To allow for communication to the business layer and to take care of event handling
+ *
+ * homePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
@@ -24,15 +22,22 @@ public class HomePanel extends BasePanel {
     private JLabel titleLabel;
 
     /**
+     * Constructor for the HomePanel class
+     *
+     * Creates action listeners for widgets
+     *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
     public HomePanel(MultiPanelWindow panelController) {
-        super("Welcome!", panelController,"homePanel");
+        super("Welcome", panelController,"homePanel");
         //TODO: Read session file to get patient name.
         createActionListeners();
     }
 
+    /**
+     * @return homePanel
+     */
     @Override
     public JPanel getPagePanel()
     {
@@ -41,9 +46,7 @@ public class HomePanel extends BasePanel {
 
 
     /**
-     * TODO: Add action listeners
-     * To create all event handlers, which will point
-     * to other methods in the class
+     * To create all event handlers, which will point to other methods in the class
      */
     @Override
     public void createActionListeners() {
@@ -52,8 +55,7 @@ public class HomePanel extends BasePanel {
     }
 
     /**
-     * Delete the log-in session file and
-     * go to log in page.
+     * Delete the log-in session file and go to log in page.
      */
     private void logOutUser()
     {
@@ -61,7 +63,4 @@ public class HomePanel extends BasePanel {
         panelController.showPage(new LogInPanel(panelController));
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
 }
