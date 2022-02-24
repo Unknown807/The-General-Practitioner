@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,13 +26,15 @@ import java.util.stream.Stream;
  * @author Wenbo Wu
  */
 public class RegisterLogic implements IRegister {
-    private Validator validator;
     private DataAccess dataAccessLayer;
+    private Validator validator;
 
     /**
-     * Constructor
+     * The constructor for the RegisterLogic class.
+     * Creates connection to DAL and creates a validator to
+     * validate the user's login information
      *
-     * @throws DatabaseException if issue connecting to the database
+     * @throws DatabaseException if there was an issue connecting to the database
      */
     public RegisterLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
@@ -39,22 +42,21 @@ public class RegisterLogic implements IRegister {
     }
 
     /**
-     * Validates all fields are of the correct format and then inserts the new patient
-     * in the database
+     * Validates all fields and then inserts the new patient in the database
      *
      * @param fName first name
      * @param mName middle name
      * @param lName last name
      * @param DoB date of birth
-     * @param gender
-     * @param phoneNo
-     * @param email
-     * @param confirmEmail
-     * @param password
-     * @param confirmPassword
+     * @param gender gender
+     * @param phoneNo phone number
+     * @param email email
+     * @param confirmEmail confirmation email
+     * @param password password
+     * @param confirmPassword confirmation password
      * @param chosenDoctor the index of the doctor in the list that will correspond to their ID
      *                     in the database
-     * @throws Exception if any verification method fails or when inserting a patient into the database
+     * @throws CustomException if any verification method fails or there was an error inserting a patient into the database
      */
     @Override
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws CustomException {
@@ -71,7 +73,7 @@ public class RegisterLogic implements IRegister {
                 this.validator.verifyMatchingPasswords(password, confirmPassword)
             );
 
-        List<ErrorCode> errorsList = errorsStream.filter(x -> x!=null).collect(Collectors.toList());
+        List<ErrorCode> errorsList = errorsStream.filter(Objects::nonNull).collect(Collectors.toList());
         if (errorsList.size() > 0) {
             throw new CustomException("Invalid Form Details", errorsList);
         }
@@ -81,21 +83,19 @@ public class RegisterLogic implements IRegister {
 
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date dateConv = null;
+        Date dateConv;
         try {
             dateConv = df.parse(DoB);
         } catch (ParseException e) {
             throw new CustomException("Invalid date", Arrays.asList(ErrorCode.WRONG_DATE));
         }
 
-        Patient newPatient = this.dataAccessLayer.registerPatient(
+        Patient loggedInPatient = this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
                 dataAccessLayer.getDoctors().get(chosenDoctor)
         );
 
-        Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password); // Does not use `passHash`
         Session session = new Session(loggedInPatient, false);
         session.saveToFile();
     }
-
 }

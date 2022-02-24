@@ -3,7 +3,7 @@ package com.group15A.Utils;
 /**
  * Error codes to be used with Custom Exceptions
  *
- * @author Andrei
+ * @author Andrei Constantin
  */
 public enum ErrorCode
 {

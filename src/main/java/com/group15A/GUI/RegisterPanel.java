@@ -103,6 +103,7 @@ public class RegisterPanel extends BasePanel {
             put(ErrorCode.WRONG_DATE, dateOfBirthErrorLabel);
             put(ErrorCode.WRONG_PHONE_NO, phoneErrorLabel);
             put(ErrorCode.WRONG_EMAIL, emailErrorLabel);
+            put(ErrorCode.EMAIL_IN_USE, emailErrorLabel);
             put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
             put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
             put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);

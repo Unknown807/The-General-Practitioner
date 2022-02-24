@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * An interface to the Data Access Layer
  *
- * @author Andrei
+ * @author Andrei Constantin
  */
 public interface IDataAccess
 {
