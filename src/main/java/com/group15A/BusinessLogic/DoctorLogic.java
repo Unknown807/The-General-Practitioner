@@ -17,8 +17,8 @@ public class DoctorLogic implements IDoctor {
     private DataAccess dataAccessLayer;
 
     /**
-     * Constructor
-     * @throws DatabaseException if issue connecting to the database
+     * Constructor for the doctor logic
+     * @throws DatabaseException if there was an issue connecting to the database
      */
     public DoctorLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
@@ -27,8 +27,8 @@ public class DoctorLogic implements IDoctor {
     /**
      * Retrieves all the doctors in the database
      *
-     * @return a list of Doctor instances, each having data
-     * @throws DatabaseException if issue in getting doctors from the database
+     * @return the list of doctors
+     * @throws DatabaseException if there was an issue getting doctors from the database
      */
     @Override
     public List<Doctor> getDoctors() throws DatabaseException {

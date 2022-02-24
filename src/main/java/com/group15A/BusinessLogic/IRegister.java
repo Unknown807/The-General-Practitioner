@@ -7,5 +7,6 @@ package com.group15A.BusinessLogic;
  * @author Wenbo Wu
  */
 public interface IRegister {
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception;
+    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo,
+                         String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception;
 }
