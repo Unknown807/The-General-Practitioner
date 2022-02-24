@@ -166,7 +166,7 @@ public class RegisterPanel extends BasePanel {
             panelController.showPage(new HomePanel(panelController));
         } catch (CustomException e) {
             setErrorLabels(e);
-            //System.err.println("Encountered error: Register unsuccessful.");
+            //System.err.println(e.getMessage());
         }
 
     }
@@ -208,8 +208,10 @@ public class RegisterPanel extends BasePanel {
     public void setErrorLabels(CustomException e)
     {
         List<ErrorCode> errorCodes = e.getErrorList();
-        for(ErrorCode errorCode : errorCodes){
-            errorLabelCodes.get(errorCode).setVisible(true);
+        Boolean visibleValue;
+        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
+            visibleValue = errorCodes.contains(errorCode);
+            errorLabelCodes.get(errorCode).setVisible(visibleValue);
         }
     }
 
