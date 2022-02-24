@@ -55,6 +55,7 @@ public class HomePanel extends BasePanel {
      */
     private void logOutUser()
     {
+        // TODO: Should be implemented in business logic (e.g., LogInLogic.java).
         File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
         sessionFile.delete();
 
