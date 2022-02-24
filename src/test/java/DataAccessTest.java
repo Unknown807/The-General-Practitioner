@@ -12,6 +12,11 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests for the Data Access Layer
+ *
+ * @author Andrei
+ */
 public class DataAccessTest extends TestCase {
 
     private DataAccess dataAccess;
@@ -87,5 +92,26 @@ public class DataAccessTest extends TestCase {
             Doctor doctor = dataAccess.getDoctors().get(0);
             Patient originalPatient = dataAccess.registerPatient(patient, doctor);
             patient = dataAccess.getPatient(originalPatient.getPatientID());
+
+            //Modify the patient
+            patient.setMiddleName("MiddleTest");
+            patient = dataAccess.updatePatient(patient);
+
+            //Check that the patient from the database is different from the original database
+            assertNotEquals(patient, originalPatient);
+
+            //Check if modifying the originalPatient to the new information will make the patient one and the same
+            originalPatient.setMiddleName("MiddleTest");
+            assertEquals(patient, originalPatient);
+
+            //Delete the dummy data from the database
+            dataAccess.deletePatient(originalPatient.getPatientID());
+        }catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
+
+
 
 }
