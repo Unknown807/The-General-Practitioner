@@ -1,5 +1,6 @@
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.EmailInUseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
@@ -58,6 +59,39 @@ public class DataAccessTest extends TestCase {
             try {
                 if(patientFromDb!=null)
                     dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testCreatePatientExistingEmail()
+    {
+        Patient patientFromDb = null;
+        Patient secondPatient = null;
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
+
+            //Try registering the same patient
+            secondPatient = dataAccess.registerPatient(patient, doctor);
+
+            //Delete the dummy data from the database
+        } catch(EmailInUseException ex) {
+            assertTrue(true);
+        } catch (Exception ex) {
+            fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+                if(secondPatient!=null)
+                    dataAccess.deletePatient(secondPatient.getPatientID());
             } catch (DatabaseException ex) {
                 System.err.println(ex.getMessage());
             }
