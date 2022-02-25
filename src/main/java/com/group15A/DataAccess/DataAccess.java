@@ -268,6 +268,8 @@ public class DataAccess implements IDataAccess
             statement.setString(4, patient.getFirstName());
             statement.setString(5, patient.getMiddleName());
             statement.setString(6, patient.getLastName());
+            if(patient.getDob()==null)
+                throw new CustomException("Date cannot be null");
             statement.setDate(7, new Date(patient.getDob().getTime()));
             statement.setString(8, patient.getGender());
             statement.setString(9, patient.getPhoneNo());
