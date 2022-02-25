@@ -149,7 +149,6 @@ public class DataAccess implements IDataAccess
             throw new EmailInUseException();
         } catch (Exception ex)
         {
-            System.err.println(ex);
             throw new DatabaseException("Could not register patient in the database");
         }
     }
