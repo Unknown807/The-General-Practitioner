@@ -124,6 +124,7 @@ public class DataAccess implements IDataAccess
      * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
      */
     @Override
     public Patient registerPatient(Patient patient, Doctor doctor) throws EmailInUseException, DatabaseException
@@ -145,10 +146,9 @@ public class DataAccess implements IDataAccess
 
             return getPatient(patient.getEmail(), patient.getPassHash());
         } catch (SQLIntegrityConstraintViolationException ex) {
-            throw new EmailInUseException("Email already in use");
+            throw new EmailInUseException();
         } catch (Exception ex)
         {
-            System.err.println(ex);
             throw new DatabaseException("Could not register patient in the database");
         }
     }
@@ -157,6 +157,7 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information provided in the object
      * @param patient The modified patient
      * @return The corresponding patient from the database
+     * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
@@ -208,9 +209,8 @@ public class DataAccess implements IDataAccess
             PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, doctorID);
             ResultSet result = statement.executeQuery();
-            Doctor doctor = getDoctorFromDB(result);
 
-            return doctor;
+            return getDoctorFromDB(result);
         } catch (DoctorNotFoundException ex)
         {
             throw ex;
@@ -254,8 +254,9 @@ public class DataAccess implements IDataAccess
      * @param patient The modified patient
      * @param doctor The new doctor
      * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
      */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException
+    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException, EmailInUseException
     {
         try {
             String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -266,12 +267,16 @@ public class DataAccess implements IDataAccess
             statement.setString(4, patient.getFirstName());
             statement.setString(5, patient.getMiddleName());
             statement.setString(6, patient.getLastName());
+            if(patient.getDob()==null)
+                throw new CustomException("Date cannot be null");
             statement.setDate(7, new Date(patient.getDob().getTime()));
             statement.setString(8, patient.getGender());
             statement.setString(9, patient.getPhoneNo());
             statement.setInt(10, doctor.getDoctorID());
 
             statement.executeQuery();
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException();
         } catch (Exception ex)
         {
             throw new DatabaseException("Could not update the patient");

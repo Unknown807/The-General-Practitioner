@@ -1,5 +1,6 @@
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.EmailInUseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
@@ -7,6 +8,7 @@ import com.group15A.DataModel.Patient;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,22 +42,127 @@ public class DataAccessTest extends TestCase {
     @Test
     public void testCreatePatient()
     {
+        Patient patientFromDb = null;
         try
         {
             //Create a new patient
             Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
             Doctor doctor = dataAccess.getDoctors().get(0);
-            Patient patientFromDb = dataAccess.registerPatient(patient, doctor);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
 
             //See if the patient in the database is the same as the one created earlier
             assertEquals(patient, patientFromDb);
-
-            //Delete the dummy data from the database
-            dataAccess.deletePatient(patientFromDb.getPatientID());
         }catch(Exception ex) {
             System.err.println(ex.getMessage());
             fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
+    }
+
+    @Test
+    public void testCreatePatientExistingEmail()
+    {
+        Patient patientFromDb = null;
+        Patient secondPatient = null;
+        try
+        {
+            //Create a new patient
+            Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
+
+            //Try registering the same patient
+            secondPatient = dataAccess.registerPatient(patient, doctor);
+
+        } catch(EmailInUseException ex) {
+            //An EmailInUseException is expected
+            assertTrue(true);
+        } catch (Exception ex) {
+            fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+                if(secondPatient!=null)
+                    dataAccess.deletePatient(secondPatient.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void testCreatePatientNullEmail()
+    {
+        Patient patient = new Patient(null, "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    @Test
+    public void testCreatePatientNullPassword()
+    {
+        Patient patient = new Patient("mynewmail1@mail.com", null, "Test", null, "Testing", new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    @Test
+    public void testCreatePatientNullFirstName()
+    {
+        Patient patient = new Patient("mynewmail1@mail.com", "myPass", null, null, "Testing", new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    @Test
+    public void testCreatePatientNullLastName()
+    {
+        Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, null, new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    @Test
+    public void testCreatePatientNullDate()
+    {
+        Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", null, "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    private boolean testCreatePatientNullInfo(Patient patient)
+    {
+        Patient patientFromDb = null;
+        try {
+            //Create a new patient
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
+        } catch (Exception ex) {
+            //We expect an exception
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException dbEx) {
+                System.err.println(dbEx.getMessage());
+                return false;
+            }
+
+            return true;
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+
+        return false;
     }
 
     @Test
