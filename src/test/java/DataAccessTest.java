@@ -40,21 +40,27 @@ public class DataAccessTest extends TestCase {
     @Test
     public void testCreatePatient()
     {
+        Patient patientFromDb = null;
         try
         {
             //Create a new patient
             Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
             Doctor doctor = dataAccess.getDoctors().get(0);
-            Patient patientFromDb = dataAccess.registerPatient(patient, doctor);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
 
             //See if the patient in the database is the same as the one created earlier
             assertEquals(patient, patientFromDb);
-
-            //Delete the dummy data from the database
-            dataAccess.deletePatient(patientFromDb.getPatientID());
         }catch(Exception ex) {
             System.err.println(ex.getMessage());
             fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
     }
 
