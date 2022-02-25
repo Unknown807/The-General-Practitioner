@@ -73,7 +73,7 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
-    public void testVerifyFirstNameSuccessBlankName() {
+    public void testVerifyMiddleNameSuccessBlankName() {
         assertNull(this.validator.verifyMiddleName(""));
     }
 
