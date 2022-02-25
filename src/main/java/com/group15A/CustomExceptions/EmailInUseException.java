@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class EmailInUseException extends CustomException
 {
     /**
-     * Constructor for the EmailInUseException. It creates a Custom Exception with the EMAIL_IN_USE error code
-     * @param errorMessage The error message
+     * Constructor for the EmailInUseException. It creates a Custom Exception with the EMAIL_IN_USE error code and a
+     * suitable error message
      */
-    public EmailInUseException(String errorMessage) {
-        super(errorMessage, new ArrayList<>(){{add(ErrorCode.EMAIL_IN_USE);}});
+    public EmailInUseException() {
+        super("Email already in use", new ArrayList<>(){{add(ErrorCode.EMAIL_IN_USE);}});
     }
 }
