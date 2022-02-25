@@ -8,6 +8,7 @@ import com.group15A.DataModel.Patient;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,8 +81,8 @@ public class DataAccessTest extends TestCase {
             //Try registering the same patient
             secondPatient = dataAccess.registerPatient(patient, doctor);
 
-            //Delete the dummy data from the database
         } catch(EmailInUseException ex) {
+            //An EmailInUseException is expected
             assertTrue(true);
         } catch (Exception ex) {
             fail();
@@ -96,6 +97,43 @@ public class DataAccessTest extends TestCase {
                 System.err.println(ex.getMessage());
             }
         }
+    }
+
+    @Test
+    public void testCreatePatientNullEmail()
+    {
+        Patient patient = new Patient(null, "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
+    private boolean testCreatePatientNullInfo(Patient patient)
+    {
+        Patient patientFromDb = null;
+        try {
+            //Create a new patient
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patientFromDb = dataAccess.registerPatient(patient, doctor);
+        } catch (Exception ex) {
+            //We expect an exception
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException dbEx) {
+                System.err.println(dbEx.getMessage());
+            }
+
+            return true;
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(patientFromDb!=null)
+                    dataAccess.deletePatient(patientFromDb.getPatientID());
+            } catch (DatabaseException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+
+        return false;
     }
 
     @Test
