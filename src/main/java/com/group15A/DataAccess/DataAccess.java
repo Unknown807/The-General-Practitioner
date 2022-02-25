@@ -158,6 +158,7 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information provided in the object
      * @param patient The modified patient
      * @return The corresponding patient from the database
+     * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
@@ -209,9 +210,8 @@ public class DataAccess implements IDataAccess
             PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, doctorID);
             ResultSet result = statement.executeQuery();
-            Doctor doctor = getDoctorFromDB(result);
 
-            return doctor;
+            return getDoctorFromDB(result);
         } catch (DoctorNotFoundException ex)
         {
             throw ex;
