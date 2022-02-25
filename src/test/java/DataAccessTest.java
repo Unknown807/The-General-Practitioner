@@ -106,6 +106,13 @@ public class DataAccessTest extends TestCase {
         assertTrue(testCreatePatientNullInfo(patient));
     }
 
+    @Test
+    public void testCreatePatientNullPassword()
+    {
+        Patient patient = new Patient("mynewmail1@mail.com", null, "Test", null, "Testing", new Date(), "Male", "08858271");
+        assertTrue(testCreatePatientNullInfo(patient));
+    }
+
     private boolean testCreatePatientNullInfo(Patient patient)
     {
         Patient patientFromDb = null;
