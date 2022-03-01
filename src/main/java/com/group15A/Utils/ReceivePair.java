@@ -4,13 +4,12 @@ package com.group15A.Utils;
  * The form of the data being passed between pages
  *
  * @author Milovan Gveric
- * @param <B> the type of the data to be passed
  */
-public class ReceivePair<B> {
+public class ReceivePair {
     private ReceiveType first;
-    private B second;
+    private Object second;
 
-    public ReceivePair(ReceiveType first, B second) {
+    public ReceivePair(ReceiveType first, Object second) {
         this.first = first;
         this.second = second;
     }
@@ -19,7 +18,7 @@ public class ReceivePair<B> {
         return first;
     }
 
-    public B getSecond() {
+    public Object getSecond() {
         return second;
     }
 }

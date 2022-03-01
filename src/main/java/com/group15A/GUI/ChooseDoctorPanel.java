@@ -4,6 +4,8 @@ import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +28,7 @@ public class ChooseDoctorPanel extends BasePanel {
     private JPanel doctorListPanel;
     private JScrollPane doctorListScrollPane;
 
-    private PageInfo returningPage = PageInfo.REGISTER;
+    private PageInfo returningPage;
     private DoctorLogic doctorLogic;
     private List<Doctor> doctorsList;
     private List<JButton> doctorButtons;
@@ -41,7 +43,7 @@ public class ChooseDoctorPanel extends BasePanel {
      */
     public ChooseDoctorPanel(MultiPanelWindow panelController)
     {
-        super(panelController);
+        super("Choose Your New Doctor", "chooseDoctorPanel", panelController);
         createActionListeners();
 
         try {
@@ -88,8 +90,11 @@ public class ChooseDoctorPanel extends BasePanel {
         return this.chooseDoctorPanel;
     }
 
-    public void setReturningPage(PageInfo page) {
-        this.returningPage = page;
+    @Override
+    public void receiveData(ReceivePair pair) {
+        if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {
+            this.returningPage = (PageInfo) pair.getSecond();
+        }
     }
 
     /**

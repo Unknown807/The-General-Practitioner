@@ -1,9 +1,7 @@
 package com.group15A.GUI;
 
-import com.group15A.Utils.ReceiveType;
-
+import com.group15A.Utils.ReceivePair;
 import javax.swing.*;
-import java.util.Map;
 
 /**
  * All panels in the card layout inherit from this, allows using JPanels
@@ -19,6 +17,9 @@ import java.util.Map;
  */
 public abstract class BasePanel {
     protected MultiPanelWindow panelController;
+    protected String windowTitle;
+    private final String panelFieldName;
+
 
     /**
      * Constructor for BasePanel class
@@ -26,14 +27,26 @@ public abstract class BasePanel {
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */
-    public BasePanel(MultiPanelWindow panelController)
+    public BasePanel(String windowTitle, String panelFieldName, MultiPanelWindow panelController)
     {
         this.panelController = panelController;
+        this.panelFieldName = panelFieldName;
+        this.windowTitle = windowTitle;
+    }
+
+    public String getPanelFieldName()
+    {
+        return this.panelFieldName;
+    }
+
+    public String getWindowTitle()
+    {
+        return this.windowTitle;
     }
 
     public abstract JPanel getPagePanel();
 
-    public abstract void receiveData(ReceiveType receiveType, Object data);
+    public abstract void receiveData(ReceivePair pair);
 
     public abstract void createActionListeners();
 }

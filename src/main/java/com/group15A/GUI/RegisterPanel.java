@@ -8,6 +8,7 @@ import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
@@ -96,7 +97,7 @@ public class RegisterPanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
-        super(panelController);
+        super("Enter Your Details", "registerPanel", panelController);
 
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
@@ -153,9 +154,10 @@ public class RegisterPanel extends BasePanel {
     }
 
     @Override
-    public void receiveData(ReceiveType receiveType, Object data) {
-        if (receiveType.equals(ReceiveType.DOCTOR)) {
-            Doctor chosenDoctor = (Doctor) data;
+    public void receiveData(ReceivePair pair) {
+        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+            Doctor chosenDoctor = (Doctor) pair.getSecond();
+            //TODO change button text and have a chosenDoctor attribute
         }
 
     }
@@ -169,7 +171,7 @@ public class RegisterPanel extends BasePanel {
         logInButton.addActionListener( e -> panelController.showPage(PageInfo.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
         chooseDoctorButton.addActionListener(e -> {
-            panelController.showPage(PageInfo.CHOOSE_DOCTOR);
+            panelController.showPage(PageInfo.CHOOSE_DOCTOR, new ReceivePair(ReceiveType.RETURN_PAGE, PageInfo.REGISTER));
         });
     }
 

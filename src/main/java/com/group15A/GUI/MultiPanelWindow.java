@@ -2,13 +2,15 @@ package com.group15A.GUI;
 
 import com.group15A.Session;
 import com.group15A.Utils.PageInfo;
-import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The window which will be shown, consists of a card layout
@@ -27,6 +29,7 @@ import java.io.File;
 public class MultiPanelWindow extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelCards;
+    private Map<PageInfo, BasePanel> cards;
     private Session session;
 
     /**
@@ -38,20 +41,7 @@ public class MultiPanelWindow extends JFrame {
      */
     public MultiPanelWindow() {
         this.session = new Session(null, false);
-
-        BasePanel[] cards = new BasePanel[]{
-                new LogInPanel(this),
-                new RegisterPanel(this),
-                new HomePanel(this),
-                new ChooseDoctorPanel(this)
-        };
-
-        PageInfo[] pages = PageInfo.values();
-
-        this.cardLayout = (CardLayout) (panelCards.getLayout());
-        for (int i=0; i<cards.length; i++) {
-            this.panelCards.add(cards[i].getPagePanel(), PageInfo.panels.get(pages[i]));
-        }
+        createPages();
 
         // Run closeProgram() when window close button is clicked
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -80,14 +70,34 @@ public class MultiPanelWindow extends JFrame {
     }
 
 
+    private void createPages() {
+        this.cards = new HashMap<>();
+        this.cards.put(PageInfo.LOGIN, new LogInPanel(this));
+        this.cards.put(PageInfo.REGISTER, new RegisterPanel(this));
+        this.cards.put(PageInfo.HOME, new HomePanel(this));
+        this.cards.put(PageInfo.CHOOSE_DOCTOR, new ChooseDoctorPanel(this));
+
+        PageInfo[] pages = PageInfo.values();
+
+        this.cardLayout = (CardLayout) (panelCards.getLayout());
+        for (PageInfo page: pages) {
+            BasePanel bspanel = this.cards.get(page);
+            this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
+        }
+    }
+
     /**
      * Switches to a given JPanel that is in the card layout
      *
      * @param page the page to switch to, contains window title and the required JPanel
      */
-    public void showPage(PageInfo page) {
-        this.setTitle(PageInfo.titles.get(page));
-        this.cardLayout.show(panelCards, PageInfo.panels.get(page));
+    public void showPage(PageInfo page, ReceivePair... pairs) {
+        BasePanel nextPanel = this.cards.get(page);
+        this.setTitle(nextPanel.getWindowTitle());
+        this.cardLayout.show(panelCards, nextPanel.getPanelFieldName());
+        for (ReceivePair pair: pairs) {
+            this.cards.get(page).receiveData(pair);
+        }
     }
 
     public Session getSession() {

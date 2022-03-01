@@ -1,7 +1,7 @@
 package com.group15A.Utils;
 
 /**
- * The type of data to be received by a page
+ * The type of data to expected to be received by the current pages
  *
  * @author Milovan Gveric
  */

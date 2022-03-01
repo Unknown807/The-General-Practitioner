@@ -3,6 +3,8 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +48,7 @@ public class LogInPanel extends BasePanel {
      */
     public LogInPanel(MultiPanelWindow panelController)
     {
-        super(panelController);
+        super("Please Sign In", "logInPanel", panelController);
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
@@ -59,6 +61,11 @@ public class LogInPanel extends BasePanel {
     public JPanel getPagePanel()
     {
         return this.logInPanel;
+    }
+
+    @Override
+    public void receiveData(ReceivePair pair) {
+
     }
 
     /**

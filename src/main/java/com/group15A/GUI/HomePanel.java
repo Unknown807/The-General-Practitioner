@@ -2,7 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.Session;
 import com.group15A.Utils.PageInfo;
-import com.group15A.Utils.ReceiveType;
+import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
 
@@ -32,7 +32,7 @@ public class HomePanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public HomePanel(MultiPanelWindow panelController) {
-        super(panelController);
+        super("Welcome", "homePanel", panelController);
         //TODO: Read session file to get patient name.
         createActionListeners();
     }
@@ -47,7 +47,7 @@ public class HomePanel extends BasePanel {
     }
 
     @Override
-    public void receiveData(ReceiveType receiveType, Object data) {}
+    public void receiveData(ReceivePair pair) {}
 
 
     /**
