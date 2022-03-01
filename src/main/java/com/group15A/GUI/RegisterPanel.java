@@ -6,7 +6,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.ErrorCode;
-import com.group15A.Utils.Pages;
+import com.group15A.Utils.Page;
 
 import javax.swing.*;
 import java.awt.*;
@@ -163,7 +163,7 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> panelController.showPage(Pages.LOGIN));
+        logInButton.addActionListener( e -> panelController.showPage(Page.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
     }
 
@@ -192,7 +192,7 @@ public class RegisterPanel extends BasePanel {
                 doctorsList.get(doctorCombo.getSelectedIndex())
             );
 
-            panelController.showPage(Pages.HOME);
+            panelController.showPage(Page.HOME);
         } catch (CustomException e) {
             setErrorLabels(e);
         }

@@ -6,20 +6,20 @@ import java.util.HashMap;
  *
  * @author Milovan Gveric
  */
-public enum Pages {
+public enum Page {
     LOGIN,
     REGISTER,
     HOME,
     CHOOSE_DOCTOR;
 
-    public final static HashMap<Pages, String> panels = new HashMap<>(){{
+    public final static HashMap<Page, String> panels = new HashMap<>(){{
         put(LOGIN, "logInPanel");
         put(REGISTER, "registerPanel");
         put(HOME, "homePanel");
         put(CHOOSE_DOCTOR, "chooseDoctorPanel");
     }};
 
-    public final static HashMap<Pages, String> titles = new HashMap<>(){{
+    public final static HashMap<Page, String> titles = new HashMap<>(){{
         put(LOGIN, "Please Sign In");
         put(REGISTER, "Enter Your Details");
         put(HOME, "Welcome");
