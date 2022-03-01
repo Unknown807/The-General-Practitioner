@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.Session;
 import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 
@@ -44,6 +45,9 @@ public class HomePanel extends BasePanel {
     {
         return this.homePanel;
     }
+
+    @Override
+    public void receiveData(ReceiveType receiveType, Object data) {}
 
 
     /**

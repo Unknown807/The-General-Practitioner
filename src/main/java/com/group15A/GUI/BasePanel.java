@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.Utils.ReceiveType;
+
 import javax.swing.*;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public abstract class BasePanel {
 
     public abstract JPanel getPagePanel();
 
-    public abstract void receiveData(Map<String, Object> data);
+    public abstract void receiveData(ReceiveType receiveType, Object data);
 
     public abstract void createActionListeners();
 }

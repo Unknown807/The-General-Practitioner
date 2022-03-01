@@ -1,6 +1,5 @@
 package com.group15A.GUI;
 
-import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
@@ -9,13 +8,13 @@ import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import java.awt.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
@@ -151,6 +150,14 @@ public class RegisterPanel extends BasePanel {
     public JPanel getPagePanel()
     {
         return this.registerPanel;
+    }
+
+    @Override
+    public void receiveData(ReceiveType receiveType, Object data) {
+        if (receiveType.equals(ReceiveType.DOCTOR)) {
+            Doctor chosenDoctor = (Doctor) data;
+        }
+
     }
 
     /**
