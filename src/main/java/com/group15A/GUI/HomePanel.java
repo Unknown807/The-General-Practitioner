@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.Session;
+import com.group15A.Utils.Pages;
 
 import javax.swing.*;
 
@@ -30,7 +31,7 @@ public class HomePanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public HomePanel(MultiPanelWindow panelController) {
-        super("Welcome", panelController,"homePanel");
+        super(panelController);
         //TODO: Read session file to get patient name.
         createActionListeners();
     }
@@ -59,7 +60,7 @@ public class HomePanel extends BasePanel {
     private void logOutUser()
     {
         Session.deleteSession();
-        panelController.showPage(new LogInPanel(panelController));
+        panelController.showPage(Pages.LOGIN);
     }
 
 }

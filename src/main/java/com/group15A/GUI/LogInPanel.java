@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.Utils.Pages;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class LogInPanel extends BasePanel {
      */
     public LogInPanel(MultiPanelWindow panelController)
     {
-        super("Please Sign In", panelController,"logInPanel");
+        super(panelController);
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
@@ -65,7 +66,7 @@ public class LogInPanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
-        registerButton.addActionListener( e -> panelController.showPage(new RegisterPanel(panelController)));
+        registerButton.addActionListener( e -> panelController.showPage(Pages.REGISTER));
         logInButton.addActionListener(e -> this.logInPatient());
     }
 
@@ -84,7 +85,7 @@ public class LogInPanel extends BasePanel {
                              new String(passwordField.getPassword()),
                              stayLoggedIn
             );
-            panelController.showPage(new HomePanel(panelController));
+            panelController.showPage(Pages.HOME);
         }
         catch (DatabaseException e) {
             // Show error pop up if database is not connected and close program

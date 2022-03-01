@@ -6,6 +6,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.ErrorCode;
+import com.group15A.Utils.Pages;
 
 import javax.swing.*;
 import java.awt.*;
@@ -94,7 +95,7 @@ public class RegisterPanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
-        super("Enter Your Details", panelController,"registerPanel");
+        super(panelController);
 
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
@@ -162,7 +163,7 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> panelController.showPage(new LogInPanel(panelController)));
+        logInButton.addActionListener( e -> panelController.showPage(Pages.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
     }
 
@@ -191,7 +192,7 @@ public class RegisterPanel extends BasePanel {
                 doctorsList.get(doctorCombo.getSelectedIndex())
             );
 
-            panelController.showPage(new HomePanel(panelController));
+            panelController.showPage(Pages.HOME);
         } catch (CustomException e) {
             setErrorLabels(e);
         }

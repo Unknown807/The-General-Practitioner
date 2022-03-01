@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.Utils.Pages;
+
 import javax.swing.*;
 
 /**
@@ -30,7 +32,7 @@ public class ChooseDoctorPanel extends BasePanel {
      */
     public ChooseDoctorPanel(MultiPanelWindow panelController)
     {
-        super("Choose your new doctor", panelController,"chooseDoctorPanel");
+        super(panelController);
         createActionListeners();
     }
 
@@ -49,8 +51,8 @@ public class ChooseDoctorPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> {panelController.showPage(new LogInPanel(panelController));});
-        registerButton.addActionListener( e -> {panelController.showPage(new RegisterPanel(panelController));});
+        logInButton.addActionListener( e -> panelController.showPage(Pages.LOGIN));
+        registerButton.addActionListener( e -> panelController.showPage(Pages.REGISTER));
     }
 
 }

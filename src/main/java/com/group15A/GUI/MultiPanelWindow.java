@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.Session;
+import com.group15A.Utils.Pages;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,9 +45,11 @@ public class MultiPanelWindow extends JFrame {
                 new ChooseDoctorPanel(this)
         };
 
+        Pages[] pages = Pages.values();
+
         this.cardLayout = (CardLayout) (panelCards.getLayout());
-        for (BasePanel card : cards) {
-            this.panelCards.add(card.getPagePanel(),card.getPanelFieldName());
+        for (int i=0; i<cards.length; i++) {
+            this.panelCards.add(cards[i].getPagePanel(), Pages.panels.get(pages[i]));
         }
 
         // Run closeProgram() when window close button is clicked
@@ -68,11 +71,11 @@ public class MultiPanelWindow extends JFrame {
 
         // Choose the page to be displayed when starting the program
         File file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()+"/LoggedUser.bin");
-        int pageToShow = 0; // log in page
+        Pages pageToShow = Pages.LOGIN; // log in page
         if(file.exists()) {
-            pageToShow = 2; // home page
+            pageToShow = Pages.HOME; // home page
         }
-        showPage(cards[pageToShow]);
+        showPage(pageToShow);
     }
 
 
@@ -81,9 +84,9 @@ public class MultiPanelWindow extends JFrame {
      *
      * @param page the page to switch to, contains window title and the required JPanel
      */
-    public void showPage(BasePanel page) {
-        this.setTitle(page.getWindowTitle());
-        this.cardLayout.show(panelCards, page.getPanelFieldName());
+    public void showPage(Pages page) {
+        this.setTitle(Pages.titles.get(page));
+        this.cardLayout.show(panelCards, Pages.panels.get(page));
     }
 
     public Session getSession() {
