@@ -62,7 +62,7 @@ public class RegisterLogic implements IRegister {
      * @throws CustomException if any verification method fails or there was an error inserting a patient into the database
      */
     @Override
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws CustomException {
+    public Patient register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws CustomException {
         Stream<ErrorCode> errorsStream = Stream.of(
                 this.validator.verifyFirstName(fName),
                 this.validator.verifyMiddleName(mName),
@@ -96,7 +96,6 @@ public class RegisterLogic implements IRegister {
                 chosenDoctor
         );
 
-        Session session = new Session(loggedInPatient, false);
-        session.saveToFile();
+        return loggedInPatient;
     }
 }

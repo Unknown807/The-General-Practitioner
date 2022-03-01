@@ -5,6 +5,8 @@ import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Utils.Page;
 
@@ -76,11 +78,10 @@ public class RegisterPanel extends BasePanel {
     private JComboBox yearCombo;
     private JPanel datePanel;
     private JLabel doctorLabel;
+    private JButton chooseDoctorButton;
     private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
-    private DoctorLogic doctorLogic;
-    private List<Doctor> doctorsList;
 
     private HashMap<ErrorCode,JLabel> errorLabelCodes;
 
@@ -109,14 +110,8 @@ public class RegisterPanel extends BasePanel {
 
         try {
             registerLogic = new RegisterLogic();
-            doctorLogic = new DoctorLogic();
 
-            doctorsList = doctorLogic.getDoctors();
-            for (Doctor d : doctorsList) {
-                doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
-            }
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                       registerPanel,
                         "Please connect to the database and restart the program.",
@@ -165,6 +160,9 @@ public class RegisterPanel extends BasePanel {
     {
         logInButton.addActionListener( e -> panelController.showPage(Page.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
+        chooseDoctorButton.addActionListener(e -> {
+            panelController.showPage(Page.CHOOSE_DOCTOR);
+        });
     }
 
     /**
@@ -176,7 +174,7 @@ public class RegisterPanel extends BasePanel {
      */
     private void registerNewPatient() {
         try {
-            registerLogic.register(
+            Patient newPatient = registerLogic.register(
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
@@ -189,8 +187,14 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                doctorsList.get(doctorCombo.getSelectedIndex())
+                null
+                //doctorsList.get(doctorCombo.getSelectedIndex())
             );
+
+            Session currentSession = panelController.getSession();
+            currentSession.setLoggedInPatient(newPatient);
+            currentSession.setKeepLoggedIn(false);
+            currentSession.saveToFile();
 
             panelController.showPage(Page.HOME);
         } catch (CustomException e) {
