@@ -8,6 +8,8 @@ import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
+import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -79,9 +81,7 @@ public class RegisterLogic implements IRegister {
             throw new CustomException("Invalid Form Details", errorsList);
         }
 
-        //TODO make methods for hashing password
-        String passHash = password;
-
+        String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateConv;
