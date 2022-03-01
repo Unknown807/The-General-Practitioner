@@ -24,6 +24,8 @@ public abstract class BasePanel {
     /**
      * Constructor for BasePanel class
      *
+     * @param windowTitle the title of the window
+     * @param panelFieldName the string used to find the panel in the card layout
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */

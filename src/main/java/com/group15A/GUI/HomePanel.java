@@ -46,6 +46,9 @@ public class HomePanel extends BasePanel {
         return this.homePanel;
     }
 
+    /**
+     * @param pair the received data from another page
+     */
     @Override
     public void receiveData(ReceivePair pair) {}
 

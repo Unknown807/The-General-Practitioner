@@ -9,6 +9,12 @@ public class ReceivePair {
     private ReceiveType first;
     private Object second;
 
+    /**
+     * Constructor for ReceivePair
+     *
+     * @param first the type of data to expect
+     * @param second the data itself
+     */
     public ReceivePair(ReceiveType first, Object second) {
         this.first = first;
         this.second = second;

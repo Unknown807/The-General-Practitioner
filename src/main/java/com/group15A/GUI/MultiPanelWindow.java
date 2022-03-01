@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * cardLayout is needed to add pages to be switched between
  *
- * cards is the list of JPanels to be stored
+ * cards is the list of BasePanels to be stored
  *
  * panelCards is the parent that holds all JPanels, of which
  * its layout is cardLayout
@@ -37,7 +37,7 @@ public class MultiPanelWindow extends JFrame {
      *
      * Stores all pages,
      * sets default window size,
-     * and to a certain page if the session file is still stored
+     * and goes to a certain page if the session file is still stored
      */
     public MultiPanelWindow() {
         this.session = new Session(null, false);
@@ -69,7 +69,10 @@ public class MultiPanelWindow extends JFrame {
         showPage(pageToShow);
     }
 
-
+    /**
+     * Creates a hashmap linking the types of pages to the actual
+     * BasePanel instances
+     */
     private void createPages() {
         this.cards = new HashMap<>();
         this.cards.put(PageInfo.LOGIN, new LogInPanel(this));

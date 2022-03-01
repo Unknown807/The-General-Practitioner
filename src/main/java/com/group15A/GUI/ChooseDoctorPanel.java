@@ -63,13 +63,17 @@ public class ChooseDoctorPanel extends BasePanel {
         addDoctorsToPanel();
     }
 
+    /**
+     * Dynamically add buttons with doctors' first and last names to the
+     * scroll pane
+     */
     public void addDoctorsToPanel() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.weightx = 1;
         gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.BOTH;
 
         for (Doctor d : doctorsList) {
             JButton doctorButton = new JButton();
@@ -90,6 +94,12 @@ public class ChooseDoctorPanel extends BasePanel {
         return this.chooseDoctorPanel;
     }
 
+    /**
+     * Receives:
+     *  - Which page to switch back to (as Choose Doctor Panel is shared)
+     *
+     * @param pair the received data from another page
+     */
     @Override
     public void receiveData(ReceivePair pair) {
         if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {

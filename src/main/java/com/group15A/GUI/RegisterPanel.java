@@ -153,6 +153,12 @@ public class RegisterPanel extends BasePanel {
         return this.registerPanel;
     }
 
+    /**
+     * Receives:
+     *  - The Doctor instance that was chosen by the user
+     *
+     * @param pair the received data from another page
+     */
     @Override
     public void receiveData(ReceivePair pair) {
         if (pair.getFirst().equals(ReceiveType.DOCTOR)) {

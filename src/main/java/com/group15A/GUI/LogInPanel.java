@@ -63,6 +63,9 @@ public class LogInPanel extends BasePanel {
         return this.logInPanel;
     }
 
+    /**
+     * @param pair the received data from another page
+     */
     @Override
     public void receiveData(ReceivePair pair) {
 
