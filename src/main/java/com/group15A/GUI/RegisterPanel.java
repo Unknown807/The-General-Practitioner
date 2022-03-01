@@ -83,7 +83,7 @@ public class RegisterPanel extends BasePanel {
     private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
-
+    private Doctor chosenDoctor;
     private HashMap<ErrorCode,JLabel> errorLabelCodes;
 
     /**
@@ -162,10 +162,9 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair) {
         if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
-            Doctor chosenDoctor = (Doctor) pair.getSecond();
-            //TODO change button text and have a chosenDoctor attribute
+            this.chosenDoctor = (Doctor) pair.getSecond();
+            this.chooseDoctorButton.setText(this.chosenDoctor.getFullName());
         }
-
     }
 
     /**

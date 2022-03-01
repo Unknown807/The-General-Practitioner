@@ -63,11 +63,19 @@ public class ChooseDoctorPanel extends BasePanel {
         addDoctorsToPanel();
     }
 
+    private void chooseDoctor(JButton clickedButton) {
+        Integer index = doctorButtons.indexOf(clickedButton);
+        panelController.showPage(
+            PageType.REGISTER,
+            new ReceivePair(ReceiveType.DOCTOR, doctorsList.get(index))
+        );
+    }
+
     /**
      * Dynamically add buttons with doctors' first and last names to the
      * scroll pane
      */
-    public void addDoctorsToPanel() {
+    private void addDoctorsToPanel() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.BOTH;
@@ -77,8 +85,9 @@ public class ChooseDoctorPanel extends BasePanel {
 
         for (Doctor d : doctorsList) {
             JButton doctorButton = new JButton();
-            doctorButton.setText(d.getFirstName()+" "+d.getLastName());
+            doctorButton.setText(d.getFullName());
             doctorButton.setFont(new Font("", Font.BOLD, 30));
+            doctorButton.addActionListener(e -> this.chooseDoctor((JButton) e.getSource()));
 
             doctorButtons.add(doctorButton);
             doctorListPanel.add(doctorButton, gbc);

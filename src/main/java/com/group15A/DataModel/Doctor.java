@@ -87,6 +87,10 @@ public class Doctor {
         return Objects.hash(doctorID, email, firstName, middleName, lastName, dob, gender, phoneNo);
     }
 
+    public String getFullName() {
+        return this.firstName+" "+this.lastName;
+    }
+
     // All getters and setters for attributes below
 
     public String getEmail() {
