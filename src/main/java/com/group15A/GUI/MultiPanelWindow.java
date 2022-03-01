@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.Session;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -23,6 +25,7 @@ import java.io.File;
 public class MultiPanelWindow extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelCards;
+    private Session session;
 
     /**
      * Constructor for the MultiPanelWindow class
@@ -32,6 +35,8 @@ public class MultiPanelWindow extends JFrame {
      * and to a certain page if the session file is still stored
      */
     public MultiPanelWindow() {
+        this.session = new Session(null, false);
+
         BasePanel[] cards = new BasePanel[]{
                 new LogInPanel(this),
                 new RegisterPanel(this),
@@ -79,6 +84,10 @@ public class MultiPanelWindow extends JFrame {
     public void showPage(BasePanel page) {
         this.setTitle(page.getWindowTitle());
         this.cardLayout.show(panelCards, page.getPanelFieldName());
+    }
+
+    public Session getSession() {
+        return session;
     }
 
     /**
