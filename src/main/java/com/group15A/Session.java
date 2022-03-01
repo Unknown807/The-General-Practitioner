@@ -21,7 +21,7 @@ public class Session implements Serializable {
      */
     public Session(Patient patient, boolean keepLoggedIn)
     {
-        loggedInPatient = patient;
+        this.loggedInPatient = patient;
         this.keepLoggedIn = keepLoggedIn;
     }
 
@@ -31,6 +31,14 @@ public class Session implements Serializable {
 
     public boolean isKeepLoggedIn() {
         return keepLoggedIn;
+    }
+
+    public void setKeepLoggedIn(boolean keepLoggedIn) {
+        this.keepLoggedIn = keepLoggedIn;
+    }
+
+    public void setLoggedInPatient(Patient patient) {
+        this.loggedInPatient = patient;
     }
 
     /**

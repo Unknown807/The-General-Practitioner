@@ -3,10 +3,13 @@ package com.group15A.BusinessLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
+import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -59,7 +62,7 @@ public class RegisterLogic implements IRegister {
      * @throws CustomException if any verification method fails or there was an error inserting a patient into the database
      */
     @Override
-    public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws CustomException {
+    public Patient register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws CustomException {
         Stream<ErrorCode> errorsStream = Stream.of(
                 this.validator.verifyFirstName(fName),
                 this.validator.verifyMiddleName(mName),
@@ -78,9 +81,7 @@ public class RegisterLogic implements IRegister {
             throw new CustomException("Invalid Form Details", errorsList);
         }
 
-        //TODO make methods for hashing password
-        String passHash = password;
-
+        String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateConv;
@@ -92,10 +93,9 @@ public class RegisterLogic implements IRegister {
 
         Patient loggedInPatient = this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
-                dataAccessLayer.getDoctors().get(chosenDoctor)
+                chosenDoctor
         );
 
-        Session session = new Session(loggedInPatient, false);
-        session.saveToFile();
+        return loggedInPatient;
     }
 }

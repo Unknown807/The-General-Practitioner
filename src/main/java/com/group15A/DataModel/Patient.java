@@ -22,7 +22,7 @@ public class Patient {
     private String gender;
     private String phoneNo;
 
-    public static final Integer UNKNOWN_PATIENT_ID = -1;
+    private static final Integer UNKNOWN_PATIENT_ID = -1;
 
     /**
      * Constructor for a patient

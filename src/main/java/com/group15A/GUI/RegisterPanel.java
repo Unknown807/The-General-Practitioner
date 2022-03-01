@@ -1,11 +1,15 @@
 package com.group15A.GUI;
 
-import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
+import com.group15A.Utils.PageType;
+import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,10 +79,10 @@ public class RegisterPanel extends BasePanel {
     private JComboBox yearCombo;
     private JPanel datePanel;
     private JLabel doctorLabel;
+    private JButton chooseDoctorButton;
     private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
-    private DoctorLogic doctorLogic;
 
     private HashMap<ErrorCode,JLabel> errorLabelCodes;
 
@@ -93,7 +97,7 @@ public class RegisterPanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
-        super("Enter Your Details", panelController,"registerPanel");
+        super("Enter Your Details", "registerPanel", panelController);
 
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
@@ -107,13 +111,8 @@ public class RegisterPanel extends BasePanel {
 
         try {
             registerLogic = new RegisterLogic();
-            doctorLogic = new DoctorLogic();
 
-            for (Doctor d : doctorLogic.getDoctors()) {
-                doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
-            }
-        }
-        catch (DatabaseException e) {
+        } catch (DatabaseException e) {
             JOptionPane.showMessageDialog(
                       registerPanel,
                         "Please connect to the database and restart the program.",
@@ -155,13 +154,31 @@ public class RegisterPanel extends BasePanel {
     }
 
     /**
+     * Receives:
+     *  - The Doctor instance that was chosen by the user
+     *
+     * @param pair the received data from another page
+     */
+    @Override
+    public void receiveData(ReceivePair pair) {
+        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+            Doctor chosenDoctor = (Doctor) pair.getSecond();
+            //TODO change button text and have a chosenDoctor attribute
+        }
+
+    }
+
+    /**
      * To create all event handlers, which will point to other methods in the class
      */
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> panelController.showPage(new LogInPanel(panelController)));
+        logInButton.addActionListener( e -> panelController.showPage(PageType.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
+        chooseDoctorButton.addActionListener(e -> {
+            panelController.showPage(PageType.CHOOSE_DOCTOR, new ReceivePair(ReceiveType.RETURN_PAGE, PageType.REGISTER));
+        });
     }
 
     /**
@@ -173,7 +190,7 @@ public class RegisterPanel extends BasePanel {
      */
     private void registerNewPatient() {
         try {
-            registerLogic.register(
+            Patient newPatient = registerLogic.register(
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
@@ -186,10 +203,16 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                doctorCombo.getSelectedIndex()
+                null
+                //doctorsList.get(doctorCombo.getSelectedIndex())
             );
 
-            panelController.showPage(new HomePanel(panelController));
+            Session currentSession = panelController.getSession();
+            currentSession.setLoggedInPatient(newPatient);
+            currentSession.setKeepLoggedIn(false);
+            currentSession.saveToFile();
+
+            panelController.showPage(PageType.HOME);
         } catch (CustomException e) {
             setErrorLabels(e);
         }

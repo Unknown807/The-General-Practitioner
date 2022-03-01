@@ -1,6 +1,8 @@
 package com.group15A.GUI;
 
 import com.group15A.Session;
+import com.group15A.Utils.PageType;
+import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
 
@@ -30,7 +32,7 @@ public class HomePanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public HomePanel(MultiPanelWindow panelController) {
-        super("Welcome", panelController,"homePanel");
+        super("Welcome", "homePanel", panelController);
         //TODO: Read session file to get patient name.
         createActionListeners();
     }
@@ -43,6 +45,12 @@ public class HomePanel extends BasePanel {
     {
         return this.homePanel;
     }
+
+    /**
+     * @param pair the received data from another page
+     */
+    @Override
+    public void receiveData(ReceivePair pair) {}
 
 
     /**
@@ -59,7 +67,7 @@ public class HomePanel extends BasePanel {
     private void logOutUser()
     {
         Session.deleteSession();
-        panelController.showPage(new LogInPanel(panelController));
+        panelController.showPage(PageType.LOGIN);
     }
 
 }
