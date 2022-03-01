@@ -79,6 +79,7 @@ public class RegisterPanel extends BasePanel {
 
     private RegisterLogic registerLogic;
     private DoctorLogic doctorLogic;
+    private List<Doctor> doctorsList;
 
     private HashMap<ErrorCode,JLabel> errorLabelCodes;
 
@@ -109,7 +110,8 @@ public class RegisterPanel extends BasePanel {
             registerLogic = new RegisterLogic();
             doctorLogic = new DoctorLogic();
 
-            for (Doctor d : doctorLogic.getDoctors()) {
+            doctorsList = doctorLogic.getDoctors();
+            for (Doctor d : doctorsList) {
                 doctorCombo.addItem(d.getFirstName()+" "+d.getLastName());
             }
         }
@@ -186,7 +188,7 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                doctorCombo.getSelectedIndex()
+                doctorsList.get(doctorCombo.getSelectedIndex())
             );
 
             panelController.showPage(new HomePanel(panelController));

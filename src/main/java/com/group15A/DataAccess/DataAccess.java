@@ -15,11 +15,9 @@ import java.util.List;
 public class DataAccess implements IDataAccess
 {
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "lZWzuM3fuz5okeUSwE";
-
+    private static final String DB_PASSWORD = "root";
 
     private Connection connection;
-
 
     /**
      * Constructor for the DataAccess class.

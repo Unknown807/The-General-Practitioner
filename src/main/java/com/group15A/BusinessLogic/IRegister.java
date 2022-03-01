@@ -1,5 +1,7 @@
 package com.group15A.BusinessLogic;
 
+import com.group15A.DataModel.Doctor;
+
 /**
  * The interface for RegisterLogic
  *
@@ -8,5 +10,5 @@ package com.group15A.BusinessLogic;
  */
 public interface IRegister {
     public void register(String fName, String mName, String lName, String DoB, String gender, String phoneNo,
-                         String email, String confirmEmail, String password, String confirmPassword, Integer chosenDoctor) throws Exception;
+                         String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws Exception;
 }
