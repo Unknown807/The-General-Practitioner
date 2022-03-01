@@ -7,7 +7,7 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
-import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
 
@@ -174,10 +174,10 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> panelController.showPage(PageInfo.LOGIN));
+        logInButton.addActionListener( e -> panelController.showPage(PageType.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
         chooseDoctorButton.addActionListener(e -> {
-            panelController.showPage(PageInfo.CHOOSE_DOCTOR, new ReceivePair(ReceiveType.RETURN_PAGE, PageInfo.REGISTER));
+            panelController.showPage(PageType.CHOOSE_DOCTOR, new ReceivePair(ReceiveType.RETURN_PAGE, PageType.REGISTER));
         });
     }
 
@@ -212,7 +212,7 @@ public class RegisterPanel extends BasePanel {
             currentSession.setKeepLoggedIn(false);
             currentSession.saveToFile();
 
-            panelController.showPage(PageInfo.HOME);
+            panelController.showPage(PageType.HOME);
         } catch (CustomException e) {
             setErrorLabels(e);
         }

@@ -5,7 +5,7 @@ package com.group15A.Utils;
  *
  * @author Milovan Gveric
  */
-public enum PageInfo {
+public enum PageType {
     LOGIN,
     REGISTER,
     HOME,

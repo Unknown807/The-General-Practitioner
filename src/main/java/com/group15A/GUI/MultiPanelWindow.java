@@ -1,7 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.Session;
-import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class MultiPanelWindow extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelCards;
-    private Map<PageInfo, BasePanel> cards;
+    private Map<PageType, BasePanel> cards;
     private Session session;
 
     /**
@@ -62,9 +62,9 @@ public class MultiPanelWindow extends JFrame {
 
         // Choose the page to be displayed when starting the program
         File file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()+"/LoggedUser.bin");
-        PageInfo pageToShow = PageInfo.LOGIN; // log in page
+        PageType pageToShow = PageType.LOGIN; // log in page
         if(file.exists()) {
-            pageToShow = PageInfo.HOME; // home page
+            pageToShow = PageType.HOME; // home page
         }
         showPage(pageToShow);
     }
@@ -75,15 +75,15 @@ public class MultiPanelWindow extends JFrame {
      */
     private void createPages() {
         this.cards = new HashMap<>();
-        this.cards.put(PageInfo.LOGIN, new LogInPanel(this));
-        this.cards.put(PageInfo.REGISTER, new RegisterPanel(this));
-        this.cards.put(PageInfo.HOME, new HomePanel(this));
-        this.cards.put(PageInfo.CHOOSE_DOCTOR, new ChooseDoctorPanel(this));
+        this.cards.put(PageType.LOGIN, new LogInPanel(this));
+        this.cards.put(PageType.REGISTER, new RegisterPanel(this));
+        this.cards.put(PageType.HOME, new HomePanel(this));
+        this.cards.put(PageType.CHOOSE_DOCTOR, new ChooseDoctorPanel(this));
 
-        PageInfo[] pages = PageInfo.values();
+        PageType[] pages = PageType.values();
 
         this.cardLayout = (CardLayout) (panelCards.getLayout());
-        for (PageInfo page: pages) {
+        for (PageType page: pages) {
             BasePanel bspanel = this.cards.get(page);
             this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
         }
@@ -94,7 +94,7 @@ public class MultiPanelWindow extends JFrame {
      *
      * @param page the page to switch to, contains window title and the required JPanel
      */
-    public void showPage(PageInfo page, ReceivePair... pairs) {
+    public void showPage(PageType page, ReceivePair... pairs) {
         BasePanel nextPanel = this.cards.get(page);
         this.setTitle(nextPanel.getWindowTitle());
         this.cardLayout.show(panelCards, nextPanel.getPanelFieldName());

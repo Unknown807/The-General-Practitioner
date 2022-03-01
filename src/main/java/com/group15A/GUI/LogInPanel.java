@@ -2,9 +2,8 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.Utils.PageInfo;
+import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
-import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +75,7 @@ public class LogInPanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
-        registerButton.addActionListener( e -> panelController.showPage(PageInfo.REGISTER));
+        registerButton.addActionListener( e -> panelController.showPage(PageType.REGISTER));
         logInButton.addActionListener(e -> this.logInPatient());
     }
 
@@ -95,7 +94,7 @@ public class LogInPanel extends BasePanel {
                              new String(passwordField.getPassword()),
                              stayLoggedIn
             );
-            panelController.showPage(PageInfo.HOME);
+            panelController.showPage(PageType.HOME);
         }
         catch (DatabaseException e) {
             // Show error pop up if database is not connected and close program
