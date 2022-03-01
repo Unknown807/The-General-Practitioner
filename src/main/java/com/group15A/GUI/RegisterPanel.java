@@ -8,13 +8,14 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
-import com.group15A.Utils.Page;
+import com.group15A.Utils.PageInfo;
 
 import javax.swing.*;
 import java.awt.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
@@ -158,10 +159,10 @@ public class RegisterPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        logInButton.addActionListener( e -> panelController.showPage(Page.LOGIN));
+        logInButton.addActionListener( e -> panelController.showPage(PageInfo.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
         chooseDoctorButton.addActionListener(e -> {
-            panelController.showPage(Page.CHOOSE_DOCTOR);
+            panelController.showPage(PageInfo.CHOOSE_DOCTOR);
         });
     }
 
@@ -196,7 +197,7 @@ public class RegisterPanel extends BasePanel {
             currentSession.setKeepLoggedIn(false);
             currentSession.saveToFile();
 
-            panelController.showPage(Page.HOME);
+            panelController.showPage(PageInfo.HOME);
         } catch (CustomException e) {
             setErrorLabels(e);
         }

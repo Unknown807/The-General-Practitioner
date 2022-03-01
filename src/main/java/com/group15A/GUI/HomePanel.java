@@ -1,7 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.Session;
-import com.group15A.Utils.Page;
+import com.group15A.Utils.PageInfo;
 
 import javax.swing.*;
 
@@ -60,7 +60,7 @@ public class HomePanel extends BasePanel {
     private void logOutUser()
     {
         Session.deleteSession();
-        panelController.showPage(Page.LOGIN);
+        panelController.showPage(PageInfo.LOGIN);
     }
 
 }

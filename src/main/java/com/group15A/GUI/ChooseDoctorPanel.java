@@ -3,7 +3,7 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.DoctorLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
-import com.group15A.Utils.Page;
+import com.group15A.Utils.PageInfo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +26,7 @@ public class ChooseDoctorPanel extends BasePanel {
     private JPanel doctorListPanel;
     private JScrollPane doctorListScrollPane;
 
-    private Page returningPage = Page.REGISTER;
+    private PageInfo returningPage = PageInfo.REGISTER;
     private DoctorLogic doctorLogic;
     private List<Doctor> doctorsList;
     private List<JButton> doctorButtons;
@@ -88,7 +88,7 @@ public class ChooseDoctorPanel extends BasePanel {
         return this.chooseDoctorPanel;
     }
 
-    public void setReturningPage(Page page) {
+    public void setReturningPage(PageInfo page) {
         this.returningPage = page;
     }
 

@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import javax.swing.*;
+import java.util.Map;
 
 /**
  * All panels in the card layout inherit from this, allows using JPanels
@@ -29,6 +30,8 @@ public abstract class BasePanel {
     }
 
     public abstract JPanel getPagePanel();
+
+    public abstract void receiveData(Map<String, Object> data);
 
     public abstract void createActionListeners();
 }
