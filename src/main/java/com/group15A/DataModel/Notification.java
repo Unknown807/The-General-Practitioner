@@ -1,5 +1,6 @@
 package com.group15A.DataModel;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -9,43 +10,79 @@ import java.util.Objects;
  *
  *  @author Wenbo Wu
  */
-//class for the patient get message
 public class Notification {
 
-    private int NotificationID;
-    private int doctorID;
-    private int patientID;
-    private String Notification; // the message
+    private Integer NotifID;
+    private Integer doctorID;
+    private Integer patientID;
+    private String message;
+    private LocalTime timestamp;
 
-    public int getNotificationID() {
-        return NotificationID;
+    public Notification(Integer notifID, Integer doctorID, Integer patientID, String message, LocalTime timestamp) {
+        NotifID = notifID;
+        this.doctorID = doctorID;
+        this.patientID = patientID;
+        this.message = message;
+        this.timestamp = timestamp;
     }
 
-    public void setNotificationID(int notificationID) {
-        NotificationID = notificationID;
+    public Integer getNotifID() {
+        return NotifID;
     }
 
-    public int getDoctorID() {
+    public void setNotifID(Integer notifID) {
+        NotifID = notifID;
+    }
+
+    public Integer getDoctorID() {
         return doctorID;
     }
 
-    public void setDoctorID(int doctorID) {
+    public void setDoctorID(Integer doctorID) {
         this.doctorID = doctorID;
     }
 
-    public int getPatientID() {
+    public Integer getPatientID() {
         return patientID;
     }
 
-    public void setPatientID(int patientID) {
+    public void setPatientID(Integer patientID) {
         this.patientID = patientID;
     }
 
-    public String getNotification() {
-        return Notification;
+    public String getMessage() {
+        return message;
     }
 
-    public void setNotification(String notification) {
-        Notification = notification;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalTime getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notification that = (Notification) o;
+        return Objects.equals(getNotifID(), that.getNotifID()) && Objects.equals(getDoctorID(), that.getDoctorID()) && Objects.equals(getPatientID(), that.getPatientID()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getTimestamp(), that.getTimestamp());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNotifID(), getDoctorID(), getPatientID(), getMessage(), getTimestamp());
+    }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "NotifID=" + NotifID +
+                ", doctorID=" + doctorID +
+                ", patientID=" + patientID +
+                ", message='" + message + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }
