@@ -17,4 +17,35 @@ public class Notification {
     private int patientID;
     private String Notification; // the message
 
+    public int getNotificationID() {
+        return NotificationID;
+    }
+
+    public void setNotificationID(int notificationID) {
+        NotificationID = notificationID;
+    }
+
+    public int getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
+    }
+
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public void setPatientID(int patientID) {
+        this.patientID = patientID;
+    }
+
+    public String getNotification() {
+        return Notification;
+    }
+
+    public void setNotification(String notification) {
+        Notification = notification;
+    }
 }
