@@ -67,12 +67,12 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(getBookingID(), booking.getBookingID()) && Objects.equals(getDoctorID(), booking.getDoctorID()) && Objects.equals(getPatientID(), booking.getPatientID()) && Objects.equals(getBookingTime(), booking.getBookingTime()) && Objects.equals(getTimestamp(), booking.getTimestamp());
+        return Objects.equals(bookingID, booking.bookingID) && Objects.equals(doctorID, booking.doctorID) && Objects.equals(patientID, booking.patientID) && Objects.equals(bookingTime, booking.bookingTime) && Objects.equals(timestamp, booking.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBookingID(), getDoctorID(), getPatientID(), getBookingTime(), getTimestamp());
+        return Objects.hash(bookingID, doctorID, patientID, bookingTime, timestamp);
     }
 
     @Override

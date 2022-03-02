@@ -67,12 +67,12 @@ public class Notification {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(getNotifID(), that.getNotifID()) && Objects.equals(getDoctorID(), that.getDoctorID()) && Objects.equals(getPatientID(), that.getPatientID()) && Objects.equals(getMessage(), that.getMessage()) && Objects.equals(getTimestamp(), that.getTimestamp());
+        return Objects.equals(NotifID, that.NotifID) && Objects.equals(doctorID, that.doctorID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(timestamp, that.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNotifID(), getDoctorID(), getPatientID(), getMessage(), getTimestamp());
+        return Objects.hash(NotifID, doctorID, patientID, message, timestamp);
     }
 
     @Override
