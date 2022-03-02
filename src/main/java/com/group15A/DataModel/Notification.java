@@ -17,7 +17,4 @@ public class Notification {
     private int patientID;
     private String Notification; // the message
 
-
-
-
 }
