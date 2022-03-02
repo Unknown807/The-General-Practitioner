@@ -13,7 +13,7 @@ public class AddBookingPanel extends BasePanel {
     private JButton goHomeButton;
     private JButton createBookingButton;
     private JScrollPane dateSelectionPanel;
-    private JTextArea descriptionTextArea;
+    private JTextPane descriptionTextArea;
 
     /**
      *

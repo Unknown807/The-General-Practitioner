@@ -9,7 +9,6 @@ import javax.swing.*;
  * @author Filip Fois
  */
 public class ViewBookingsPanel extends BasePanel {
-    private JPanel viewBookingPanel;
     private JButton goHomeButton;
     private JPanel viewBookingsPanel;
     private JScrollPane bookingsScrollPane;
@@ -24,21 +23,22 @@ public class ViewBookingsPanel extends BasePanel {
     }
 
     /**
-     * @return viewBookingPanel
-     */
-    @Override
-    public JPanel getPagePanel()
-    {
-        return this.viewBookingPanel;
-    }
-
-    /**
      * @param pair the received data from another page
      */
     @Override
     public void receiveData(ReceivePair pair)
     {
 
+    }
+
+
+    /**
+     * @return viewBookingsPanel
+     */
+    @Override
+    public JPanel getPagePanel()
+    {
+        return this.viewBookingsPanel;
     }
 
     /**

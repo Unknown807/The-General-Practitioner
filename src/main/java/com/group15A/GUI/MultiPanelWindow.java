@@ -66,7 +66,7 @@ public class MultiPanelWindow extends JFrame {
         if(file.exists()) {
             pageToShow = PageType.HOME; // home page
         }
-        showPage(pageToShow);
+        showPage(PageType.ADD_BOOKING);
     }
 
     /**
@@ -79,13 +79,16 @@ public class MultiPanelWindow extends JFrame {
         this.cards.put(PageType.REGISTER, new RegisterPanel(this));
         this.cards.put(PageType.HOME, new HomePanel(this));
         this.cards.put(PageType.CHOOSE_DOCTOR, new ChooseDoctorPanel(this));
+        this.cards.put(PageType.VIEW_BOOKINGS, new ViewBookingsPanel(this));
+        this.cards.put(PageType.ADD_BOOKING, new AddBookingPanel(this));
+
 
         PageType[] pages = PageType.values();
 
         this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (PageType page: pages) {
             BasePanel bspanel = this.cards.get(page);
-            this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
+           this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
         }
     }
 
