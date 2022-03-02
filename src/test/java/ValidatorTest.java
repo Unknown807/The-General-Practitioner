@@ -73,7 +73,7 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
-    public void testVerifyFirstNameSuccessBlankName() {
+    public void testVerifyMiddleNameSuccessBlankName() {
         assertNull(this.validator.verifyMiddleName(""));
     }
 
@@ -128,7 +128,7 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
-    public void testVerifyGenderFailreAndCorrectErrorCode() {
+    public void testVerifyGenderFailureAndCorrectErrorCode() {
         assertEquals(this.validator.verifyGender("X"), ErrorCode.WRONG_GENDER);
     }
 

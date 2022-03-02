@@ -1,5 +1,6 @@
 package com.group15A.GUI;
 
+import com.group15A.Utils.ReceivePair;
 import javax.swing.*;
 
 /**
@@ -19,24 +20,22 @@ public abstract class BasePanel {
     protected String windowTitle;
     private final String panelFieldName;
 
+
     /**
-     * Constructor.
+     * Constructor for BasePanel class
      *
+     * @param windowTitle the title of the window
+     * @param panelFieldName the string used to find the panel in the card layout
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from subclass panels to call showPage
      */
-    public BasePanel(String windowTitle, MultiPanelWindow panelController, String panelFieldName)
+    public BasePanel(String windowTitle, String panelFieldName, MultiPanelWindow panelController)
     {
         this.panelController = panelController;
         this.panelFieldName = panelFieldName;
         this.windowTitle = windowTitle;
     }
 
-    /**
-     * Returns the name of the field storing a page's JPanel object.
-     * @return panelFieldName The name of the field storing a page's JPanel object.
-     * @author Filip Fois
-     */
     public String getPanelFieldName()
     {
         return this.panelFieldName;
@@ -48,6 +47,8 @@ public abstract class BasePanel {
     }
 
     public abstract JPanel getPagePanel();
+
+    public abstract void receiveData(ReceivePair pair);
 
     public abstract void createActionListeners();
 }

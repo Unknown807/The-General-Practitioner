@@ -1,12 +1,8 @@
 package com.group15A.DataAccess;
 
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.DoctorNotFoundException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataModel.*;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +14,16 @@ import java.util.List;
  */
 public class DataAccess implements IDataAccess
 {
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "root";
+
     private Connection connection;
 
+    /**
+     * Constructor for the DataAccess class.
+     * It sets up the connection to the database
+     * @throws DatabaseException if there was a problem connecting to the database
+     */
     public DataAccess() throws DatabaseException
     {
         setupConnection();
@@ -38,7 +42,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             String query = "CALL find_patient(?, ?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setString(1, email);
             statement.setString(2, password);
 
@@ -96,7 +100,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             String query = "CALL get_patient(?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, patientID);
 
             ResultSet result = statement.executeQuery();
@@ -118,13 +122,14 @@ public class DataAccess implements IDataAccess
      * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
      */
     @Override
-    public Patient registerPatient(Patient patient, Doctor doctor) throws DatabaseException
+    public Patient registerPatient(Patient patient, Doctor doctor) throws EmailInUseException, DatabaseException
     {
         try {
             String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setString(1, patient.getEmail());
             statement.setString(2, patient.getPassHash());
             statement.setString(3, patient.getFirstName());
@@ -138,6 +143,8 @@ public class DataAccess implements IDataAccess
             statement.executeQuery();
 
             return getPatient(patient.getEmail(), patient.getPassHash());
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException();
         } catch (Exception ex)
         {
             throw new DatabaseException("Could not register patient in the database");
@@ -148,6 +155,7 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information provided in the object
      * @param patient The modified patient
      * @return The corresponding patient from the database
+     * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
@@ -169,7 +177,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             String query = "CALL find_doctor(?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, patient.getPatientID());
 
             ResultSet result = statement.executeQuery();
@@ -196,12 +204,11 @@ public class DataAccess implements IDataAccess
     public Doctor getDoctor(int doctorID) throws DoctorNotFoundException, DatabaseException {
         try {
             String query = "CALL get_doctor(?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, doctorID);
             ResultSet result = statement.executeQuery();
-            Doctor doctor = getDoctorFromDB(result);
 
-            return doctor;
+            return getDoctorFromDB(result);
         } catch (DoctorNotFoundException ex)
         {
             throw ex;
@@ -245,24 +252,29 @@ public class DataAccess implements IDataAccess
      * @param patient The modified patient
      * @param doctor The new doctor
      * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
      */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException
+    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException, EmailInUseException
     {
         try {
             String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, patient.getPatientID());
             statement.setString(2, patient.getEmail());
             statement.setString(3, patient.getPassHash());
             statement.setString(4, patient.getFirstName());
             statement.setString(5, patient.getMiddleName());
             statement.setString(6, patient.getLastName());
+            if(patient.getDob()==null)
+                throw new CustomException("Date cannot be null");
             statement.setDate(7, new Date(patient.getDob().getTime()));
             statement.setString(8, patient.getGender());
             statement.setString(9, patient.getPhoneNo());
             statement.setInt(10, doctor.getDoctorID());
 
             statement.executeQuery();
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException();
         } catch (Exception ex)
         {
             throw new DatabaseException("Could not update the patient");
@@ -297,7 +309,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             String query = "CALL get_doctors();";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             ResultSet result = statement.executeQuery();
             var doctors = new ArrayList<Doctor>();
             while (result.next()) {
@@ -331,7 +343,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             String query = "CALL get_certifications_doctor(?);";
-            CallableStatement statement = connection.prepareCall(query);
+            PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, doctor.getDoctorID());
             ResultSet result = statement.executeQuery();
             var certifications = new ArrayList<Certification>();
@@ -353,6 +365,24 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Delete the patient with the given id
+     * @param patientID The patient id
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deletePatient(int patientID) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patientID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the patient from the database");
+        }
+    }
+
+    /**
      * Set up the connection to the database
      * @throws DatabaseException if the connection could not be established
      */
@@ -360,7 +390,7 @@ public class DataAccess implements IDataAccess
     {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user=root&password=root");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not connect to the database");

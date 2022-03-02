@@ -1,11 +1,13 @@
 package com.group15A.DataModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
  * Used to represent a patient within the system, will be used to pass and change
  * information between the business logic and data access layer.
+ *
  * @author Milovan Gveric
  * @author Wenbo Wu
  */
@@ -20,10 +22,11 @@ public class Patient {
     private String gender;
     private String phoneNo;
 
-    public static final Integer UNKNOWN_PATIENT_ID = -1;
+    private static final Integer UNKNOWN_PATIENT_ID = -1;
 
     /**
      * Constructor for a patient
+     *
      * @param patientID The ID
      * @param email The email address
      * @param passHash The hashed password
@@ -48,6 +51,7 @@ public class Patient {
 
     /**
      * Constructor for a patient with an unknown id
+     *
      * @param email The email address
      * @param passHash The hashed password
      * @param firstName The first name
@@ -62,6 +66,11 @@ public class Patient {
         this(UNKNOWN_PATIENT_ID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
     }
 
+    /**
+     * toString method for Patient
+     *
+     * @return a textual representation of Patient and its data
+     */
     @Override
     public String toString() {
         return "Patient{" +
@@ -71,20 +80,31 @@ public class Patient {
                 ", firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", dob='" + dob + '\'' +
+                ", dob='" + getSimpleDate(dob) + '\'' +
                 ", gender='" + gender + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 '}';
     }
 
+    /**
+     * Method for equality testing
+     *
+     * @param o
+     * @return whether object 'o' is equal to Patient 'this'
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
-        return patientID.equals(patient.patientID) && email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && dob.equals(patient.dob) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
+        return email.equals(patient.email) && passHash.equals(patient.passHash) && firstName.equals(patient.firstName) && Objects.equals(middleName, patient.middleName) && lastName.equals(patient.lastName) && getSimpleDate(dob).equals(getSimpleDate(patient.dob)) && gender.equals(patient.gender) && phoneNo.equals(patient.phoneNo);
     }
 
+    /**
+     * Hashing for Patient object
+     *
+     * @return hashed object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(patientID, email, passHash, firstName, middleName, lastName, dob, gender, phoneNo);
@@ -158,5 +178,10 @@ public class Patient {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    private static String getSimpleDate(Date date)
+    {
+        return (new SimpleDateFormat("yyyy-MM-dd")).format(date);
     }
 }

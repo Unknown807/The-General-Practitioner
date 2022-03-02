@@ -11,8 +11,7 @@ import com.group15A.Validator.Validator;
 import java.util.Arrays;
 
 /**
- * Contains backend functionality that relates to signing the
- * user in
+ * Contains backend functionality that relates to signing the user in
  *
  * @author Milovan Gveric
  * @author Wenbo Wu
@@ -22,10 +21,11 @@ public class LogInLogic implements ILogIn {
     private Validator validator;
 
     /**
-     * Creates connection to DAL and has a validator class to
-     * validate the user's email and password
+     * The constructor for the LogInLogic class.
+     * Creates connection to DAL and creates a validator to
+     * validate the user's login information
      *
-     * @throws DatabaseException if issue with connecting to database
+     * @throws DatabaseException if there was an issue connecting to the database
      */
     public LogInLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
@@ -33,12 +33,12 @@ public class LogInLogic implements ILogIn {
     }
 
     /**
-     * Verify the user's email and password format and
-     * sign them in
+     * Verify the format of the user's email and password and
+     * sign them in if the validation passes
      *
-     * @param email
-     * @param password
-     * @throws Exception if issue with email or password format or getting the
+     * @param email The email account
+     * @param password The password
+     * @throws Exception if there was an issue with the format of the email or password or with retrieving the
      * patient from the database
      */
     @Override

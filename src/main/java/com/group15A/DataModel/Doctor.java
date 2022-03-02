@@ -6,6 +6,7 @@ import java.util.Objects;
 /**
  * Used to represent a doctor within the system, will be used to pass and change
  * information between the business logic and data access layer.
+ *
  * @author Milovan Gveric
  * @author Wenbo Wu
  */
@@ -20,8 +21,18 @@ public class Doctor {
     private String gender;
     private String phoneNo;
 
-    // Constructor
-
+    /**
+     * Constructor for Doctor class
+     *
+     * @param doctorID Dr ID
+     * @param email Dr email
+     * @param firstName Dr first name
+     * @param middleName Dr middle name
+     * @param lastName Dr last name
+     * @param dob Dr date of birth
+     * @param gender Dr gender
+     * @param phoneNo Dr phone number
+     */
     public Doctor(Integer doctorID, String email, String firstName, String middleName, String lastName, Date dob, String gender, String phoneNo) {
         this.doctorID = doctorID;
         this.email = email;
@@ -33,6 +44,11 @@ public class Doctor {
         this.phoneNo = phoneNo;
     }
 
+    /**
+     * toString method for Doctor
+     *
+     * @return a textual representation of Doctor and its data
+     */
     @Override
     public String toString() {
         return "Doctor{" +
@@ -47,6 +63,12 @@ public class Doctor {
                 '}';
     }
 
+    /**
+     * Method for equality testing
+     *
+     * @param o
+     * @return whether object 'o' is equal to Doctor 'this'
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,9 +77,18 @@ public class Doctor {
         return doctorID.equals(doctor.doctorID) && email.equals(doctor.email) && firstName.equals(doctor.firstName) && Objects.equals(middleName, doctor.middleName) && lastName.equals(doctor.lastName) && dob.equals(doctor.dob) && gender.equals(doctor.gender) && phoneNo.equals(doctor.phoneNo);
     }
 
+    /**
+     * Hashing for Doctor object
+     *
+     * @return hashed object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(doctorID, email, firstName, middleName, lastName, dob, gender, phoneNo);
+    }
+
+    public String getFullName() {
+        return this.firstName+" "+this.lastName;
     }
 
     // All getters and setters for attributes below
