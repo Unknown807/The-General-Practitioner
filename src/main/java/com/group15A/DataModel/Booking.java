@@ -15,8 +15,8 @@ public class Booking {
     private Integer bookingID;
     private Integer doctorID;
     private Integer patientID;
-    private Date bookingTime ;// the dates of booking
-    private LocalTime timestamp;// is show booked or  cancel
+    private Date bookingTime ;
+    private LocalTime timestamp;
 
     public Booking(Integer bookingID, Integer doctorID, Integer patientID, Date bookingTime, LocalTime timestamp) {
         this.bookingID = bookingID;
@@ -85,5 +85,4 @@ public class Booking {
                 ", timestamp=" + timestamp +
                 '}';
     }
-
 }
