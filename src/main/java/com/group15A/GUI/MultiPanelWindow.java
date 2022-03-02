@@ -108,6 +108,14 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
+     * @param session new session (Patient object and stay-logged-in status)
+     */
+    public void setSession(Session session)
+    {
+        this.session = session;
+    }
+
+    /**
      * When the close window button is clicked,
      * the user will be logged out (if they don't want to stay logged in),
      * and the program will terminate.
@@ -115,27 +123,21 @@ public class MultiPanelWindow extends JFrame {
     public void closeProgram()
     {
         // Delete session file if user doesn't want to stay logged in (i.e. log out user)
-        // TODO: Delete session if user doesn't want to stay logged in.
-        //---
-        // TODO: Access `session.keepLoggedIn`.
-//        Session session = new Session();
-//        if(!session.keepLoggedIn) {
-//            try {
-//                File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
-//                sessionFile.delete();
-//            }
-//            catch (Exception e){
-//                JOptionPane.showMessageDialog(
-//                        panelCards,
-//                        "Could not delete session file.",
-//                        "ERROR: Log out failed",
-//                        JOptionPane.ERROR_MESSAGE
-//                );
-//                System.exit(0);
-//            }
-//        }
-        //---
-
+        if(!session.isKeepLoggedIn()) {
+            try {
+                File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
+                sessionFile.delete();
+            }
+            catch (Exception e){
+                JOptionPane.showMessageDialog(
+                        panelCards,
+                        "Could not delete session file.",
+                        "ERROR: Log out failed",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                System.exit(0);
+            }
+        }
 
         // Exit program
         System.exit(0);
