@@ -18,6 +18,4 @@ public class Booking {
     private String ;// the dates of booking
     private int // is show booked or  cancel
 
-
-
 }
