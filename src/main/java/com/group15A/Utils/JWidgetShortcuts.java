@@ -63,6 +63,12 @@ public class JWidgetShortcuts {
         }
     }
 
+    /**
+     * Adds an integer to a combobox,
+     * before prepending the number with a zero (0) if it's a single digit
+     * @param comboBox the combobox to add the item to
+     * @param item the integer to add to the combo box
+     */
     private static void addItemToCombo(JComboBox comboBox, int item)
     {
         String newItem = String.valueOf(item);
@@ -73,6 +79,11 @@ public class JWidgetShortcuts {
         comboBox.addItem(newItem);
     }
 
+    /**
+     * Adds a zero to the start of a given number (typically single digit)
+     * @param number the number to add a zero to the start of
+     * @return the given number with a zero added at the start
+     */
     private static String twoCharacterNumber(int number)
     {
         return "0"+number;
