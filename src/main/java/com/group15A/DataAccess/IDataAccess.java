@@ -35,4 +35,6 @@ public interface IDataAccess
     List<Booking> getBookings() throws CustomException;
 
     List<Booking> getBookings(Doctor doctor) throws CustomException;
+
+    List<Booking> getBookings(Patient patient) throws CustomException;
 }
