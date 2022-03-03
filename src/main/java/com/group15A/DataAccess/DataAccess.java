@@ -458,8 +458,6 @@ public class DataAccess implements IDataAccess
         }
     }
 
-
-
     /**
      * Get a list of bookings from the given result set
      * @param result The result set
@@ -480,6 +478,37 @@ public class DataAccess implements IDataAccess
         }
         return bookings;
     }
+
+
+    /**
+     * Create booking
+     * @param patient The patient
+     * @param doctor The doctor
+     * @param date The date of the booking
+     * @return The Booking from the database
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Booking createBooking(Patient patient, Doctor doctor, java.util.Date date) throws DatabaseException
+    {
+        try {
+            String query = "CALL insert_booking(?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setInt(2, doctor.getDoctorID());
+            statement.setDate(3, new Date(date.getTime()));
+
+            statement.executeQuery();
+
+            var bookings = getBookings();
+            return bookings.get(bookings.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
 
     /**
      * Delete the patient with the given id

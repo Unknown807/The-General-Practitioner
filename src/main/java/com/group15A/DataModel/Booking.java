@@ -16,7 +16,7 @@ public class Booking {
     private Integer bookingID;
     private Integer doctorID;
     private Integer patientID;
-    private Date bookingTime ;
+    private Date bookingTime;
     private Timestamp timestamp;
 
     public Booking(Integer bookingID, Integer doctorID, Integer patientID, Date bookingTime, Timestamp timestamp) {
