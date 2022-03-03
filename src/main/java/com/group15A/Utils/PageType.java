@@ -9,5 +9,7 @@ public enum PageType {
     LOGIN,
     REGISTER,
     HOME,
-    CHOOSE_DOCTOR
+    CHOOSE_DOCTOR,
+    VIEW_BOOKINGS,
+    ADD_BOOKING
 }
