@@ -3,6 +3,7 @@ package com.group15A.DataAccess;
 import com.group15A.CustomExceptions.*;
 import com.group15A.DataModel.*;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 public class DataAccess implements IDataAccess
 {
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "root";
+    private static final String DB_PASSWORD = "lZWzuM3fuz5okeUSwE";
 
     private Connection connection;
 
@@ -363,6 +364,179 @@ public class DataAccess implements IDataAccess
             throw new DatabaseException("Could not get certifications from the database");
         }
     }
+
+    /**
+     * Get the booking with the specified id
+     * @param bookingID The booking id
+     * @return The booking
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Booking getBooking(int bookingID) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, bookingID);
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+            Booking booking = new Booking(
+                    result.getInt("id_booking"),
+                    result.getInt("id_patient"),
+                    result.getInt("id_doctor"),
+                    result.getTimestamp("booking_time"),
+                    result.getTimestamp("timestamp")
+            );
+
+            return booking;
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get certifications from the database");
+        }
+    }
+
+
+    /**
+     * Get all bookings from the database
+     * @return The bookings
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public List<Booking> getBookings() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_bookings();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getBookingsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
+    /**
+     * Get all bookings of the given doctor
+     * @return The bookings
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public List<Booking> getBookings(Doctor doctor) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_bookings_doctor(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, doctor.getDoctorID());
+            ResultSet result = statement.executeQuery();
+
+            return getBookingsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
+    /**
+     * Get all bookings of the given patient
+     * @return The bookings
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public List<Booking> getBookings(Patient patient) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_bookings_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            ResultSet result = statement.executeQuery();
+
+            return getBookingsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
+    /**
+     * Get a list of bookings from the given result set
+     * @param result The result set
+     * @return The list of bookings
+     * @throws SQLException if there was a problem retrieving the bookings
+     */
+    private ArrayList<Booking> getBookingsFromDB(ResultSet result) throws SQLException
+    {
+        var bookings = new ArrayList<Booking>();
+        while (result.next()) {
+            bookings.add(new Booking(
+                    result.getInt("id_booking"),
+                    result.getInt("id_patient"),
+                    result.getInt("id_doctor"),
+                    result.getTimestamp("booking_time"),
+                    result.getTimestamp("timestamp")
+            ));
+        }
+        return bookings;
+    }
+
+
+    /**
+     * Create booking
+     * @param patient The patient
+     * @param doctor The doctor
+     * @param bookingTime The date and time of the booking
+     * @return The Booking from the database
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException
+    {
+        try {
+            String query = "CALL insert_booking(?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setInt(2, doctor.getDoctorID());
+            statement.setTimestamp(3, bookingTime);
+
+            statement.executeQuery();
+
+            var bookings = getBookings();
+            return bookings.get(bookings.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
+    /**
+     * Update the booking with the new details
+     * @param booking The modified booking
+     * @return The corresponding booking from the database
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Booking updateBooking(Booking booking) throws DatabaseException
+    {
+        try {
+            String query = "CALL update_booking(?, ?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+            statement.setInt(2, booking.getPatientID());
+            statement.setInt(3, booking.getDoctorID());
+            statement.setTimestamp(4, booking.getBookingTime());
+
+            statement.executeQuery();
+
+            return getBooking(booking.getBookingID());
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
 
     /**
      * Delete the patient with the given id

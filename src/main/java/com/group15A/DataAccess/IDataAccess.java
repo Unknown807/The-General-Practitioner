@@ -3,6 +3,8 @@ package com.group15A.DataAccess;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +31,16 @@ public interface IDataAccess
     Doctor getDoctor(int doctorID) throws CustomException;
 
     List<Certification> getCertifications(Doctor doctor) throws CustomException;
+
+    Booking getBooking(int bookingID) throws CustomException;
+
+    List<Booking> getBookings() throws CustomException;
+
+    List<Booking> getBookings(Doctor doctor) throws CustomException;
+
+    List<Booking> getBookings(Patient patient) throws CustomException;
+
+    Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws CustomException;
+
+    Booking updateBooking(Booking booking) throws CustomException;
 }

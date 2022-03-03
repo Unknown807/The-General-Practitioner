@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
@@ -16,9 +18,9 @@ public class Notification {
     private Integer doctorID;
     private Integer patientID;
     private String message;
-    private LocalTime timestamp;
+    private Timestamp timestamp;
 
-    public Notification(Integer notifID, Integer doctorID, Integer patientID, String message, LocalTime timestamp) {
+    public Notification(Integer notifID, Integer doctorID, Integer patientID, String message, Timestamp timestamp) {
         NotifID = notifID;
         this.doctorID = doctorID;
         this.patientID = patientID;
@@ -58,7 +60,7 @@ public class Notification {
         this.message = message;
     }
 
-    public LocalTime getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
