@@ -19,17 +19,19 @@ public class JWidgetShortcuts {
      * @param unchosenValue The first value to be shown
      *                      (unchosenValue usually indicates a valid item has not been chosen)
      */
-    public static void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
+    public static void addNumbersToCombo(JComboBox comboBox, int first, int last, int steps, String unchosenValue)
     {
-        comboBox.addItem(unchosenValue);
+        if(!(unchosenValue == null)){
+            comboBox.addItem(unchosenValue);
+        }
         if(first < last) {
-            for(int i = first; i <= last; i++){
-                comboBox.addItem(i);
+            for(int i = first; i <= last; i += steps){
+                addItemToCombo(comboBox,i);
             }
         }
         else {
             for(int i = first; i >= last; i--){
-                comboBox.addItem(i);
+                addItemToCombo(comboBox,i);
             }
         }
     }
@@ -46,7 +48,9 @@ public class JWidgetShortcuts {
      */
     public static void addStringsToCombo(JComboBox comboBox, String[] words, boolean reverse, String unchosenValue)
     {
-        comboBox.addItem(unchosenValue);
+        if(!(unchosenValue == null)){
+            comboBox.addItem(unchosenValue);
+        }
         if(!reverse) {
             for (String word : words) {
                 comboBox.addItem(word);
@@ -57,6 +61,21 @@ public class JWidgetShortcuts {
                 comboBox.addItem(words[i]);
             }
         }
+    }
+
+    private static void addItemToCombo(JComboBox comboBox, int item)
+    {
+        String newItem = String.valueOf(item);
+        if(item < 10){
+            newItem = twoCharacterNumber(item);
+        }
+
+        comboBox.addItem(newItem);
+    }
+
+    private static String twoCharacterNumber(int number)
+    {
+        return "0"+number;
     }
 
 }
