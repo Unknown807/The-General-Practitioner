@@ -6,10 +6,7 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
-import com.group15A.Utils.ErrorCode;
-import com.group15A.Utils.PageType;
-import com.group15A.Utils.ReceivePair;
-import com.group15A.Utils.ReceiveType;
+import com.group15A.Utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,9 +99,9 @@ public class RegisterPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
 
-        addNumbersToCombo(dayCombo,1,31,"Day");
-        addNumbersToCombo(monthCombo,1,12,"Month");
-        addNumbersToCombo(yearCombo,2022,1900,"Year");
+        JWidgetShortcuts.addNumbersToCombo(dayCombo,1,31,1,"Day");
+        JWidgetShortcuts.addNumbersToCombo(monthCombo,1,12,1,"Month");
+        JWidgetShortcuts.addNumbersToCombo(yearCombo,2022,1900,1,"Year");
 
         createErrorMap();
         createActionListeners();
@@ -216,31 +213,6 @@ public class RegisterPanel extends BasePanel {
             setErrorLabels(e);
         }
 
-    }
-
-    /**
-     * Adds a range of numbers as items in a given combobox,
-     * in order of first to last.
-     *
-     * @param comboBox The combobox which will have values added to it
-     * @param first The first value to added (after unchosenValue)
-     * @param last The last value to be added
-     * @param unchosenValue The first value to be shown
-     *                      (unchosenValue usually indicates a valid item has not been chosen)
-     */
-    public void addNumbersToCombo(JComboBox comboBox, int first, int last, String unchosenValue)
-    {
-        comboBox.addItem(unchosenValue);
-        if(first < last) {
-            for(int i = first; i <= last; i++){
-                comboBox.addItem(i);
-            }
-        }
-        else {
-            for(int i = first; i >= last; i--){
-                comboBox.addItem(i);
-            }
-        }
     }
 
     /**
