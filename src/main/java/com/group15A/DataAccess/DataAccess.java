@@ -15,7 +15,7 @@ import java.util.List;
 public class DataAccess implements IDataAccess
 {
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "root";
+    private static final String DB_PASSWORD = "lZWzuM3fuz5okeUSwE";
 
     private Connection connection;
 
@@ -358,6 +358,37 @@ public class DataAccess implements IDataAccess
             }
 
             return certifications;
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get certifications from the database");
+        }
+    }
+
+    /**
+     * Get the booking with the specified id
+     * @param bookingID The booking id
+     * @return The booking
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Booking getBooking(int bookingID) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, bookingID);
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+            Booking booking = new Booking(
+                    result.getInt("id_booking"),
+                    result.getInt("id_patient"),
+                    result.getInt("id_doctor"),
+                    result.getDate("booking_time"),
+                    result.getTimestamp("timestamp")
+            );
+
+            return booking;
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not get certifications from the database");

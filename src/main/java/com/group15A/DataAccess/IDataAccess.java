@@ -29,4 +29,6 @@ public interface IDataAccess
     Doctor getDoctor(int doctorID) throws CustomException;
 
     List<Certification> getCertifications(Doctor doctor) throws CustomException;
+
+    Booking getBooking(int bookingID) throws CustomException;
 }
