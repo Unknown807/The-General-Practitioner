@@ -32,10 +32,6 @@ public class Notification {
         return NotifID;
     }
 
-    public void setNotifID(Integer notifID) {
-        NotifID = notifID;
-    }
-
     public Integer getDoctorID() {
         return doctorID;
     }
