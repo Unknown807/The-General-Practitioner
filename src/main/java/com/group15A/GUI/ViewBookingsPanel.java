@@ -4,6 +4,8 @@ import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 /**
  *
@@ -13,7 +15,6 @@ public class ViewBookingsPanel extends BasePanel {
     private JButton goHomeButton;
     private JPanel viewBookingsPanel;
     private JPanel contentPanel;
-    private JScrollPane contentScrollPane;
     private JPanel bookingsPanel;
     private JLabel messageLabel;
     private JButton newBookingButton;
@@ -24,6 +25,7 @@ public class ViewBookingsPanel extends BasePanel {
     public ViewBookingsPanel(MultiPanelWindow panelController)
     {
         super("View Bookings", "viewBookingPanel", panelController);
+       // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
         createActionListeners();
     }
 

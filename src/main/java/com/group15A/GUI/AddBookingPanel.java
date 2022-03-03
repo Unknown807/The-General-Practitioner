@@ -15,7 +15,6 @@ public class AddBookingPanel extends BasePanel {
     private JButton goHomeButton;
     private JButton createBookingButton;
     private JPanel contentPanel;
-    private JScrollPane contentScrollPane;
     private JPanel bookingSelectionPanel;
     private JComboBox dayCombo;
     private JPanel dateSelectionPanel;

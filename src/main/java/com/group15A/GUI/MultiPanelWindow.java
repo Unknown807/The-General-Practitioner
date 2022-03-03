@@ -5,6 +5,7 @@ import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -56,7 +57,7 @@ public class MultiPanelWindow extends JFrame {
         this.setContentPane(panelCards);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(
-                (int)(dimension.getWidth()*0.6), // Make window width 60% that of the screen
+                (int)(dimension.getWidth()*0.8), // Make window width 70% that of the screen
                 (int)(dimension.getHeight()*0.8) // Make window height 80% that of the screen
         );
 
@@ -89,6 +90,7 @@ public class MultiPanelWindow extends JFrame {
         this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (PageType page: pages) {
             BasePanel bspanel = this.cards.get(page);
+            bspanel.getPagePanel().setBorder(new EmptyBorder(20,20,20,20));
            this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
         }
     }
