@@ -99,9 +99,9 @@ public class RegisterPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
 
-        JWidgetShortcuts.addNumbersToCombo(dayCombo,1,31,"Day");
-        JWidgetShortcuts.addNumbersToCombo(monthCombo,1,12,"Month");
-        JWidgetShortcuts.addNumbersToCombo(yearCombo,2022,1900,"Year");
+        JWidgetShortcuts.addNumbersToCombo(dayCombo,1,31,1,"Day");
+        JWidgetShortcuts.addNumbersToCombo(monthCombo,1,12,1,"Month");
+        JWidgetShortcuts.addNumbersToCombo(yearCombo,2022,1900,1,"Year");
 
         createErrorMap();
         createActionListeners();
