@@ -16,10 +16,10 @@ public class Booking {
     private Integer bookingID;
     private Integer doctorID;
     private Integer patientID;
-    private Date bookingTime;
+    private Timestamp bookingTime;
     private Timestamp timestamp;
 
-    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Date bookingTime, Timestamp timestamp) {
+    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
         this.patientID = patientID;
@@ -51,7 +51,7 @@ public class Booking {
         return bookingTime;
     }
 
-    public void setBookingTime(Date bookingTime) {
+    public void setBookingTime(Timestamp bookingTime) {
         this.bookingTime = bookingTime;
     }
 
