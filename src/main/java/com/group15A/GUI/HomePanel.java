@@ -22,6 +22,10 @@ public class HomePanel extends BasePanel {
     private JScrollPane messageScrollPane;
     private JLabel messageLabel;
     private JLabel titleLabel;
+    private JPanel messagePanel;
+    private JPanel navigationPanel;
+    private JButton viewBookingsButton;
+    private JButton newBookingButton;
 
     /**
      * Constructor for the HomePanel class
