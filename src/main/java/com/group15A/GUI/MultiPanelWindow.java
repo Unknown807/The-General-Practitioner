@@ -64,9 +64,10 @@ public class MultiPanelWindow extends JFrame {
         File file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()+"/LoggedUser.bin");
         PageType pageToShow = PageType.LOGIN; // log in page
         if(file.exists()) {
+            //TODO: Check value in file for "keepLoggedIn" (this way, this page-choosing system doesn't just rely on the existance of the file)
             pageToShow = PageType.HOME; // home page
         }
-        showPage(PageType.ADD_BOOKING);
+        showPage(pageToShow);
     }
 
     /**
