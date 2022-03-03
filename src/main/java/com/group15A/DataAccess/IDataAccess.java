@@ -31,4 +31,6 @@ public interface IDataAccess
     List<Certification> getCertifications(Doctor doctor) throws CustomException;
 
     Booking getBooking(int bookingID) throws CustomException;
+
+    List<Booking> getBookings() throws CustomException;
 }

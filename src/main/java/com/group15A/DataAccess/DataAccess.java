@@ -395,6 +395,51 @@ public class DataAccess implements IDataAccess
         }
     }
 
+
+    /**
+     * Get all bookings from the database
+     * @return The bookings
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public List<Booking> getBookings() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_bookings();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getBookingsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
+
+
+
+    /**
+     * Get a list of bookings from the given result set
+     * @param result The result set
+     * @return The list of bookings
+     * @throws SQLException if there was a problem retrieving the bookings
+     */
+    private ArrayList<Booking> getBookingsFromDB(ResultSet result) throws SQLException
+    {
+        var bookings = new ArrayList<Booking>();
+        while (result.next()) {
+            bookings.add(new Booking(
+                    result.getInt("id_booking"),
+                    result.getInt("id_patient"),
+                    result.getInt("id_doctor"),
+                    result.getDate("booking_time"),
+                    result.getTimestamp("timestamp")
+            ));
+        }
+        return bookings;
+    }
+
     /**
      * Delete the patient with the given id
      * @param patientID The patient id
