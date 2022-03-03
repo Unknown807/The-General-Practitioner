@@ -416,6 +416,27 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    /**
+     * Get all bookings of the given doctor
+     * @return The bookings
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public List<Booking> getBookings(Doctor doctor) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_bookings_doctor(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, doctor.getDoctorID());
+            ResultSet result = statement.executeQuery();
+
+            return getBookingsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
 
 
 
