@@ -1,5 +1,6 @@
 package com.group15A.GUI;
 
+import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
@@ -11,7 +12,11 @@ import javax.swing.*;
 public class ViewBookingsPanel extends BasePanel {
     private JButton goHomeButton;
     private JPanel viewBookingsPanel;
-    private JScrollPane bookingsScrollPane;
+    private JPanel contentPanel;
+    private JScrollPane contentScrollPane;
+    private JPanel bookingsPanel;
+    private JLabel messageLabel;
+    private JButton newBookingButton;
 
     /**
      *
@@ -47,6 +52,8 @@ public class ViewBookingsPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
+        goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
+        newBookingButton.addActionListener(e -> {panelController.showPage(PageType.ADD_BOOKING);});
 
     }
 

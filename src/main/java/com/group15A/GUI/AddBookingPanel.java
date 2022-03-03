@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.Utils.JWidgetShortcuts;
+import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
@@ -66,7 +67,7 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-
+        goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
     }
 
 }
