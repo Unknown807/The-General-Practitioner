@@ -31,10 +31,6 @@ public class Booking {
         return bookingID;
     }
 
-    public void setBookingID(Integer bookingID) {
-        this.bookingID = bookingID;
-    }
-
     public Integer getDoctorID() {
         return doctorID;
     }
