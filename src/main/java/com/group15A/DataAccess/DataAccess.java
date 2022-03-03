@@ -3,6 +3,7 @@ package com.group15A.DataAccess;
 import com.group15A.CustomExceptions.*;
 import com.group15A.DataModel.*;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -384,7 +385,7 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_booking"),
                     result.getInt("id_patient"),
                     result.getInt("id_doctor"),
-                    result.getDate("booking_time"),
+                    result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             );
 
@@ -472,7 +473,7 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_booking"),
                     result.getInt("id_patient"),
                     result.getInt("id_doctor"),
-                    result.getDate("booking_time"),
+                    result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             ));
         }
@@ -484,24 +485,51 @@ public class DataAccess implements IDataAccess
      * Create booking
      * @param patient The patient
      * @param doctor The doctor
-     * @param date The date of the booking
+     * @param bookingTime The date and time of the booking
      * @return The Booking from the database
      * @throws DatabaseException if there was an error querying the database
      */
     @Override
-    public Booking createBooking(Patient patient, Doctor doctor, java.util.Date date) throws DatabaseException
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException
     {
         try {
             String query = "CALL insert_booking(?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, patient.getPatientID());
             statement.setInt(2, doctor.getDoctorID());
-            statement.setDate(3, new Date(date.getTime()));
+            statement.setTimestamp(3, bookingTime);
 
             statement.executeQuery();
 
             var bookings = getBookings();
             return bookings.get(bookings.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
+    /**
+     * Update the booking with the new details
+     * @param booking The modified booking
+     * @return The corresponding booking from the database
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Booking updateBooking(Booking booking) throws DatabaseException
+    {
+        try {
+            String query = "CALL update_booking(?, ?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+            statement.setInt(2, booking.getPatientID());
+            statement.setInt(3, booking.getDoctorID());
+            statement.setTimestamp(4, booking.getBookingTime());
+
+            statement.executeQuery();
+
+            return getBooking(booking.getBookingID());
         } catch (Exception ex)
         {
             System.err.println(ex);

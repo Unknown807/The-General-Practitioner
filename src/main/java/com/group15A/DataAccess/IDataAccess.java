@@ -3,6 +3,7 @@ package com.group15A.DataAccess;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.*;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -39,5 +40,7 @@ public interface IDataAccess
 
     List<Booking> getBookings(Patient patient) throws CustomException;
 
-    Booking createBooking(Patient patient, Doctor doctor, Date date) throws CustomException;
+    Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws CustomException;
+
+    Booking updateBooking(Booking booking) throws CustomException;
 }

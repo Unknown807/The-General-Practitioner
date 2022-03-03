@@ -2,7 +2,6 @@ package com.group15A.DataModel;
 
 import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -47,7 +46,7 @@ public class Booking {
         this.patientID = patientID;
     }
 
-    public Date getBookingTime() {
+    public Timestamp getBookingTime() {
         return bookingTime;
     }
 
