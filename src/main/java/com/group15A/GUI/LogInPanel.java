@@ -2,7 +2,6 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
@@ -91,11 +90,10 @@ public class LogInPanel extends BasePanel {
         logInErrorLabel.setVisible(false);
         try {
             logInLogic = new LogInLogic();
-            Session newSession = logInLogic.login(emailField.getText(),
+            logInLogic.login(emailField.getText(),
                              new String(passwordField.getPassword()),
                              stayLoggedIn
             );
-            panelController.setSession(newSession);
             panelController.showPage(PageType.HOME);
         }
         catch (DatabaseException e) {

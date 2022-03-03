@@ -64,7 +64,6 @@ public class MultiPanelWindow extends JFrame {
         File file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()+"/LoggedUser.bin");
         PageType pageToShow = PageType.LOGIN; // log in page
         if(file.exists()) {
-            //TODO: Check value in file for "keepLoggedIn" (this way, this page-choosing system doesn't just rely on the existance of the file)
             pageToShow = PageType.HOME; // home page
         }
         showPage(pageToShow);
@@ -80,16 +79,13 @@ public class MultiPanelWindow extends JFrame {
         this.cards.put(PageType.REGISTER, new RegisterPanel(this));
         this.cards.put(PageType.HOME, new HomePanel(this));
         this.cards.put(PageType.CHOOSE_DOCTOR, new ChooseDoctorPanel(this));
-        this.cards.put(PageType.VIEW_BOOKINGS, new ViewBookingsPanel(this));
-        this.cards.put(PageType.ADD_BOOKING, new AddBookingPanel(this));
-
 
         PageType[] pages = PageType.values();
 
         this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (PageType page: pages) {
             BasePanel bspanel = this.cards.get(page);
-           this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
+            this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
         }
     }
 
@@ -112,14 +108,6 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
-     * @param session new session (Patient object and stay-logged-in status)
-     */
-    public void setSession(Session session)
-    {
-        this.session = session;
-    }
-
-    /**
      * When the close window button is clicked,
      * the user will be logged out (if they don't want to stay logged in),
      * and the program will terminate.
@@ -127,21 +115,27 @@ public class MultiPanelWindow extends JFrame {
     public void closeProgram()
     {
         // Delete session file if user doesn't want to stay logged in (i.e. log out user)
-        if(!session.isKeepLoggedIn()) {
-            try {
-                File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
-                sessionFile.delete();
-            }
-            catch (Exception e){
-                JOptionPane.showMessageDialog(
-                        panelCards,
-                        "Could not delete session file.",
-                        "ERROR: Log out failed",
-                        JOptionPane.ERROR_MESSAGE
-                );
-                System.exit(0);
-            }
-        }
+        // TODO: Delete session if user doesn't want to stay logged in.
+        //---
+        // TODO: Access `session.keepLoggedIn`.
+//        Session session = new Session();
+//        if(!session.keepLoggedIn) {
+//            try {
+//                File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
+//                sessionFile.delete();
+//            }
+//            catch (Exception e){
+//                JOptionPane.showMessageDialog(
+//                        panelCards,
+//                        "Could not delete session file.",
+//                        "ERROR: Log out failed",
+//                        JOptionPane.ERROR_MESSAGE
+//                );
+//                System.exit(0);
+//            }
+//        }
+        //---
+
 
         // Exit program
         System.exit(0);

@@ -27,8 +27,6 @@ public class ChooseDoctorPanel extends BasePanel {
     private JButton registerButton;
     private JPanel doctorListPanel;
     private JScrollPane doctorListScrollPane;
-    private JScrollPane contentScrollPanel;
-    private JLabel promptLabel;
 
     private PageType returningPage;
     private DoctorLogic doctorLogic;

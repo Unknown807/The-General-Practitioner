@@ -42,7 +42,7 @@ public class LogInLogic implements ILogIn {
      * patient from the database
      */
     @Override
-    public Session login(String email, String password, Boolean stayLoggedIn) throws Exception {
+    public void login(String email, String password, Boolean stayLoggedIn) throws Exception {
         ErrorCode passError = this.validator.verifyEmail(email);
         ErrorCode emailError = this.validator.verifyPassword(password);
 
@@ -54,7 +54,6 @@ public class LogInLogic implements ILogIn {
         Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
         Session session = new Session(loggedInPatient, stayLoggedIn);
         session.saveToFile();
-        return session;
     }
 }
 

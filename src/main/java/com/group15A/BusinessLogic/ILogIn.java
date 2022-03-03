@@ -1,7 +1,5 @@
 package com.group15A.BusinessLogic;
 
-import com.group15A.Session;
-
 /**
  * The interface for LogInLogic
  *
@@ -9,5 +7,5 @@ import com.group15A.Session;
  * @author Wenbo Wu
  */
 public interface ILogIn {
-    public Session login(String email, String password, Boolean stayLoggedIn) throws Exception;
+    public void login(String email, String password, Boolean stayLoggedIn) throws Exception;
 }
