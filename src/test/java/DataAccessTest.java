@@ -2,6 +2,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.EmailInUseException;
 import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Certification;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;

@@ -1,7 +1,7 @@
 package com.group15A.DataModel;
 
+import java.sql.Timestamp;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -15,10 +15,10 @@ public class Booking {
     private Integer bookingID;
     private Integer doctorID;
     private Integer patientID;
-    private Date bookingTime ;
-    private LocalTime timestamp;
+    private Timestamp bookingTime;
+    private Timestamp timestamp;
 
-    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Date bookingTime, LocalTime timestamp) {
+    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
         this.patientID = patientID;
@@ -28,10 +28,6 @@ public class Booking {
 
     public Integer getBookingID() {
         return bookingID;
-    }
-
-    public void setBookingID(Integer bookingID) {
-        this.bookingID = bookingID;
     }
 
     public Integer getDoctorID() {
@@ -50,15 +46,15 @@ public class Booking {
         this.patientID = patientID;
     }
 
-    public Date getBookingTime() {
+    public Timestamp getBookingTime() {
         return bookingTime;
     }
 
-    public void setBookingTime(Date bookingTime) {
+    public void setBookingTime(Timestamp bookingTime) {
         this.bookingTime = bookingTime;
     }
 
-    public LocalTime getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
