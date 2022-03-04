@@ -91,6 +91,7 @@ public class LogInPanel extends BasePanel {
         logInErrorLabel.setVisible(false);
         try {
             logInLogic = new LogInLogic();
+
             Session newSession = logInLogic.login(emailField.getText(),
                              new String(passwordField.getPassword()),
                              stayLoggedIn
@@ -111,6 +112,7 @@ public class LogInPanel extends BasePanel {
         catch (Exception e) {
             logInErrorLabel.setVisible(true);
         }
+        passwordField.setText("");
     }
 
 }
