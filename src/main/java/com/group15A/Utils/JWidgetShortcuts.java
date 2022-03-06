@@ -6,6 +6,7 @@ import javax.swing.*;
  * A collection of methods that can be used on Java Swing widgets
  *
  * @author Filip Fois
+ * @author Milovan Gveric
  */
 public class JWidgetShortcuts {
 
@@ -14,25 +15,22 @@ public class JWidgetShortcuts {
      * in order of first to last
      *
      * @param comboBox The combobox which will have values added to it
-     * @param first The first value to added (after unchosenValue)
+     * @param first The first value to added (after unchosen)
      * @param last The last value to be added
-     * @param unchosenValue The first value to be shown
-     *                      (unchosenValue usually indicates a valid item has not been chosen)
+     * @param inc the number of increments going from first to last
+     * @param unchosen The first value to be shown
+     *                      (unchosen usually indicates a valid item has not been chosen)
      */
-    public static void addNumbersToCombo(JComboBox comboBox, int first, int last, int steps, String unchosenValue)
+    public static void addItemsToCombo(JComboBox comboBox, int first, int last, int inc, String unchosen)
     {
-        if(!(unchosenValue == null)){
-            comboBox.addItem(unchosenValue);
+        if (!(unchosen == null)){
+            comboBox.addItem(unchosen);
         }
-        if(first < last) {
-            for(int i = first; i <= last; i += steps){
-                addItemToCombo(comboBox,i);
-            }
-        }
-        else {
-            for(int i = first; i >= last; i--){
-                addItemToCombo(comboBox,i);
-            }
+
+        int steps = (first < last) ? inc : (-1*inc);
+        // ternary condition for increment order
+        for(int i = first; ((first < last) ? (i<=last) : (i>=last)); i+=steps){
+            addItemToCombo(comboBox, i);
         }
     }
 
@@ -43,23 +41,21 @@ public class JWidgetShortcuts {
      * @param comboBox The combobox which will have values added to it
      * @param words The collection of strings to add as items
      * @param reverse If true, add items in array in reverse, otherwise, add in given order
-     * @param unchosenValue The first value to be shown
-     *                      (unchosenValue usually indicates a valid item has not been chosen)
+     * @param unchosen The first value to be shown
+     *                      (unchosen usually indicates a valid item has not been chosen)
      */
-    public static void addStringsToCombo(JComboBox comboBox, String[] words, boolean reverse, String unchosenValue)
+    public static void addItemsToCombo(JComboBox comboBox, String[] words, boolean reverse, String unchosen)
     {
-        if(!(unchosenValue == null)){
-            comboBox.addItem(unchosenValue);
+        if (!(unchosen == null)){
+            comboBox.addItem(unchosen);
         }
-        if(!reverse) {
-            for (String word : words) {
-                comboBox.addItem(word);
-            }
-        }
-        else {
-            for(int i = words.length-1; i >= 0; i--){
-                comboBox.addItem(words[i]);
-            }
+
+        int start = reverse ? words.length-1 : 0;
+        int end   = reverse ? 0 : words.length-1;
+        int steps = reverse ? -1 : 1;
+
+        for(int i = start; i != end; i+=steps){
+            comboBox.addItem(words[i]);
         }
     }
 
@@ -71,22 +67,9 @@ public class JWidgetShortcuts {
      */
     private static void addItemToCombo(JComboBox comboBox, int item)
     {
-        String newItem = String.valueOf(item);
-        if(item < 10){
-            newItem = twoCharacterNumber(item);
-        }
-
-        comboBox.addItem(newItem);
-    }
-
-    /**
-     * Adds a zero to the start of a given number (typically single digit)
-     * @param number the number to add a zero to the start of
-     * @return the given number with a zero added at the start
-     */
-    private static String twoCharacterNumber(int number)
-    {
-        return "0"+number;
+        comboBox.addItem(
+            (item < 10) ? "0"+item : ""+item
+        );
     }
 
 }

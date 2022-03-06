@@ -7,6 +7,7 @@ import com.group15A.Session;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Arrays;
 
@@ -50,8 +51,9 @@ public class LogInLogic implements ILogIn {
         if (passError != null || emailError != null) {
             throw new CustomException("Invalid Email or Password in LogIn", Arrays.asList(passError, emailError));
         }
-        //TODO: Check if the given user is in the database
-        Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
+
+        String passHash = BCrypt.hashpw(password, BCrypt.gensalt()); // can remove while testing UI
+        Patient loggedInPatient = this.dataAccessLayer.getPatient(email, passHash);
         Session session = new Session(loggedInPatient, stayLoggedIn);
         session.saveToFile();
         return session;
