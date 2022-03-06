@@ -68,7 +68,7 @@ public class ChooseDoctorPanel extends BasePanel {
     private void chooseDoctor(JButton clickedButton) {
         Integer index = doctorButtons.indexOf(clickedButton);
         panelController.showPage(
-            PageType.REGISTER,
+            this.returningPage,
             new ReceivePair(ReceiveType.DOCTOR, doctorsList.get(index))
         );
     }
@@ -124,7 +124,6 @@ public class ChooseDoctorPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        //logInButton.addActionListener( e -> panelController.showPage(Page.LOGIN));
         registerButton.addActionListener( e -> panelController.showPage(this.returningPage));
     }
 

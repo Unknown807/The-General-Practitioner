@@ -73,15 +73,14 @@ public class RegisterLogic implements IRegister {
                 this.validator.verifyEmail(email),
                 this.validator.verifyPassword(password),
                 this.validator.verifyMatchingEmails(email, confirmEmail),
-                this.validator.verifyMatchingPasswords(password, confirmPassword)
-            );
+                this.validator.verifyMatchingPasswords(password, confirmPassword),
+                (chosenDoctor == null) ? ErrorCode.DOCTOR_NOT_CHOSEN : null
+        );
 
         List<ErrorCode> errorsList = errorsStream.filter(Objects::nonNull).collect(Collectors.toList());
         if (errorsList.size() > 0) {
             throw new CustomException("Invalid Form Details", errorsList);
         }
-
-        String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateConv;
@@ -90,6 +89,8 @@ public class RegisterLogic implements IRegister {
         } catch (ParseException e) {
             throw new CustomException("Invalid date", Arrays.asList(ErrorCode.WRONG_DATE));
         }
+
+        String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         Patient loggedInPatient = this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
