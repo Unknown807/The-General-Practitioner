@@ -50,7 +50,7 @@ public class LogInLogic implements ILogIn {
         if (passError != null || emailError != null) {
             throw new CustomException("Invalid Email or Password in LogIn", Arrays.asList(passError, emailError));
         }
-
+        //TODO: Check if the given user is in the database
         Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
         Session session = new Session(loggedInPatient, stayLoggedIn);
         session.saveToFile();
