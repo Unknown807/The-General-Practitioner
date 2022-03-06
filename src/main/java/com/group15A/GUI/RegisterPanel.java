@@ -77,6 +77,7 @@ public class RegisterPanel extends BasePanel {
     private JPanel datePanel;
     private JLabel doctorLabel;
     private JButton chooseDoctorButton;
+    private JLabel doctorErrorLabel;
     private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
@@ -138,6 +139,7 @@ public class RegisterPanel extends BasePanel {
             put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
             put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
             put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
+            put(ErrorCode.DOCTOR_NOT_CHOSEN, doctorErrorLabel);
         }};
     }
 
@@ -199,8 +201,7 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                null
-                //doctorsList.get(doctorCombo.getSelectedIndex())
+                chosenDoctor
             );
 
             Session currentSession = panelController.getSession();
@@ -210,6 +211,7 @@ public class RegisterPanel extends BasePanel {
 
             panelController.showPage(PageType.HOME);
         } catch (CustomException e) {
+            clearErrorLabels();
             setErrorLabels(e);
         }
 
@@ -223,14 +225,17 @@ public class RegisterPanel extends BasePanel {
      *
      * @param e The customException, contains a list of error codes.
      */
-    public void setErrorLabels(CustomException e)
+    private void setErrorLabels(CustomException e)
     {
         List<ErrorCode> errorCodes = e.getErrorList();
+        for (ErrorCode errorCode : errorCodes) {
+            errorLabelCodes.get(errorCode).setVisible(true);
+        }
+    }
 
-        Boolean visibleValue;
-        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
-            visibleValue = errorCodes.contains(errorCode);
-            errorLabelCodes.get(errorCode).setVisible(visibleValue);
+    private void clearErrorLabels() {
+        for (JLabel errorLabel : errorLabelCodes.values()) {
+            errorLabel.setVisible(false);
         }
     }
 
