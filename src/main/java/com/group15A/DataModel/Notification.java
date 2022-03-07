@@ -14,12 +14,14 @@ public class Notification {
     private Integer notifID;
     private Integer patientID;
     private String message;
+    private String header;
     private Timestamp timestamp;
     private boolean isNew;
 
-    public Notification(Integer notifID, Integer patientID, String message, Timestamp timestamp) {
+    public Notification(Integer notifID, Integer patientID, String header, String message, Timestamp timestamp) {
         this.notifID = notifID;
         this.patientID = patientID;
+        this.header = header;
         this.message = message;
         this.timestamp = timestamp;
         isNew = true;
@@ -56,17 +58,21 @@ public class Notification {
 
     public void setIsNew(boolean isNew) {this.isNew = isNew;}
 
+    public String getHeader() {return header;}
+
+    public void setHeader(String header) {this.header = header;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(notifID, that.notifID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(timestamp, that.timestamp) && isNew==that.isNew;
+        return Objects.equals(notifID, that.notifID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(header, that.header) && Objects.equals(timestamp, that.timestamp) && isNew==that.isNew;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(notifID, patientID, message, timestamp, isNew);
+        return Objects.hash(notifID, patientID, header, message, timestamp, isNew);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class Notification {
         return "Notification{" +
                 "NotifID=" + notifID +
                 ", patientID=" + patientID +
+                ", header='" + header + '\'' +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +
                 ", isNew=" + isNew +
