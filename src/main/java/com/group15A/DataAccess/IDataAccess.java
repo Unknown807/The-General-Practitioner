@@ -47,4 +47,6 @@ public interface IDataAccess
     Notification getNotification(int notificationID) throws CustomException;
 
     Notification createNotification(Patient patient, String header, String message) throws CustomException;
+
+    List<Notification> getNotifications(Patient patient) throws CustomException;
 }

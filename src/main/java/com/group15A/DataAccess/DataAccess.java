@@ -568,6 +568,7 @@ public class DataAccess implements IDataAccess
         }
     }
 
+
     /**
      * Create notification
      * @param patient The patient
@@ -598,6 +599,28 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Get the notifications of the given patient
+     * @param patient The patient
+     * @return The patient's notifications
+     * @throws DatabaseException
+     */
+    @Override
+    public List<Notification> getNotifications(Patient patient) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notifications_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            ResultSet result = statement.executeQuery();
+
+            return getNotificationsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get notifications from the database");
+        }
+    }
+
+    /**
      * Get all notifications from the database
      * @return The notifications
      * @throws DatabaseException if there was a problem querying the database
@@ -612,7 +635,7 @@ public class DataAccess implements IDataAccess
             return getNotificationsFromDB(result);
         }catch (Exception ex)
         {
-            throw new DatabaseException("Could not get bookings from the database");
+            throw new DatabaseException("Could not get notifications from the database");
         }
     }
 
