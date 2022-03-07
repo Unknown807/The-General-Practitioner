@@ -569,6 +569,35 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Create notification
+     * @param patient The patient
+     * @param header The header of the notification
+     * @param message The main body of the notification
+     * @return The Notification from the database
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException
+    {
+        try {
+            String query = "CALL insert_notification(?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setString(2, header);
+            statement.setString(3, message);
+
+            statement.executeQuery();
+
+            var notifications = getNotifications();
+            return notifications.get(notifications.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
+    /**
      * Get all notifications from the database
      * @return The notifications
      * @throws DatabaseException if there was a problem querying the database
