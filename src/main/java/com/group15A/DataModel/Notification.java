@@ -19,6 +19,7 @@ public class Notification {
     private Integer patientID;
     private String message;
     private Timestamp timestamp;
+    private boolean isNew;
 
     public Notification(Integer notifID, Integer doctorID, Integer patientID, String message, Timestamp timestamp) {
         NotifID = notifID;
@@ -26,6 +27,7 @@ public class Notification {
         this.patientID = patientID;
         this.message = message;
         this.timestamp = timestamp;
+        isNew = true;
     }
 
     public Integer getNotifID() {
@@ -60,17 +62,24 @@ public class Notification {
         return timestamp;
     }
 
+    public boolean getIsNew()
+    {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {this.isNew = isNew;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(NotifID, that.NotifID) && Objects.equals(doctorID, that.doctorID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(timestamp, that.timestamp);
+        return Objects.equals(NotifID, that.NotifID) && Objects.equals(doctorID, that.doctorID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(timestamp, that.timestamp) && isNew==that.isNew;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(NotifID, doctorID, patientID, message, timestamp);
+        return Objects.hash(NotifID, doctorID, patientID, message, timestamp, isNew);
     }
 
     @Override
@@ -81,6 +90,7 @@ public class Notification {
                 ", patientID=" + patientID +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +
+                ", isNew=" + isNew +
                 '}';
     }
 }
