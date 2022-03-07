@@ -17,7 +17,8 @@ public class Notification {
     private Timestamp timestamp;
     private boolean isNew;
 
-    public Notification(Integer patientID, String message, Timestamp timestamp) {
+    public Notification(Integer notifID, Integer patientID, String message, Timestamp timestamp) {
+        this.notifID = notifID;
         this.patientID = patientID;
         this.message = message;
         this.timestamp = timestamp;
