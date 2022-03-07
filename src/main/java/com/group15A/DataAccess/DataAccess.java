@@ -533,7 +533,7 @@ public class DataAccess implements IDataAccess
         } catch (Exception ex)
         {
             System.err.println(ex);
-            throw new DatabaseException("Could not insert booking in the database");
+            throw new DatabaseException("Could not update booking in the database");
         }
     }
 
@@ -617,6 +617,29 @@ public class DataAccess implements IDataAccess
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not get notifications from the database");
+        }
+    }
+
+    /**
+     * Set the given notification as seen
+     * @param notification The notification
+     * @return The corresponding notification in the database
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Notification setNotificationSeen(Notification notification) throws DatabaseException
+    {
+        try{
+            String query = "CALL notificationNotNew(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notification.getNotifID());
+
+            statement.executeQuery();
+
+            return getNotification(notification.getNotifID());
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not update the notification");
         }
     }
 
