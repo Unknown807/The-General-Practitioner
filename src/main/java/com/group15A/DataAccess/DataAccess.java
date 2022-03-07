@@ -568,6 +568,46 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    /**
+     * Get all notifications from the database
+     * @return The notifications
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    private List<Notification> getNotifications() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notifications();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getNotificationsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get bookings from the database");
+        }
+    }
+
+    /**
+     * Get a list of notifications from the given result set
+     * @param result The result set
+     * @return The list of notifications
+     * @throws SQLException if there was a problem retrieving the bookings
+     */
+    private List<Notification> getNotificationsFromDB(ResultSet result) throws SQLException
+    {
+        var notifications = new ArrayList<Notification>();
+        while (result.next()) {
+            notifications.add(new Notification(
+                    result.getInt("id_notif"),
+                    result.getInt("id_patient"),
+                    result.getString("header"),
+                    result.getString("message"),
+                    result.getTimestamp("timestamp")
+            ));
+        }
+
+        return notifications;
+    }
 
     /**
      * Delete the patient with the given id

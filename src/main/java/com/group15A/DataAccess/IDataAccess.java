@@ -45,4 +45,5 @@ public interface IDataAccess
     Booking updateBooking(Booking booking) throws CustomException;
 
     Notification getNotification(int notificationID) throws CustomException;
+
 }
