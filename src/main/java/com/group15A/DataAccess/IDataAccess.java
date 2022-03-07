@@ -43,4 +43,6 @@ public interface IDataAccess
     Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws CustomException;
 
     Booking updateBooking(Booking booking) throws CustomException;
+
+    Notification getNotification(int notificationID) throws CustomException;
 }

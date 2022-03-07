@@ -392,7 +392,7 @@ public class DataAccess implements IDataAccess
             return booking;
         }catch (Exception ex)
         {
-            throw new DatabaseException("Could not get certifications from the database");
+            throw new DatabaseException("Could not get booking from the database");
         }
     }
 
@@ -534,6 +534,37 @@ public class DataAccess implements IDataAccess
         {
             System.err.println(ex);
             throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
+
+    /**
+     * Get the notification with the given id from the database
+     * @param notificationID The id of the notification
+     * @return The notification
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Notification getNotification(int notificationID) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notification(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notificationID);
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+            Notification notification = new Notification(
+                    result.getInt("id_notif"),
+                    result.getInt("id_patient"),
+                    result.getString("header"),
+                    result.getString("message"),
+                    result.getTimestamp("booking_time")
+            );
+
+            return notification;
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get notification from the database");
         }
     }
 
