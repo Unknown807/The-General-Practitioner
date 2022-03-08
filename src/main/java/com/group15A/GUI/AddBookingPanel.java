@@ -125,8 +125,10 @@ public class AddBookingPanel extends BasePanel {
                     minuteCombo.getSelectedItem().toString(),
                     this.panelController.getSession().getLoggedInPatient()
             );
+            this.bookingErrorLabel.setVisible(false);
         } catch (CustomException e) {
-
+            this.bookingErrorLabel.setVisible(true);
+            this.bookingErrorLabel.setText("The requested doctor / booking time is unavailable");
         }
     }
 
