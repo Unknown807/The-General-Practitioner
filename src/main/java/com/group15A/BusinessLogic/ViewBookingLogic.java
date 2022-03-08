@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author Milovan Gveric
  */
-public class ViewBookingLogic implements IViewBooking, IBooking {
+public class ViewBookingLogic implements IViewBooking {
     private DataAccess dataAccessLayer;
 
     public ViewBookingLogic() throws DatabaseException {
@@ -25,15 +25,5 @@ public class ViewBookingLogic implements IViewBooking, IBooking {
         return this.dataAccessLayer.getBookings(
                 this.dataAccessLayer.getPatient(patientID)
         );
-    }
-
-    @Override
-    public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException {
-        return this.dataAccessLayer.getDoctor(patient);
-    }
-
-    @Override
-    public Patient getPatient(Integer patientID) throws CustomException {
-        return this.dataAccessLayer.getPatient(patientID);
     }
 }

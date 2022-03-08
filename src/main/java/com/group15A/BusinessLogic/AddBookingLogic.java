@@ -16,7 +16,7 @@ import java.util.Arrays;
 /**
  * @author Milovan Gveric
  */
-public class AddBookingLogic implements IAddBooking, IBooking {
+public class AddBookingLogic implements IAddBooking {
     private Validator validator;
     private DataAccess dataAccessLayer;
 
