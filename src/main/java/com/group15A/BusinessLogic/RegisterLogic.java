@@ -5,10 +5,8 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
-import com.group15A.Session;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
-import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.DateFormat;
