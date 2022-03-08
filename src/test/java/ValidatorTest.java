@@ -93,23 +93,23 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
-    public void testVerifyDoBIncorrectFormatAndCorrectErrorCode() {
-        assertEquals(this.validator.verifyDoB("03-03-2002"), ErrorCode.WRONG_DATE);
+    public void testVerifyDateIncorrectFormatAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDate("03-03-2002"), ErrorCode.WRONG_DATE);
     }
 
     @Test
-    public void testVerifyDoBFailureAndCorrectErrorCode() {
-        assertEquals(this.validator.verifyDoB("not_a_date_at_all"), ErrorCode.WRONG_DATE);
+    public void testVerifyDateFailureAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDate("not_a_date_at_all"), ErrorCode.WRONG_DATE);
     }
 
     @Test
-    public void testVerifyDoBCorrectFormatNoZeroPadding() {
-        assertNull(this.validator.verifyDoB("2002-1-5"));
+    public void testVerifyDateCorrectFormatNoZeroPadding() {
+        assertNull(this.validator.verifyDate("2002-1-5"));
     }
 
     @Test
-    public void testVerifyDoBCorrectFormat() {
-        assertNull(this.validator.verifyDoB("2002-01-05"));
+    public void testVerifyDateCorrectFormat() {
+        assertNull(this.validator.verifyDate("2002-01-05"));
     }
 
     @Test

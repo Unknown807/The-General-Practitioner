@@ -15,4 +15,6 @@ public enum ReceiveType {
     // Login Page
 
     // Home Page
+
+    // Add Booking Page
 }

@@ -1,8 +1,16 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.AddBookingLogic;
+import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Patient;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 
@@ -26,6 +34,8 @@ public class AddBookingPanel extends BasePanel {
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
 
+    private AddBookingLogic addBookingLogic;
+
     /**
      *
      */
@@ -40,6 +50,18 @@ public class AddBookingPanel extends BasePanel {
         JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
         JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");
         createActionListeners();
+
+        try {
+            addBookingLogic = new AddBookingLogic();
+        } catch (DatabaseException e) {
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
+        }
     }
 
     /**
@@ -57,7 +79,30 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair)
     {
+        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+            this.updateDoctorLabels((Patient) pair.getSecond());
+        }
+    }
 
+    private void updateDoctorLabels(Patient patient) {
+        try {
+            Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
+            this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
+            this.bookingErrorLabel.setVisible(false);
+
+        } catch(DatabaseException e) {
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
+
+        } catch (DoctorNotFoundException e) {
+            this.bookingErrorLabel.setText("The requested doctor is unavailable");
+            this.bookingErrorLabel.setVisible(true);
+        }
     }
 
     /**
@@ -67,6 +112,24 @@ public class AddBookingPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
+        createBookingButton.addActionListener(e -> this.createNewBooking());
+    }
+
+    private void createNewBooking() {
+        try {
+            this.addBookingLogic.createNewBooking(
+                    yearCombo.getSelectedItem().toString()+"-"+
+                    monthCombo.getSelectedItem().toString()+"-"+
+                    dayCombo.getSelectedItem().toString(),
+                    hourCombo.getSelectedItem().toString(),
+                    minuteCombo.getSelectedItem().toString(),
+                    this.panelController.getSession().getLoggedInPatient()
+            );
+            this.bookingErrorLabel.setVisible(false);
+        } catch (CustomException e) {
+            this.bookingErrorLabel.setVisible(true);
+            this.bookingErrorLabel.setText("The requested doctor / booking time is unavailable");
+        }
     }
 
 }

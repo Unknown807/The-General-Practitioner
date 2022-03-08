@@ -105,7 +105,7 @@ public class MultiPanelWindow extends JFrame {
         this.setTitle(nextPanel.getWindowTitle());
         this.cardLayout.show(panelCards, nextPanel.getPanelFieldName());
         for (ReceivePair pair: pairs) {
-            this.cards.get(page).receiveData(pair);
+            nextPanel.receiveData(pair);
         }
     }
 
