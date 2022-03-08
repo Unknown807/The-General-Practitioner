@@ -64,7 +64,12 @@ public class HomePanel extends BasePanel {
     @Override
     public void createActionListeners() {
         logOutButton.addActionListener(e -> {logOutUser();});
-        viewBookingsButton.addActionListener(e -> {panelController.showPage(PageType.VIEW_BOOKINGS);});
+        viewBookingsButton.addActionListener(e -> {
+            panelController.showPage(
+                    PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+            );
+        });
         newBookingButton.addActionListener(e -> {
             panelController.showPage(
                     PageType.ADD_BOOKING,

@@ -135,6 +135,10 @@ public class AddBookingPanel extends BasePanel {
                     this.panelController.getSession().getLoggedInPatientID()
             );
             this.bookingErrorLabel.setVisible(false);
+            this.panelController.showPage(
+                    PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+            );
         } catch (CustomException e) {
             this.bookingErrorLabel.setVisible(true);
             this.bookingErrorLabel.setText("The requested doctor / booking time is unavailable");

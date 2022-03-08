@@ -26,4 +26,9 @@ public class ViewBookingLogic implements IViewBooking {
                 this.dataAccessLayer.getPatient(patientID)
         );
     }
+
+    @Override
+    public Doctor getDoctor(Integer doctorID) throws CustomException {
+        return this.dataAccessLayer.getDoctor(doctorID);
+    }
 }

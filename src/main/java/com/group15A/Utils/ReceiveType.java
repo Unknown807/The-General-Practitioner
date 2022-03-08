@@ -10,11 +10,8 @@ public enum ReceiveType {
     DOCTOR,
 
     // Choose Doctor Page
-    RETURN_PAGE
+    RETURN_PAGE,
 
-    // Login Page
-
-    // Home Page
-
-    // Add Booking Page
+    // View Booking Page
+    PATIENT_ID
 }
