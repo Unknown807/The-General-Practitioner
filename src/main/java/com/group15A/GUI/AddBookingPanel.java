@@ -1,5 +1,11 @@
 package com.group15A.GUI;
 
+import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
@@ -25,6 +31,8 @@ public class AddBookingPanel extends BasePanel {
     private JPanel timeSelectionPanel;
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
+    private Doctor doctor;
+    DataAccess dataAccess;
 
     /**
      *
@@ -40,6 +48,27 @@ public class AddBookingPanel extends BasePanel {
         JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
         JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");
         createActionListeners();
+
+        try {
+            dataAccess = new DataAccess();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        try {
+            doctor = getPatientDoctor();
+            promptLabel.setText("Book your appointment with Dr " + doctor.getFullName());
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        } catch (DoctorNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private Doctor getPatientDoctor() throws DatabaseException, DoctorNotFoundException
+    {
+        return dataAccess.getDoctor(panelController.getSession().getLoggedInPatient());
     }
 
     /**
@@ -67,6 +96,21 @@ public class AddBookingPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
+        createBookingButton.addActionListener(e -> {makeBooking();});
+    }
+
+    /**
+     * TODO: (Fully) implement makeBooking()
+     * Pass the entered data to BusinessLogic.BookingLogic.makeBooking()
+     *
+     */
+    private void makeBooking()
+    {
+        // DUMMY CODE
+        bookingErrorLabel.setVisible(false);
+        boolean bookingSuccess = false;
+        // set bookingSuccess to true
+        bookingErrorLabel.setVisible(!bookingSuccess);
     }
 
 }
