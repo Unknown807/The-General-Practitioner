@@ -1,5 +1,6 @@
 package com.group15A.GUI;
 
+import com.group15A.CustomExceptions.SessionEmptyException;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
@@ -41,10 +42,14 @@ public class MultiPanelWindow extends JFrame {
      * and goes to a certain page if the session file is still stored
      */
     public MultiPanelWindow() {
-        this.session = new Session(null, false);
-        createPages();
 
-        // Run closeProgram() when window close button is clicked
+        // Create session
+        this.session = new Session(null, false);
+
+        // Set session (if file exists)
+        refreshSession();
+
+        // Set response to window being closed
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -54,6 +59,9 @@ public class MultiPanelWindow extends JFrame {
             }
         });
 
+        // Create pages
+        createPages();
+
         this.setContentPane(panelCards);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(
@@ -62,14 +70,14 @@ public class MultiPanelWindow extends JFrame {
         );
 
         // Choose the page to be displayed when starting the program
-        File file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()+"/LoggedUser.bin");
         PageType pageToShow = PageType.LOGIN; // log in page
-        if(file.exists()) {
-            //TODO: Check value in file for "keepLoggedIn" (this way, this page-choosing system doesn't just rely on the existance of the file)
+        if(getSession().isKeepLoggedIn()) {
+            System.out.println(getSession().getLoggedInPatient().getFirstName());
             pageToShow = PageType.HOME; // home page
         }
         showPage(pageToShow);
     }
+
 
     /**
      * Creates a hashmap linking the types of pages to the actual
@@ -96,6 +104,16 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
+     * Allows for createPages to be called outside of MultiPanelWindow class.
+     * Useful when another class has updated this class' session and so must refresh
+     * the content of all pages.
+     */
+    public void refreshPages()
+    {
+        createPages();
+    }
+
+    /**
      * Switches to a given JPanel that is in the card layout
      *
      * @param page the page to switch to, contains window title and the required JPanel
@@ -109,16 +127,43 @@ public class MultiPanelWindow extends JFrame {
         }
     }
 
-    public Session getSession() {
+    /**
+     * @return The current session
+     */
+    public Session getSession(){
         return session;
     }
 
     /**
+     * @return session has not been set (i.e. is empty)
+     */
+    public Boolean sessionIsEmpty()
+    {
+        return (getSession().getLoggedInPatient() == null);
+    }
+
+    /**
+     * Set session based on content of session file
+     */
+    public void refreshSession()
+    {
+        try{
+            setSession(Session.loadFromFile());
+        } catch (Exception e) {
+            System.err.println("Session file not found.\n"+e.getMessage());
+        }
+        refreshPages();
+    }
+
+    /**
+     * Sets session and refreshes pages.
+     *
      * @param session new session (Patient object and stay-logged-in status)
      */
     public void setSession(Session session)
     {
         this.session = session;
+        refreshPages();
     }
 
     /**
