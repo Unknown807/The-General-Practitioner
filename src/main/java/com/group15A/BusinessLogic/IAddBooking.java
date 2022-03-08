@@ -12,7 +12,9 @@ import com.group15A.DataModel.Patient;
  * @author Milovan Gveric
  */
 public interface IAddBooking {
-    public Booking createNewBooking(String date, String hour, String minute, Patient patient) throws Exception;
+    public Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws Exception;
 
     public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException;
+
+    public Patient getPatient(Integer patientID) throws Exception;
 }

@@ -80,12 +80,13 @@ public class AddBookingPanel extends BasePanel {
     public void receiveData(ReceivePair pair)
     {
         if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
-            this.updateDoctorLabels((Patient) pair.getSecond());
+            this.updateDoctorLabels((Integer) pair.getSecond());
         }
     }
 
-    private void updateDoctorLabels(Patient patient) {
+    private void updateDoctorLabels(Integer patientID) {
         try {
+            Patient patient = this.addBookingLogic.getPatient(patientID);
             Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
             this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
             this.bookingErrorLabel.setVisible(false);
@@ -102,6 +103,14 @@ public class AddBookingPanel extends BasePanel {
         } catch (DoctorNotFoundException e) {
             this.bookingErrorLabel.setText("The requested doctor is unavailable");
             this.bookingErrorLabel.setVisible(true);
+        } catch (CustomException e) {
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Issue with current session",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
         }
     }
 
@@ -123,7 +132,7 @@ public class AddBookingPanel extends BasePanel {
                     dayCombo.getSelectedItem().toString(),
                     hourCombo.getSelectedItem().toString(),
                     minuteCombo.getSelectedItem().toString(),
-                    this.panelController.getSession().getLoggedInPatient()
+                    this.panelController.getSession().getLoggedInPatientID()
             );
             this.bookingErrorLabel.setVisible(false);
         } catch (CustomException e) {

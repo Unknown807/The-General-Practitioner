@@ -59,7 +59,7 @@ public class ViewBookingsPanel extends BasePanel {
         newBookingButton.addActionListener(e -> {
             panelController.showPage(
                     PageType.ADD_BOOKING,
-                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatient())
+                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
             );
         });
 

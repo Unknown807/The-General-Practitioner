@@ -28,7 +28,7 @@ public class AddBookingLogic implements IAddBooking {
     }
 
     @Override
-    public Booking createNewBooking(String date, String hour, String minute, Patient patient) throws CustomException {
+    public Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws CustomException {
         ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
         ErrorCode dateError = this.validator.verifyDate(date);
 
@@ -36,6 +36,7 @@ public class AddBookingLogic implements IAddBooking {
             throw new CustomException("Invalid time values", Arrays.asList(timestampError, dateError));
         }
 
+        Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
         Timestamp bookingDateTime = Timestamp.valueOf(date+" "+hour+":"+minute+":00");
 
@@ -51,6 +52,11 @@ public class AddBookingLogic implements IAddBooking {
     @Override
     public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException {
         return this.dataAccessLayer.getDoctor(patient);
+    }
+
+    @Override
+    public Patient getPatient(Integer patientID) throws CustomException {
+        return this.dataAccessLayer.getPatient(patientID);
     }
 
 
