@@ -38,7 +38,7 @@ public class Session implements Serializable {
     }
 
     public void setLoggedInPatient(Patient patient) {
-        this.loggedInPatientID = patient.getPatientID();
+        this.loggedInPatientID = patient == null ? -1 : patient.getPatientID();
     }
 
     /**
