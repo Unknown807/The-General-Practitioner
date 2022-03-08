@@ -1,10 +1,19 @@
 package com.group15A.GUI;
 
+import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.CustomExceptions.SessionEmptyException;
+import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Notification;
+import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
+import java.util.List;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
@@ -19,13 +28,13 @@ public class HomePanel extends BasePanel {
     private JPanel homePanel;
     private JButton logOutButton;
     private JPanel contentScrollPane;
-    private JScrollPane messageScrollPane;
     private JLabel messageLabel;
     private JLabel titleLabel;
     private JPanel messagePanel;
     private JPanel navigationPanel;
     private JButton viewBookingsButton;
     private JButton newBookingButton;
+    private JPanel messageContentPanel;
 
     /**
      * Constructor for the HomePanel class
@@ -39,6 +48,22 @@ public class HomePanel extends BasePanel {
         super("Welcome", "homePanel", panelController);
         //TODO: Read session file to get patient name.
         createActionListeners();
+        if(!panelController.sessionIsEmpty()) {
+            String patientFirstName = panelController.getSession().getLoggedInPatient().getFirstName();
+            titleLabel.setText("Welcome, " + patientFirstName + ".");
+            displayNotifications();
+        }
+    }
+
+    private void displayNotifications()
+    {
+        getNotifications();
+    }
+
+    //TODO: Should be in NotificationLogic
+    private void getNotifications()
+    {
+
     }
 
     /**
@@ -73,7 +98,16 @@ public class HomePanel extends BasePanel {
     private void logOutUser()
     {
         Session.deleteSession();
+        panelController.refreshSession();
         panelController.showPage(PageType.LOGIN);
     }
 
+    private void createUIComponents() {
+        //TODO (for Filip): Finish adding notifications to panel
+        messageContentPanel = new JPanel();
+        for(int i = 0; i < 10; i++){
+            JTextPane messageTextPane = new JTextPane();
+            //messageTextPane.setText();
+        }
+    }
 }
