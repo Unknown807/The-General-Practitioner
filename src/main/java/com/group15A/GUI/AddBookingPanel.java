@@ -54,13 +54,15 @@ public class AddBookingPanel extends BasePanel {
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
-        try {
-            doctor = getPatientDoctor();
-            promptLabel.setText("Book your appointment with Dr " + doctor.getFullName());
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        } catch (DoctorNotFoundException e) {
-            e.printStackTrace();
+        if(!panelController.sessionIsEmpty()) {
+            try {
+                doctor = getPatientDoctor();
+                promptLabel.setText("Book your appointment with Dr " + doctor.getFullName());
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+            } catch (DoctorNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
 
