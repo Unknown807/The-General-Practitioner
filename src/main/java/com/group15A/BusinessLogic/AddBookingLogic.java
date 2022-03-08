@@ -10,11 +10,13 @@ import com.group15A.DataModel.Patient;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
-import javax.print.Doc;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
-public class AddBookingLogic implements IAddBooking {
+/**
+ * @author Milovan Gveric
+ */
+public class AddBookingLogic implements IAddBooking, IBooking {
     private Validator validator;
     private DataAccess dataAccessLayer;
 

@@ -13,8 +13,4 @@ import com.group15A.DataModel.Patient;
  */
 public interface IAddBooking {
     public Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws Exception;
-
-    public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException;
-
-    public Patient getPatient(Integer patientID) throws Exception;
 }
