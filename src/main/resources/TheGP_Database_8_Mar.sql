@@ -32,7 +32,8 @@ CREATE TABLE `booking` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_booking`),
   UNIQUE KEY `id_booking_UNIQUE` (`id_booking`),
-  UNIQUE KEY `timestamp_UNIQUE` (`timestamp`),
+  UNIQUE KEY `booking` (`id_patient`,`booking_time`),
+  UNIQUE KEY `id_doctor` (`id_doctor`,`booking_time`),
   KEY `id_patient_idx` (`id_patient`),
   KEY `id_doctor_idx` (`id_doctor`),
   CONSTRAINT `id_doctor_booking` FOREIGN KEY (`id_doctor`) REFERENCES `doctor` (`id_doctor`),
@@ -125,12 +126,13 @@ CREATE TABLE `notification` (
   `message` varchar(1000) NOT NULL,
   `header` varchar(100) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_new` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id_notif`),
   UNIQUE KEY `id_notif_UNIQUE` (`id_notif`),
   UNIQUE KEY `timestamp_UNIQUE` (`timestamp`),
   KEY `id_patient_idx` (`id_patient`),
   CONSTRAINT `id_patient` FOREIGN KEY (`id_patient`) REFERENCES `patient` (`id_patient`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +141,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,1,'Something crazy has happened!','Warning','2022-03-01 21:46:36');
+INSERT INTO `notification` VALUES (1,1,'Something crazy has happened!','Warning','2022-03-01 21:46:36',_binary ''),(4,3,'New notification','Notification','2022-03-07 19:11:29',_binary '\0');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +155,7 @@ DROP TABLE IF EXISTS `patient`;
 CREATE TABLE `patient` (
   `id_patient` int NOT NULL AUTO_INCREMENT,
   `email` varchar(500) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(1000) DEFAULT NULL,
   `first_name` varchar(1000) NOT NULL,
   `middle_name` varchar(1000) DEFAULT NULL,
   `last_name` varchar(1000) NOT NULL,
@@ -789,6 +791,33 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `notificationNotNew` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `notificationNotNew`(
+	id_notif INT
+)
+BEGIN
+
+	UPDATE notification
+    SET
+		is_new = false
+	WHERE
+		notification.id_notif = id_notif;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `update_booking` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -978,4 +1007,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-03 21:02:55
+-- Dump completed on 2022-03-08 19:47:06
