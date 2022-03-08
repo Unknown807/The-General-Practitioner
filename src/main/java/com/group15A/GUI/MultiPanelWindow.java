@@ -60,7 +60,7 @@ public class MultiPanelWindow extends JFrame {
         });
 
         // Create pages
-        createPages();
+        // createPages(); // Method called in the above 'refreshSession()'
 
         this.setContentPane(panelCards);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -104,16 +104,6 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
-     * Allows for createPages to be called outside of MultiPanelWindow class.
-     * Useful when another class has updated this class' session and so must refresh
-     * the content of all pages.
-     */
-    public void refreshPages()
-    {
-        createPages();
-    }
-
-    /**
      * Switches to a given JPanel that is in the card layout
      *
      * @param page the page to switch to, contains window title and the required JPanel
@@ -152,7 +142,7 @@ public class MultiPanelWindow extends JFrame {
         } catch (Exception e) {
             System.err.println("Session file not found.\n"+e.getMessage());
         }
-        refreshPages();
+        createPages();
     }
 
     /**
@@ -163,7 +153,7 @@ public class MultiPanelWindow extends JFrame {
     public void setSession(Session session)
     {
         this.session = session;
-        refreshPages();
+        createPages();
     }
 
     /**
