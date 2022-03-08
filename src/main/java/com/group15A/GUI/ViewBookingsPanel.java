@@ -1,12 +1,10 @@
 package com.group15A.GUI;
 
-import com.group15A.BusinessLogic.AddBookingLogic;
 import com.group15A.BusinessLogic.ViewBookingLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
-import com.group15A.DataModel.Patient;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
@@ -27,6 +25,7 @@ public class ViewBookingsPanel extends BasePanel {
     private JPanel bookingsPanel;
     private JLabel messageLabel;
     private JButton newBookingButton;
+    private JScrollPane bookingsScrollPanel;
     private JPanel bookingsDisplayPanel;
 
     private ViewBookingLogic viewBookingLogic;
@@ -89,14 +88,23 @@ public class ViewBookingsPanel extends BasePanel {
         gbc.weightx = 1;
         gbc.weighty = 1;
 
+        Color color1 = new Color(144, 176, 30);
+        Color color2 = new Color(30, 176, 132);
+
+        Boolean colorFlag = true;
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
             JLabel bookingLabel = new JLabel();
             bookingLabel.setText("Booking on "+b.getBookingTime()+" with Dr "+doctor.getFullName());
-            bookingLabel.setFont(new Font("", Font.BOLD, 30));
+            bookingLabel.setFont(new Font("", Font.BOLD, 25));
+            bookingLabel.setForeground(colorFlag ? color1 : color2);
+            bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
+            bookingLabel.setHorizontalAlignment(JLabel.CENTER);
 
             bookingLabelsList.add(bookingLabel);
             bookingsDisplayPanel.add(bookingLabel, gbc);
+
+            colorFlag = !colorFlag;
         }
     }
 
