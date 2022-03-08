@@ -118,8 +118,8 @@ public class AddBookingPanel extends BasePanel {
     private void createNewBooking() {
         try {
             this.addBookingLogic.createNewBooking(
-                    yearCombo.getSelectedItem().toString(),
-                    monthCombo.getSelectedItem().toString(),
+                    yearCombo.getSelectedItem().toString()+"-"+
+                    monthCombo.getSelectedItem().toString()+"-"+
                     dayCombo.getSelectedItem().toString(),
                     hourCombo.getSelectedItem().toString(),
                     minuteCombo.getSelectedItem().toString(),

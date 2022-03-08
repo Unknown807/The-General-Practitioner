@@ -65,7 +65,7 @@ public class RegisterLogic implements IRegister {
                 this.validator.verifyFirstName(fName),
                 this.validator.verifyMiddleName(mName),
                 this.validator.verifyLastName(lName),
-                this.validator.verifyDoB(DoB),
+                this.validator.verifyDate(DoB),
                 this.validator.verifyGender(gender),
                 this.validator.verifyPhoneNo(phoneNo),
                 this.validator.verifyEmail(email),

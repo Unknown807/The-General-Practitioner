@@ -181,10 +181,15 @@ public class Validator {
     public ErrorCode verifyTimestamp(String hour, String minute) {
         Boolean hourNotNum = !isNum(hour);
         Boolean minuteNotNum = !isNum(minute);
+
+        if (hourNotNum || minuteNotNum) {
+            return ErrorCode.WRONG_TIME;
+        }
+
         Boolean wrongHourRange = !GenericValidator.isInRange(Integer.parseInt(hour), 9, 17);
         Boolean wrongMinuteRange = !GenericValidator.isInRange(Integer.parseInt(minute), 0, 55);
 
-        if (hourNotNum || minuteNotNum || wrongHourRange || wrongMinuteRange) {
+        if (wrongHourRange || wrongMinuteRange) {
             return ErrorCode.WRONG_TIME;
         }
 
