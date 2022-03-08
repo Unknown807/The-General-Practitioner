@@ -32,13 +32,13 @@ public class AddBookingPanel extends BasePanel {
     public AddBookingPanel(MultiPanelWindow panelController)
     {
         super("New Booking", "addBookingPanel", panelController);
-        JWidgetShortcuts.addNumbersToCombo(dayCombo,1,31,1,"Day");
-        JWidgetShortcuts.addNumbersToCombo(monthCombo,1,12,1,"Month");
+        JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
+        JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
         int year = 2022;
-        JWidgetShortcuts.addNumbersToCombo(yearCombo,year,year+10,1,null);
+        JWidgetShortcuts.addItemsToCombo(yearCombo,year,year+10,1,null);
 
-        JWidgetShortcuts.addNumbersToCombo(hourCombo,9,17,1,"Hour");
-        JWidgetShortcuts.addNumbersToCombo(minuteCombo,0,55,5,"Minute");
+        JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
+        JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");
         createActionListeners();
     }
 

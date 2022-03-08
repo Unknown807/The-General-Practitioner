@@ -16,7 +16,7 @@ import java.util.List;
 public class DataAccess implements IDataAccess
 {
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "lZWzuM3fuz5okeUSwE";
+    private static final String DB_PASSWORD = "root";
 
     private Connection connection;
 
@@ -392,7 +392,7 @@ public class DataAccess implements IDataAccess
             return booking;
         }catch (Exception ex)
         {
-            throw new DatabaseException("Could not get certifications from the database");
+            throw new DatabaseException("Could not get booking from the database");
         }
     }
 
@@ -533,10 +533,156 @@ public class DataAccess implements IDataAccess
         } catch (Exception ex)
         {
             System.err.println(ex);
+            throw new DatabaseException("Could not update booking in the database");
+        }
+    }
+
+    /**
+     * Get the notification with the given id from the database
+     * @param notificationID The id of the notification
+     * @return The notification
+     * @throws DatabaseException if there was an error querying the database
+     */
+    @Override
+    public Notification getNotification(int notificationID) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notification(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notificationID);
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+            Notification notification = new Notification(
+                    result.getInt("id_notif"),
+                    result.getInt("id_patient"),
+                    result.getString("header"),
+                    result.getString("message"),
+                    result.getTimestamp("booking_time")
+            );
+
+            return notification;
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get notification from the database");
+        }
+    }
+
+
+    /**
+     * Create notification
+     * @param patient The patient
+     * @param header The header of the notification
+     * @param message The main body of the notification
+     * @return The Notification from the database
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException
+    {
+        try {
+            String query = "CALL insert_notification(?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setString(2, header);
+            statement.setString(3, message);
+
+            statement.executeQuery();
+
+            var notifications = getNotifications();
+            return notifications.get(notifications.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
             throw new DatabaseException("Could not insert booking in the database");
         }
     }
 
+    /**
+     * Get the notifications of the given patient
+     * @param patient The patient
+     * @return The patient's notifications
+     * @throws DatabaseException
+     */
+    @Override
+    public List<Notification> getNotifications(Patient patient) throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notifications_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            ResultSet result = statement.executeQuery();
+
+            return getNotificationsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get notifications from the database");
+        }
+    }
+
+    /**
+     * Set the given notification as seen
+     * @param notification The notification
+     * @return The corresponding notification in the database
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Notification setNotificationSeen(Notification notification) throws DatabaseException
+    {
+        try{
+            String query = "CALL notificationNotNew(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notification.getNotifID());
+
+            statement.executeQuery();
+
+            return getNotification(notification.getNotifID());
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not update the notification");
+        }
+    }
+
+    /**
+     * Get all notifications from the database
+     * @return The notifications
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    private List<Notification> getNotifications() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_notifications();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getNotificationsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get notifications from the database");
+        }
+    }
+
+    /**
+     * Get a list of notifications from the given result set
+     * @param result The result set
+     * @return The list of notifications
+     * @throws SQLException if there was a problem retrieving the bookings
+     */
+    private List<Notification> getNotificationsFromDB(ResultSet result) throws SQLException
+    {
+        var notifications = new ArrayList<Notification>();
+        while (result.next()) {
+            notifications.add(new Notification(
+                    result.getInt("id_notif"),
+                    result.getInt("id_patient"),
+                    result.getString("header"),
+                    result.getString("message"),
+                    result.getTimestamp("timestamp")
+            ));
+        }
+
+        return notifications;
+    }
 
     /**
      * Delete the patient with the given id

@@ -10,7 +10,12 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -271,4 +276,5 @@ public class DataAccessTest extends TestCase {
             fail();
         }
     }
+
 }

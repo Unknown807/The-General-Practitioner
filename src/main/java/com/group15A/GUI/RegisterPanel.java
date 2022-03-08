@@ -77,6 +77,7 @@ public class RegisterPanel extends BasePanel {
     private JPanel datePanel;
     private JLabel doctorLabel;
     private JButton chooseDoctorButton;
+    private JLabel doctorErrorLabel;
     private JComboBox doctorCombo;
 
     private RegisterLogic registerLogic;
@@ -99,9 +100,9 @@ public class RegisterPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
 
-        JWidgetShortcuts.addNumbersToCombo(dayCombo,1,31,1,"Day");
-        JWidgetShortcuts.addNumbersToCombo(monthCombo,1,12,1,"Month");
-        JWidgetShortcuts.addNumbersToCombo(yearCombo,2022,1900,1,"Year");
+        JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
+        JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
+        JWidgetShortcuts.addItemsToCombo(yearCombo,2022,1900,1,"Year");
 
         createErrorMap();
         createActionListeners();
@@ -138,6 +139,7 @@ public class RegisterPanel extends BasePanel {
             put(ErrorCode.WRONG_CONFIRMED_EMAIL, confirmEmailErrorLabel);
             put(ErrorCode.WRONG_PASSWORD, passwordErrorLabel);
             put(ErrorCode.WRONG_CONFIRMED_PASSWORD, confirmPasswordErrorLabel);
+            put(ErrorCode.DOCTOR_NOT_CHOSEN, doctorErrorLabel);
         }};
     }
 
@@ -199,8 +201,7 @@ public class RegisterPanel extends BasePanel {
                 confirmEmailField.getText(),
                 new String(passwordField.getPassword()),
                 new String(confirmPasswordField.getPassword()),
-                null
-                //doctorsList.get(doctorCombo.getSelectedIndex())
+                chosenDoctor
             );
 
             Session currentSession = panelController.getSession();
@@ -210,6 +211,7 @@ public class RegisterPanel extends BasePanel {
 
             panelController.showPage(PageType.HOME);
         } catch (CustomException e) {
+            clearErrorLabels();
             setErrorLabels(e);
         }
 
@@ -223,14 +225,17 @@ public class RegisterPanel extends BasePanel {
      *
      * @param e The customException, contains a list of error codes.
      */
-    public void setErrorLabels(CustomException e)
+    private void setErrorLabels(CustomException e)
     {
         List<ErrorCode> errorCodes = e.getErrorList();
+        for (ErrorCode errorCode : errorCodes) {
+            errorLabelCodes.get(errorCode).setVisible(true);
+        }
+    }
 
-        Boolean visibleValue;
-        for (ErrorCode errorCode : errorLabelCodes.keySet()) {
-            visibleValue = errorCodes.contains(errorCode);
-            errorLabelCodes.get(errorCode).setVisible(visibleValue);
+    private void clearErrorLabels() {
+        for (JLabel errorLabel : errorLabelCodes.values()) {
+            errorLabel.setVisible(false);
         }
     }
 

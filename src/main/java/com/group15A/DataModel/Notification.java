@@ -1,9 +1,6 @@
 package com.group15A.DataModel;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -14,34 +11,24 @@ import java.util.Objects;
  */
 public class Notification {
 
-    private Integer NotifID;
-    private Integer doctorID;
+    private Integer notifID;
     private Integer patientID;
     private String message;
+    private String header;
     private Timestamp timestamp;
+    private boolean isNew;
 
-    public Notification(Integer notifID, Integer doctorID, Integer patientID, String message, Timestamp timestamp) {
-        NotifID = notifID;
-        this.doctorID = doctorID;
+    public Notification(Integer notifID, Integer patientID, String header, String message, Timestamp timestamp) {
+        this.notifID = notifID;
         this.patientID = patientID;
+        this.header = header;
         this.message = message;
         this.timestamp = timestamp;
+        isNew = true;
     }
 
     public Integer getNotifID() {
-        return NotifID;
-    }
-
-    public void setNotifID(Integer notifID) {
-        NotifID = notifID;
-    }
-
-    public Integer getDoctorID() {
-        return doctorID;
-    }
-
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
+        return notifID;
     }
 
     public Integer getPatientID() {
@@ -64,27 +51,39 @@ public class Notification {
         return timestamp;
     }
 
+    public boolean getIsNew()
+    {
+        return isNew;
+    }
+
+    public void setIsNew(boolean isNew) {this.isNew = isNew;}
+
+    public String getHeader() {return header;}
+
+    public void setHeader(String header) {this.header = header;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(NotifID, that.NotifID) && Objects.equals(doctorID, that.doctorID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(timestamp, that.timestamp);
+        return Objects.equals(notifID, that.notifID) && Objects.equals(patientID, that.patientID) && Objects.equals(message, that.message) && Objects.equals(header, that.header) && Objects.equals(timestamp, that.timestamp) && isNew==that.isNew;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(NotifID, doctorID, patientID, message, timestamp);
+        return Objects.hash(notifID, patientID, header, message, timestamp, isNew);
     }
 
     @Override
     public String toString() {
         return "Notification{" +
-                "NotifID=" + NotifID +
-                ", doctorID=" + doctorID +
+                "NotifID=" + notifID +
                 ", patientID=" + patientID +
+                ", header='" + header + '\'' +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +
+                ", isNew=" + isNew +
                 '}';
     }
 }
