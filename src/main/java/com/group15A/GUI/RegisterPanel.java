@@ -192,9 +192,9 @@ public class RegisterPanel extends BasePanel {
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
-                yearCombo.getSelectedItem().toString()+"-"+
-                    monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(),
+            yearCombo.getSelectedItem().toString()+"-"+
+                monthCombo.getSelectedItem().toString()+"-"+
+                dayCombo.getSelectedItem().toString(),
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
                 emailField.getText(),

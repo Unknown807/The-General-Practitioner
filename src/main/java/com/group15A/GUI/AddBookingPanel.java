@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.AddBookingLogic;
 import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.DataModel.Doctor;
@@ -111,19 +112,22 @@ public class AddBookingPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        //createBookingButton.addActionListener(e -> this.createNewBooking());
+        createBookingButton.addActionListener(e -> this.createNewBooking());
     }
 
-//    private void createNewBooking() {
-//        try {
-//            this.addBookingLogic.createNewBooking(
-//                    yearCombo.getSelectedItem().toString()+"-"+
-//                            monthCombo.getSelectedItem().toString()+"-"+
-//                            dayCombo.getSelectedItem().toString()()+"-"+
-//            );
-//        } catch (Exception e) {
-//
-//        }
-//    }
+    private void createNewBooking() {
+        try {
+            this.addBookingLogic.createNewBooking(
+                    yearCombo.getSelectedItem().toString(),
+                    monthCombo.getSelectedItem().toString(),
+                    dayCombo.getSelectedItem().toString(),
+                    hourCombo.getSelectedItem().toString(),
+                    minuteCombo.getSelectedItem().toString(),
+                    this.panelController.getSession().getLoggedInPatient()
+            );
+        } catch (CustomException e) {
+
+        }
+    }
 
 }
