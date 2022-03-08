@@ -2,6 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,7 +56,12 @@ public class ViewBookingsPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        newBookingButton.addActionListener(e -> {panelController.showPage(PageType.ADD_BOOKING);});
+        newBookingButton.addActionListener(e -> {
+            panelController.showPage(
+                    PageType.ADD_BOOKING,
+                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatient())
+            );
+        });
 
     }
 

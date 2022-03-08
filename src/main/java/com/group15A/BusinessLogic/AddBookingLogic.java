@@ -1,8 +1,10 @@
 package com.group15A.BusinessLogic;
 
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
+import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 
 import java.sql.Timestamp;
@@ -23,6 +25,11 @@ public class AddBookingLogic implements IAddBooking {
     public Booking createNewBooking(Date bookingDate, Timestamp bookingTime, Patient patient) throws Exception {
         System.out.println("Created booking");
         return null;
+    }
+
+    @Override
+    public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException {
+        return this.dataAccessLayer.getDoctor(patient);
     }
 
 

@@ -3,6 +3,7 @@ package com.group15A.GUI;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 
@@ -64,7 +65,12 @@ public class HomePanel extends BasePanel {
     public void createActionListeners() {
         logOutButton.addActionListener(e -> {logOutUser();});
         viewBookingsButton.addActionListener(e -> {panelController.showPage(PageType.VIEW_BOOKINGS);});
-        newBookingButton.addActionListener(e -> {panelController.showPage(PageType.ADD_BOOKING);});
+        newBookingButton.addActionListener(e -> {
+            panelController.showPage(
+                    PageType.ADD_BOOKING,
+                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatient())
+            );
+        });
     }
 
     /**
