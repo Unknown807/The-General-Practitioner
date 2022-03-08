@@ -383,8 +383,8 @@ public class DataAccess implements IDataAccess
             result.next();
             Booking booking = new Booking(
                     result.getInt("id_booking"),
-                    result.getInt("id_patient"),
                     result.getInt("id_doctor"),
+                    result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             );
@@ -471,8 +471,8 @@ public class DataAccess implements IDataAccess
         while (result.next()) {
             bookings.add(new Booking(
                     result.getInt("id_booking"),
-                    result.getInt("id_patient"),
                     result.getInt("id_doctor"),
+                    result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             ));
