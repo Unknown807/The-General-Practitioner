@@ -11,7 +11,7 @@ import java.io.*;
  * @author Andrei Constantin
  */
 public class Session implements Serializable {
-    private Patient loggedInPatient = null;
+    private int loggedInPatientID;
     private boolean keepLoggedIn = false;
 
     /**
@@ -21,12 +21,12 @@ public class Session implements Serializable {
      */
     public Session(Patient patient, boolean keepLoggedIn)
     {
-        this.loggedInPatient = patient;
-        this.keepLoggedIn = keepLoggedIn;
+        setKeepLoggedIn(keepLoggedIn);
+        setLoggedInPatient(patient);
     }
 
-    public Patient getLoggedInPatient() {
-        return loggedInPatient;
+    public int getLoggedInPatientID() {
+        return loggedInPatientID;
     }
 
     public boolean isKeepLoggedIn() {
@@ -38,7 +38,7 @@ public class Session implements Serializable {
     }
 
     public void setLoggedInPatient(Patient patient) {
-        this.loggedInPatient = patient;
+        this.loggedInPatientID = patient.getPatientID();
     }
 
     /**
