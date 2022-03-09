@@ -644,6 +644,25 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Delete the booking from the database
+     * @param booking The booking
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteBooking(Booking booking) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+
+            statement.executeQuery();
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not delete the booking");
+        }
+    }
+
+    /**
      * Get all notifications from the database
      * @return The notifications
      * @throws DatabaseException if there was a problem querying the database
