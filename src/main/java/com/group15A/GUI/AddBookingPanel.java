@@ -1,14 +1,16 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.AddBookingLogic;
+import com.group15A.BusinessLogic.RegisterLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
-import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
-import com.group15A.Session;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 
@@ -34,6 +36,8 @@ public class AddBookingPanel extends BasePanel {
     private Doctor doctor;
     DataAccess dataAccess;
 
+    private AddBookingLogic addBookingLogic;
+
     /**
      *
      */
@@ -50,27 +54,16 @@ public class AddBookingPanel extends BasePanel {
         createActionListeners();
 
         try {
-            dataAccess = new DataAccess();
+            addBookingLogic = new AddBookingLogic();
         } catch (DatabaseException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
         }
-        if(!panelController.sessionIsEmpty()) {
-            try {
-                doctor = getPatientDoctor();
-                promptLabel.setText("Book your appointment with Dr " + doctor.getFullName());
-            } catch (DatabaseException e) {
-                e.printStackTrace();
-            } catch (DoctorNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
-
-    private Doctor getPatientDoctor() throws DatabaseException, DoctorNotFoundException
-    {
-        return dataAccess.getDoctor(panelController.getSession().getLoggedInPatient());
     }
 
     /**
@@ -88,7 +81,39 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair)
     {
+        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+            this.updateDoctorLabels((Integer) pair.getSecond());
+        }
+    }
 
+    private void updateDoctorLabels(Integer patientID) {
+        try {
+            Patient patient = this.addBookingLogic.getPatient(patientID);
+            Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
+            this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
+            this.bookingErrorLabel.setVisible(false);
+
+        } catch(DatabaseException e) {
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
+
+        } catch (DoctorNotFoundException e) {
+            this.bookingErrorLabel.setText("The requested doctor is unavailable");
+            this.bookingErrorLabel.setVisible(true);
+        } catch (CustomException e) {
+            JOptionPane.showMessageDialog(
+                    addBookingPanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Issue with current session",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
+        }
     }
 
     /**
@@ -98,21 +123,28 @@ public class AddBookingPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        createBookingButton.addActionListener(e -> {makeBooking();});
+        createBookingButton.addActionListener(e -> this.createNewBooking());
     }
 
-    /**
-     * TODO: (Fully) implement makeBooking()
-     * Pass the entered data to BusinessLogic.BookingLogic.makeBooking()
-     *
-     */
-    private void makeBooking()
-    {
-        // DUMMY CODE
-        bookingErrorLabel.setVisible(false);
-        boolean bookingSuccess = false;
-        // set bookingSuccess to true
-        bookingErrorLabel.setVisible(!bookingSuccess);
+    private void createNewBooking() {
+        try {
+            this.addBookingLogic.createNewBooking(
+                    yearCombo.getSelectedItem().toString()+"-"+
+                    monthCombo.getSelectedItem().toString()+"-"+
+                    dayCombo.getSelectedItem().toString(),
+                    hourCombo.getSelectedItem().toString(),
+                    minuteCombo.getSelectedItem().toString(),
+                    this.panelController.getSession().getLoggedInPatientID()
+            );
+            this.bookingErrorLabel.setVisible(false);
+            this.panelController.showPage(
+                    PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+            );
+        } catch (CustomException e) {
+            this.bookingErrorLabel.setVisible(true);
+            this.bookingErrorLabel.setText("The requested doctor / booking time is unavailable");
+        }
     }
 
 }

@@ -71,9 +71,12 @@ public class MultiPanelWindow extends JFrame {
 
         // Choose the page to be displayed when starting the program
         PageType pageToShow = PageType.LOGIN; // log in page
-        if(getSession().isKeepLoggedIn()) {
-            System.out.println(getSession().getLoggedInPatient().getFirstName());
-            pageToShow = PageType.HOME; // home page
+        if(file.exists()) {
+            Session savedSession = Session.loadFromFile();
+            if (savedSession.isKeepLoggedIn()) {
+                this.setSession(savedSession);
+                pageToShow = PageType.HOME; // home page
+            }
         }
         showPage(pageToShow);
     }
@@ -113,7 +116,7 @@ public class MultiPanelWindow extends JFrame {
         this.setTitle(nextPanel.getWindowTitle());
         this.cardLayout.show(panelCards, nextPanel.getPanelFieldName());
         for (ReceivePair pair: pairs) {
-            this.cards.get(page).receiveData(pair);
+            nextPanel.receiveData(pair);
         }
     }
 

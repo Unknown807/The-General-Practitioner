@@ -11,7 +11,7 @@ import com.group15A.Session;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
-import org.mockito.internal.matchers.Not;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -143,8 +143,18 @@ public class HomePanel extends BasePanel {
     @Override
     public void createActionListeners() {
         logOutButton.addActionListener(e -> {logOutUser();});
-        viewBookingsButton.addActionListener(e -> {panelController.showPage(PageType.VIEW_BOOKINGS);});
-        newBookingButton.addActionListener(e -> {panelController.showPage(PageType.ADD_BOOKING);});
+        viewBookingsButton.addActionListener(e -> {
+            panelController.showPage(
+                    PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+            );
+        });
+        newBookingButton.addActionListener(e -> {
+            panelController.showPage(
+                    PageType.ADD_BOOKING,
+                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
+            );
+        });
     }
 
     /**

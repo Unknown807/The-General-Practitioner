@@ -76,12 +76,12 @@ public class Validator {
     }
 
     /**
-     * @param DoB date of birth
+     * @param date date of birth
      * @return Error code if DoB is invalid format, otherwise null
      * indicating no error
      */
-    public ErrorCode verifyDoB(String DoB) {
-        if (!GenericValidator.isDate(DoB, "yyyy-MM-dd", false)) {
+    public ErrorCode verifyDate(String date) {
+        if (!GenericValidator.isDate(date, "yyyy-MM-dd", false)) {
             return ErrorCode.WRONG_DATE;
         }
         return null;
@@ -167,6 +167,30 @@ public class Validator {
     public ErrorCode verifyMatchingPasswords(String password, String confirmPassword) {
         if (!password.equals(confirmPassword)) {
             return ErrorCode.WRONG_CONFIRMED_PASSWORD;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param hour
+     * @param minute
+     * @return Error code if hour or minute are not correct time values,
+     * otherwise null, indicating no error
+     */
+    public ErrorCode verifyTimestamp(String hour, String minute) {
+        Boolean hourNotNum = !isNum(hour);
+        Boolean minuteNotNum = !isNum(minute);
+
+        if (hourNotNum || minuteNotNum) {
+            return ErrorCode.WRONG_TIME;
+        }
+
+        Boolean wrongHourRange = !GenericValidator.isInRange(Integer.parseInt(hour), 9, 17);
+        Boolean wrongMinuteRange = !GenericValidator.isInRange(Integer.parseInt(minute), 0, 55);
+
+        if (wrongHourRange || wrongMinuteRange) {
+            return ErrorCode.WRONG_TIME;
         }
 
         return null;
