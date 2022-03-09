@@ -33,6 +33,8 @@ public class AddBookingPanel extends BasePanel {
     private JPanel timeSelectionPanel;
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
+    private Doctor doctor;
+    DataAccess dataAccess;
 
     private AddBookingLogic addBookingLogic;
 

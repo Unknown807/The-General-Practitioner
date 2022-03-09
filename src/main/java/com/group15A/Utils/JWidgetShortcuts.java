@@ -1,6 +1,8 @@
 package com.group15A.Utils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.sql.Timestamp;
 
 /**
  * A collection of methods that can be used on Java Swing widgets
@@ -70,6 +72,38 @@ public class JWidgetShortcuts {
         comboBox.addItem(
             (item < 10) ? "0"+item : ""+item
         );
+    }
+
+    /**
+     * Return a preset GridBagContraints styling that
+     * aligns Components vertically and makes them
+     * fill space on the horizontal axis.
+     *
+     * @return The GridBagConstraints with the stack style.
+     */
+    public static GridBagConstraints getStackGBC()
+    {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        return gbc;
+    }
+
+    /**
+     * Receive a full timestamp and return a shortened string version, with
+     * the second and nanosecond removed
+     * (only date, hour and minute).
+     *
+     * @param timestamp The timestamp to be shortened
+     * @return shortened timestamp string
+     */
+    public static String shortTimestamp(Timestamp timestamp)
+    {
+        return timestamp.toString().substring(0,16);
     }
 
 }

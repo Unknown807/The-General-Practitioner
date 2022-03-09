@@ -68,7 +68,7 @@ public class Session implements Serializable {
      * Load the session from disk
      * @return The session. If the session was not found, return null
      */
-    public static Session loadFromFile()
+    public static Session loadFromFile() throws Exception
     {
         var fileName = getFileName();
         try(ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(fileName)))
@@ -76,8 +76,9 @@ public class Session implements Serializable {
             return (Session) inStream.readObject();
         }
         catch(Exception ex) {
-            System.err.println(ex.getMessage());
-            return null;
+            throw ex;
+            /*System.err.println(ex.getMessage());
+            return null;*/
         }
     }
 
