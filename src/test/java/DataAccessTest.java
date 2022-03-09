@@ -338,5 +338,26 @@ public class DataAccessTest extends TestCase {
         }
     }
 
+    @Test
+    public void testUpdateBooking()
+    {
+        try {
+            Patient patient = dataAccess.getPatient(1);
+            Doctor doctor = dataAccess.getDoctor(patient);
+            var time = Timestamp.valueOf(LocalDateTime.of(2022, Calendar.SEPTEMBER, 5, 15, 15, 0));
+            Booking booking = dataAccess.createBooking(patient, doctor, time);
+            var newTime= Timestamp.valueOf(LocalDateTime.of(2023, Calendar.OCTOBER, 5, 15, 15, 0));
+            booking.setBookingTime(newTime);
+            booking = dataAccess.updateBooking(booking);
+            dataAccess.deleteBooking(booking);
 
+            assertEquals(booking.getPatientID(), patient.getPatientID());
+            assertEquals(booking.getDoctorID(), doctor.getDoctorID());
+            assertEquals(booking.getBookingTime(), newTime);
+
+        } catch(Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        }
+    }
 }
