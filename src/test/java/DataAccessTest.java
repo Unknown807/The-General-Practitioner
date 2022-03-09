@@ -186,7 +186,7 @@ public class DataAccessTest extends TestCase {
 
             //Retrieve the patient from the database by id and by email
             Patient patientById = dataAccess.getPatient(patient.getPatientID());
-            Patient patientByEmail = dataAccess.getPatient(patient.getEmail(), patient.getPassHash());
+            Patient patientByEmail = dataAccess.getPatient(patient.getEmail());
 
             //Check if the patient retrieved by id is the same as the one retrieved by email and password
             assertEquals(patientById, patientByEmail);

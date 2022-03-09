@@ -53,7 +53,7 @@ public class LogInLogic implements ILogIn {
 //        }
 
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt()); // can remove while testing UI
-        Patient loggedInPatient = this.dataAccessLayer.getPatient(email, password);
+        Patient loggedInPatient = this.dataAccessLayer.getPatient(email);
         Session session = new Session(loggedInPatient, stayLoggedIn);
         session.saveToFile();
         return session;
