@@ -9,6 +9,7 @@ public class NotificationDisplay {
     private JLabel headerLabel;
     private JPanel headingContentPanel;
     private JPanel contentPanel;
+    private JButton readButton;
 
     public NotificationDisplay(String header, String date, String message)
     {
@@ -20,5 +21,19 @@ public class NotificationDisplay {
     public JPanel getMainPanel()
     {
         return notificationDisplayPanel;
+    }
+    public JPanel getContentPanel()
+    {
+        return contentPanel;
+    }
+
+    public JButton getReadButton()
+    {
+        return readButton;
+    }
+
+    public JPanel getHeading()
+    {
+        return headingContentPanel;
     }
 }
