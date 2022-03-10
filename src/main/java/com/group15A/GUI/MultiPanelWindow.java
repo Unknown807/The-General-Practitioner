@@ -46,7 +46,7 @@ public class MultiPanelWindow extends JFrame {
         // Create session
         this.session = new Session(null, false);
 
-        // Set session (if file exists)
+        // Set session (if file exists) and creates pages
         refreshSession();
 
         // Set response to window being closed
