@@ -43,7 +43,7 @@ public class LogInLogic implements ILogIn {
      * patient from the database
      */
     @Override
-    public Session login(String email, String password, Boolean stayLoggedIn) throws Exception {
+    public Session login(String email, String password, Boolean stayLoggedIn) throws CustomException {
 //        ErrorCode passError = this.validator.verifyEmail(email);
 //        ErrorCode emailError = this.validator.verifyPassword(password);
 //

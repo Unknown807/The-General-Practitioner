@@ -57,13 +57,7 @@ public class HomePanel extends BasePanel {
         try {
             this.homeLogic = new HomeLogic();
         } catch (CustomException e) {
-            JOptionPane.showMessageDialog(
-                    homePanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
         }
     }
 
@@ -118,12 +112,7 @@ public class HomePanel extends BasePanel {
             this.notifList = this.homeLogic.getNotifications(patient);
             this.displayNotifications();
         } catch (CustomException e) {
-            JOptionPane.showMessageDialog(
-                    homePanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
         }
 
     }

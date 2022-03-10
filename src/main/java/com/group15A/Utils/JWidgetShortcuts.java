@@ -111,4 +111,15 @@ public class JWidgetShortcuts {
         panel.revalidate();
         panel.repaint();
     }
+
+    public static void showDatabaseExceptionPopupAndExit(JPanel panel) {
+        JOptionPane.showMessageDialog(
+                panel,
+                "Please connect to the database and restart the program.",
+                "ERROR: Database not connected",
+                JOptionPane.ERROR_MESSAGE
+        );
+        System.exit(0);
+    }
+
 }

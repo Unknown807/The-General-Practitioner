@@ -55,13 +55,7 @@ public class AddBookingPanel extends BasePanel {
         try {
             addBookingLogic = new AddBookingLogic();
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    addBookingPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
         }
     }
 
@@ -93,25 +87,13 @@ public class AddBookingPanel extends BasePanel {
             this.bookingErrorLabel.setVisible(false);
 
         } catch(DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    addBookingPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
 
         } catch (DoctorNotFoundException e) {
             this.bookingErrorLabel.setText("The requested doctor is unavailable");
             this.bookingErrorLabel.setVisible(true);
         } catch (CustomException e) {
-            JOptionPane.showMessageDialog(
-                    addBookingPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Issue with current session",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
         }
     }
 
@@ -140,9 +122,14 @@ public class AddBookingPanel extends BasePanel {
                     PageType.VIEW_BOOKINGS,
                     new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
             );
+        } catch (DoctorNotFoundException e) {
+            this.bookingErrorLabel.setVisible(true);
+            this.bookingErrorLabel.setText("The requested doctor is unavailable");
+        } catch (DatabaseException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
         } catch (CustomException e) {
             this.bookingErrorLabel.setVisible(true);
-            this.bookingErrorLabel.setText("The requested doctor / booking time is unavailable");
+            this.bookingErrorLabel.setText("The requested booking slot is unavailable");
         }
     }
 

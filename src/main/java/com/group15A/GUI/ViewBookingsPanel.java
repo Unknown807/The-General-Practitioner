@@ -46,13 +46,7 @@ public class ViewBookingsPanel extends BasePanel {
             bookingLabelsList = new ArrayList<>();
             viewBookingLogic = new ViewBookingLogic();
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    viewBookingsPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
         }
     }
 
@@ -69,13 +63,7 @@ public class ViewBookingsPanel extends BasePanel {
                 this.messageLabel.setText("You have "+bookingsList.size()+" bookings");
                 this.displayBookings();
             } catch (CustomException e) {
-                JOptionPane.showMessageDialog(
-                        viewBookingsPanel,
-                        "Please connect to the database and restart the program.",
-                        "ERROR: Database not connected",
-                        JOptionPane.ERROR_MESSAGE
-                );
-                System.exit(0);
+                JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
             }
         }
     }
