@@ -1,5 +1,9 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.ViewProfileLogic;
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
@@ -19,6 +23,8 @@ public class ViewProfilePanel extends BasePanel {
     private JButton backButton;
     private JButton changeDoctorButton;
 
+    private ViewProfileLogic viewProfileLogic;
+
     /**
      * Constructor for the ProfilePanel class
      *
@@ -30,7 +36,20 @@ public class ViewProfilePanel extends BasePanel {
     public ViewProfilePanel(MultiPanelWindow panelController) {
         super("View Your Profile", "viewProfilePanel", panelController);
         createActionListeners();
+
+        try {
+            this.viewProfileLogic = new ViewProfileLogic();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    viewProfilePanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
         }
+    }
 
     @Override
     public JPanel getPagePanel() {
@@ -40,7 +59,21 @@ public class ViewProfilePanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair) {
         if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
-
+            try {
+                this.viewProfileLogic.updatePatientDoctor(
+                        this.panelController.getSession().getLoggedInPatientID(),
+                        (Doctor) pair.getSecond()
+                );
+                this.panelController.showPage(PageType.HOME);
+            } catch (CustomException e) {
+                JOptionPane.showMessageDialog(
+                        viewProfilePanel,
+                        "Please connect to the database and restart the program.",
+                        "ERROR: Database not connected",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                System.exit(0);
+            }
         }
     }
 

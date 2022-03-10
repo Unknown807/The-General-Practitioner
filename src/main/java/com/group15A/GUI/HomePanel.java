@@ -144,12 +144,15 @@ public class HomePanel extends BasePanel {
                     new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
             );
         });
+
         newBookingButton.addActionListener(e -> {
             panelController.showPage(
                     PageType.ADD_BOOKING,
                     new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
             );
         });
+
+        viewProfileButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
     }
 
     /**
