@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The interface for ViewBookingLogic
  *
- * @author Milovan Gverics
+ * @author Milovan Gveric
  */
 public interface IViewBooking {
     public List<Booking> getBookings(Integer patientID) throws Exception;

@@ -230,7 +230,11 @@ public class RegisterPanel extends BasePanel {
     {
         List<ErrorCode> errorCodes = e.getErrorList();
         for (ErrorCode errorCode : errorCodes) {
-            errorLabelCodes.get(errorCode).setVisible(true);
+            System.out.println(errorCode);
+            JLabel errLabel = errorLabelCodes.get(errorCode);
+            if (errLabel != null) {
+                errLabel.setVisible(true);
+            }
         }
     }
 

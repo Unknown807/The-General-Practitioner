@@ -68,7 +68,6 @@ public class ViewBookingsPanel extends BasePanel {
                 this.messageLabel.setText("You have "+bookingsList.size()+" bookings");
                 this.displayBookings();
             } catch (CustomException e) {
-                e.printStackTrace();
                 JOptionPane.showMessageDialog(
                         viewBookingsPanel,
                         "Please connect to the database and restart the program.",
