@@ -633,9 +633,11 @@ public class DataAccess implements IDataAccess
 
             statement.executeQuery();
 
-            return getNotification(notification.getNotifID());
+            notification.setIsNew(false);
+            return notification;
         } catch(Exception ex)
         {
+            ex.printStackTrace();
             throw new DatabaseException("Could not update the notification");
         }
     }
