@@ -3,12 +3,10 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.EmailInUseException;
 import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataAccess.DataAccess;
-import com.group15A.DataModel.Booking;
-import com.group15A.DataModel.Certification;
-import com.group15A.DataModel.Doctor;
-import com.group15A.DataModel.Patient;
+import com.group15A.DataModel.*;
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.mockito.internal.matchers.Not;
 
 import java.sql.SQLException;
 import java.sql.Time;
@@ -148,9 +146,8 @@ public class DataAccessTest extends TestCase {
             //Create a new patient
             Doctor doctor = dataAccess.getDoctors().get(0);
             patientFromDb = dataAccess.registerPatient(patient, doctor);
-        } catch (Exception ex) {
+        } catch (CustomException ex) {
             //We expect an exception
-
             try {
                 if(patientFromDb!=null)
                     dataAccess.deletePatient(patientFromDb.getPatientID());
@@ -360,4 +357,34 @@ public class DataAccessTest extends TestCase {
             fail();
         }
     }
+
+    @Test
+    public void testCreateNotification()
+    {
+        Notification notification = null;
+        try
+        {
+            Patient patient = dataAccess.getPatient(1);
+            notification = dataAccess.createNotification(patient, "Test", "This is a test");
+
+            var notifications = dataAccess.getNotifications(patient);
+            Notification notificationFromDB = notifications.get(notifications.size()-1);
+
+            assertEquals(notification, notificationFromDB);
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            fail();
+        } finally {
+            if (notification!=null) {
+                try {
+                    dataAccess.deleteNotification(notification.getNotifID());
+                } catch (DatabaseException e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            }
+        }
+    }
+
 }
