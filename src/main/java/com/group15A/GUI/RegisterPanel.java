@@ -207,6 +207,7 @@ public class RegisterPanel extends BasePanel {
             Session currentSession = panelController.getSession();
             currentSession.setLoggedInPatient(newPatient);
             currentSession.setKeepLoggedIn(false);
+            panelController.refreshPages();
             currentSession.saveToFile();
 
             panelController.showPage(PageType.HOME);

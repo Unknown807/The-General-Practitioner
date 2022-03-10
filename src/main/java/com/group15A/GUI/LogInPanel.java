@@ -92,9 +92,10 @@ public class LogInPanel extends BasePanel {
         try {
             logInLogic = new LogInLogic();
 
-            Session newSession = logInLogic.login(emailField.getText(),
-                             new String(passwordField.getPassword()),
-                             stayLoggedIn
+            Session newSession = logInLogic.login(
+                    emailField.getText(),
+                    passwordField.getPassword().toString(),
+                    stayLoggedIn
             );
             panelController.setSession(newSession);
             panelController.showPage(PageType.HOME);
@@ -103,7 +104,7 @@ public class LogInPanel extends BasePanel {
             // Show error pop up if database is not connected and close program
             JOptionPane.showMessageDialog(
                     null,
-                            "Please connect to the database and restart the program.",
+                            "Please connect to or update the database and restart the program.",
                     "ERROR: Database not connected",
                     JOptionPane.ERROR_MESSAGE
             );
