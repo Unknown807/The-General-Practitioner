@@ -719,6 +719,24 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Delete the notification with the given id
+     * @param notificationID The notification id
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteNotification(int notificationID) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_notification(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notificationID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the notification from the database");
+        }
+    }
+
+    /**
      * Set up the connection to the database
      * @throws DatabaseException if the connection could not be established
      */
