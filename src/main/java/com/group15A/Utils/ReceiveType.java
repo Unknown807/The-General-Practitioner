@@ -13,5 +13,8 @@ public enum ReceiveType {
     RETURN_PAGE,
 
     // View Booking Page
-    PATIENT_ID
+    PATIENT_ID,
+
+    // For Dynamic Events
+    EVENT
 }

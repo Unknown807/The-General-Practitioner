@@ -1,0 +1,32 @@
+package com.group15A.BusinessLogic;
+
+import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.NotificationNotFoundException;
+import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Notification;
+import com.group15A.DataModel.Patient;
+
+import java.util.List;
+
+/**
+ * @author Milovan Gveric
+ */
+public class HomeLogic implements IHome {
+    private DataAccess dataAccess;
+
+    public HomeLogic() throws DatabaseException {
+        this.dataAccess = new DataAccess();
+    }
+
+    @Override
+    public List<Notification> getNotifications(Patient patient) throws CustomException {
+        return this.dataAccess.getNotifications(patient);
+    }
+
+    @Override
+    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
+        return this.dataAccess.getPatient(patientID);
+    }
+}

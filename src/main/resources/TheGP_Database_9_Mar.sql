@@ -38,7 +38,7 @@ CREATE TABLE `booking` (
   KEY `id_doctor_idx` (`id_doctor`),
   CONSTRAINT `id_doctor_booking` FOREIGN KEY (`id_doctor`) REFERENCES `doctor` (`id_doctor`),
   CONSTRAINT `id_patient_booking` FOREIGN KEY (`id_patient`) REFERENCES `patient` (`id_patient`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +155,7 @@ DROP TABLE IF EXISTS `patient`;
 CREATE TABLE `patient` (
   `id_patient` int NOT NULL AUTO_INCREMENT,
   `email` varchar(500) NOT NULL,
-  `password` varchar(1000) DEFAULT NULL,
+  `password` varchar(1000) NOT NULL,
   `first_name` varchar(1000) NOT NULL,
   `middle_name` varchar(1000) DEFAULT NULL,
   `last_name` varchar(1000) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `patient` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `fk_id_doctor` (`id_doctor`),
   CONSTRAINT `fk_id_doctor` FOREIGN KEY (`id_doctor`) REFERENCES `doctor` (`id_doctor`)
-) ENGINE=InnoDB AUTO_INCREMENT=487 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=622 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,7 +177,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'myawesomeemail@gmail.com','password123','Mary',NULL,'Jane','2001-10-18 00:00:00','Female','07581282136',3),(3,'bestpatient@outlook.com','nicePassword@123','Joe','Johnny','Smith','1987-01-02 00:00:00','Male','07454125455',1),(5,'superemail@hotmail.com','superPass','Mary','Rey','Sue','2005-10-10 00:00:00','Female','074545477457',1),(8,'test@test.com','testPass','Johhny','Christopher','Depp','2022-02-18 00:00:00','Male','0859565785',1),(9,'mynewmail@mail.com','myPass','Test',NULL,'Testing','2022-02-24 00:00:00','Male','08858271',1);
+INSERT INTO `patient` VALUES (1,'myawesomeemail@gmail.com','password123','Mary',NULL,'Jane','2001-10-18 00:00:00','Female','07581282136',3),(3,'bestpatient@outlook.com','nicePassword@123','Joe','Johnny','Smith','1987-01-02 00:00:00','Male','07454125455',1),(5,'superemail@hotmail.com','superPass','Mary','Rey','Sue','2005-10-10 00:00:00','Female','074545477457',1),(8,'test@test.com','testPass','Johhny','Christopher','Depp','2022-02-18 00:00:00','Male','0859565785',1),(9,'mynewmail@mail.com','myPass','Test',NULL,'Testing','2022-02-24 00:00:00','Male','08858271',1),(621,'myemail@mail.com','$2a$10$8.uumPE6pciwtYtLGOCVku7SENyvI02uNhJPjm3Q3iQmCjP4QnMLm','Andrei','','Constantin','2001-10-18 00:00:00','Male','0785546985',3);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,12 +333,11 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `find_patient`(
-	IN email VARCHAR(500),
-    IN password VARCHAR(100)
+	IN email VARCHAR(500)
 )
 BEGIN
 	
-    SELECT * FROM patient WHERE patient.email=email AND patient.password = password;
+    SELECT * FROM patient WHERE patient.email=email;
     
 END ;;
 DELIMITER ;
@@ -428,7 +427,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_bookings_patient`(
 )
 BEGIN
 
-	select * from booking where booking.id_patient = id_patient;
+	select * from booking b where b.id_patient = id_patient;
 
 END ;;
 DELIMITER ;
@@ -560,7 +559,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_notification`(
 )
 BEGIN
 
-	SELECT * from notification where notification.id_notif = id_notif;
+	SELECT * from notification n where notification.id_notif = id_notif;
 
 END ;;
 DELIMITER ;
@@ -835,7 +834,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `update_booking`(
     booking_time DATETIME
 )
 BEGIN
-	update booking
+	update booking b
     set
 		booking.id_patient = id_patient,
         booking.id_doctor = id_doctor,
@@ -1007,4 +1006,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-08 19:47:06
+-- Dump completed on 2022-03-09 11:30:03
