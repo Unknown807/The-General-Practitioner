@@ -2,6 +2,8 @@ package com.group15A.Validator;
 
 import com.group15A.Utils.ErrorCode;
 import org.apache.commons.validator.GenericValidator;
+
+import java.sql.Timestamp;
 import java.util.regex.Pattern;
 
 /**
@@ -191,6 +193,21 @@ public class Validator {
 
         if (wrongHourRange || wrongMinuteRange) {
             return ErrorCode.WRONG_TIME;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param timestamp
+     * @return Error code if the selected booking time is before the current date and time,
+     * otherwise null, indicating no error
+     */
+    public ErrorCode verifyDateBeforeToday(String timestamp) {
+        Timestamp bookingTimestamp = Timestamp.valueOf(timestamp);
+        Timestamp today = new Timestamp(System.currentTimeMillis());
+        if (bookingTimestamp.before(today)) {
+            return ErrorCode.IMPOSSIBLE_BOOKING;
         }
 
         return null;
