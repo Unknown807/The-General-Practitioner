@@ -633,9 +633,11 @@ public class DataAccess implements IDataAccess
 
             statement.executeQuery();
 
-            return getNotification(notification.getNotifID());
+            notification.setIsNew(false);
+            return notification;
         } catch(Exception ex)
         {
+            ex.printStackTrace();
             throw new DatabaseException("Could not update the notification");
         }
     }
@@ -715,6 +717,24 @@ public class DataAccess implements IDataAccess
         } catch (Exception ex)
         {
             throw new DatabaseException("Could not delete the patient from the database");
+        }
+    }
+
+    /**
+     * Delete the notification with the given id
+     * @param notificationID The notification id
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteNotification(int notificationID) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_notification(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notificationID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the notification from the database");
         }
     }
 
