@@ -69,6 +69,7 @@ public class HomePanel extends BasePanel {
 
     private void displayNotifications() {
         //messageContentPanel.setLayout(new GridBagLayout());
+        JWidgetShortcuts.clearJPanel(messageContentPanel);
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
         messageLabel.setText("Messages ("+notifList.size()+")");
 

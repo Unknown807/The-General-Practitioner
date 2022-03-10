@@ -106,4 +106,9 @@ public class JWidgetShortcuts {
         return timestamp.toString().substring(0,16);
     }
 
+    public static void clearJPanel(JPanel panel) {
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+    }
 }

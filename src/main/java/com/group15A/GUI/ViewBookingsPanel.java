@@ -5,6 +5,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
+import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
@@ -80,12 +81,8 @@ public class ViewBookingsPanel extends BasePanel {
     }
 
     public void displayBookings() throws CustomException {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.weightx = 1;
-        gbc.weighty = 1;
+        JWidgetShortcuts.clearJPanel(bookingsDisplayPanel);
+        GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
 
         Color color1 = new Color(144, 176, 30);
         Color color2 = new Color(30, 176, 132);
@@ -94,7 +91,7 @@ public class ViewBookingsPanel extends BasePanel {
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
             JLabel bookingLabel = new JLabel();
-            bookingLabel.setText("Booking on "+b.getBookingTime()+" with Dr "+doctor.getFullName());
+            bookingLabel.setText("Booking on "+ JWidgetShortcuts.shortTimestamp(b.getBookingTime())+" with Dr "+doctor.getFullName());
             bookingLabel.setFont(new Font("", Font.BOLD, 25));
             bookingLabel.setForeground(colorFlag ? color1 : color2);
             bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
