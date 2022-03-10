@@ -1,10 +1,9 @@
 package com.group15A.GUI;
 
-import com.group15A.BusinessLogic.NotificationLogic;
-import com.group15A.BusinessLogic.PatientLogic;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.BusinessLogic.HomeLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.Notification;
+import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
@@ -39,8 +38,9 @@ public class HomePanel extends BasePanel {
     private JPanel messageExtraPanel;
     private JScrollPane messageScrollPanel;
     private JButton viewProfileButton;
-    private int patientID;
-    private String patientFirstName;
+
+    private HomeLogic homeLogic;
+    private List<Notification> notifList;
 
     /**
      * Constructor for the HomePanel class
@@ -52,47 +52,39 @@ public class HomePanel extends BasePanel {
      */
     public HomePanel(MultiPanelWindow panelController) {
         super("Welcome", "homePanel", panelController);
-        //TODO: Read session file to get patient name.
         createActionListeners();
-        if(!panelController.sessionIsEmpty()) {
-            try {
-                patientFirstName = new PatientLogic().getPatientFirstName(panelController.getSession());
-            } catch (DatabaseException e) {
-                e.printStackTrace();
-            }
-            titleLabel.setText("Welcome, " + patientFirstName + ".");
-            displayNotifications(panelController.getSession());
+
+        try {
+            this.homeLogic = new HomeLogic();
+        } catch (CustomException e) {
+            JOptionPane.showMessageDialog(
+                    homePanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(0);
         }
     }
 
-    private void displayNotifications(Session session)
-    {
+    private void displayNotifications() {
         //messageContentPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
-        try {
+        messageLabel.setText("Messages ("+notifList.size()+")");
 
-            List<Notification> notifications = getNotifications(session);
-            messageLabel.setText("Messages ("+notifications.size()+")");
-
-            if(!notifications.isEmpty()) {
-                noMessagesLabel.setVisible(false);
-                for (Notification notification : notifications) {
-                    NotificationDisplay notificationDisplay = new NotificationDisplay(
-                            notification.getHeader(),
-                            "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
-                            notification.getMessage()
-                    );
-                    //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
-                    notificationDisplay.getReadButton().addActionListener(e -> {markAsRead();});
-                    messageContentPanel.add(notificationDisplay.getMainPanel(), gbc);
-                }
+        if(!notifList.isEmpty()) {
+            noMessagesLabel.setVisible(false);
+            for (Notification notification : notifList) {
+                NotificationDisplay notificationDisplay = new NotificationDisplay(
+                        notification.getHeader(),
+                        "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
+                        notification.getMessage()
+                );
+                //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
+                notificationDisplay.getReadButton().addActionListener(e -> {markAsRead();});
+                messageContentPanel.add(notificationDisplay.getMainPanel(), gbc);
             }
-        } catch (DatabaseException e) {
-            messageLabel.setText("ERROR: Could not get notifications from the database");
-        } catch (PatientNotFoundException e) {
-            e.printStackTrace();
         }
-
     }
 
 
@@ -103,17 +95,6 @@ public class HomePanel extends BasePanel {
     private void markAsRead()
     {
 
-    }
-
-    /**
-     * TODO: Implement
-     *
-     * Returns a list of notifications for the current patient.
-     * @return
-     * @throws DatabaseException
-     */
-    private List<Notification> getNotifications(Session session) throws DatabaseException, PatientNotFoundException {
-        return new NotificationLogic().getNotifications(session);
     }
 
     /**
@@ -129,8 +110,22 @@ public class HomePanel extends BasePanel {
      * @param pair the received data from another page
      */
     @Override
-    public void receiveData(ReceivePair pair) {}
+    public void receiveData(ReceivePair pair) {
+        try {
+            Patient patient = homeLogic.getPatient(panelController.getSession().getLoggedInPatientID());
+            titleLabel.setText("Welcome, " + patient.getFirstName() + ".");
+            this.notifList = this.homeLogic.getNotifications(patient);
+            this.displayNotifications();
+        } catch (CustomException e) {
+            JOptionPane.showMessageDialog(
+                    homePanel,
+                    "Please connect to the database and restart the program.",
+                    "ERROR: Database not connected",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
 
+    }
 
     /**
      * To create all event handlers, which will point to other methods in the class
