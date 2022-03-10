@@ -29,4 +29,9 @@ public class HomeLogic implements IHome {
     public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
         return this.dataAccessLayer.getPatient(patientID);
     }
+
+    @Override
+    public void readNotification(Notification notification) throws CustomException {
+        this.dataAccessLayer.setNotificationSeen(notification);
+    }
 }

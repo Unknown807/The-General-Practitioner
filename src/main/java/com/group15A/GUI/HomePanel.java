@@ -65,21 +65,33 @@ public class HomePanel extends BasePanel {
         //messageContentPanel.setLayout(new GridBagLayout());
         JWidgetShortcuts.clearJPanel(messageContentPanel);
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
-        messageLabel.setText("Messages ("+notifList.size()+")");
 
+        int unseen = 0;
         if(!notifList.isEmpty()) {
             noMessagesLabel.setVisible(false);
             for (int i=notifList.size()-1; i>=0; i--) {
                 Notification notification = notifList.get(i);
+                if (!notification.isNew()) {
+                    continue;
+                }
+
                 NotificationDisplay notificationDisplay = new NotificationDisplay(
                         notification.getHeader(),
                         "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
                         notification.getMessage()
                 );
+
                 //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
-                notificationDisplay.getReadButton().addActionListener(e -> {markAsRead();});
+                notificationDisplay.getReadButton().addActionListener(e -> {
+                    notificationDisplay.getReadButton().setVisible(false);
+                    this.markAsRead(notification);
+                });
                 messageContentPanel.add(notificationDisplay.getMainPanel(), gbc);
+
+                unseen++;
             }
+
+            messageLabel.setText("Messages ("+unseen+")");
         }
     }
 
@@ -88,9 +100,12 @@ public class HomePanel extends BasePanel {
      *
      * Mark a given notification's isNew attribute to false
      */
-    private void markAsRead()
-    {
-
+    private void markAsRead(Notification notification) {
+        try {
+            this.homeLogic.readNotification(notification);
+        } catch (CustomException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
+        }
     }
 
     /**

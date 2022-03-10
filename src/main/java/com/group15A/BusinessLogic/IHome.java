@@ -14,4 +14,5 @@ import java.util.List;
 public interface IHome {
     public List<Notification> getNotifications(Patient patient) throws Exception;
     public Patient getPatient(Integer patientID) throws Exception;
+    public void readNotification(Notification notification) throws Exception;
 }
