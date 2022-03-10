@@ -69,7 +69,8 @@ public class HomePanel extends BasePanel {
 
         if(!notifList.isEmpty()) {
             noMessagesLabel.setVisible(false);
-            for (Notification notification : notifList) {
+            for (int i=notifList.size()-1; i>=0; i--) {
+                Notification notification = notifList.get(i);
                 NotificationDisplay notificationDisplay = new NotificationDisplay(
                         notification.getHeader(),
                         "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
