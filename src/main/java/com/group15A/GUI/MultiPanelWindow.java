@@ -155,6 +155,14 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
+     * A method for other classes to call createPages()
+     */
+    public void refreshPages()
+    {
+        createPages();
+    }
+
+    /**
      * Sets session and refreshes pages.
      *
      * @param session new session (Patient object and stay-logged-in status)
