@@ -14,19 +14,19 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public class HomeLogic implements IHome {
-    private DataAccess dataAccess;
+    private DataAccess dataAccessLayer;
 
     public HomeLogic() throws DatabaseException {
-        this.dataAccess = new DataAccess();
+        this.dataAccessLayer = new DataAccess();
     }
 
     @Override
     public List<Notification> getNotifications(Patient patient) throws CustomException {
-        return this.dataAccess.getNotifications(patient);
+        return this.dataAccessLayer.getNotifications(patient);
     }
 
     @Override
     public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
-        return this.dataAccess.getPatient(patientID);
+        return this.dataAccessLayer.getPatient(patientID);
     }
 }

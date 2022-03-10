@@ -60,7 +60,7 @@ public class ViewBookingsPanel extends BasePanel {
             Integer patientID = (Integer) pair.getSecond();
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
-                this.messageLabel.setText("You have "+bookingsList.size()+" bookings");
+                this.messageLabel.setText("Bookings ("+bookingsList.size()+")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
