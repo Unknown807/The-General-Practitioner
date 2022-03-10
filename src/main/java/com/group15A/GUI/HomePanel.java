@@ -1,7 +1,10 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.NotificationLogic;
+import com.group15A.BusinessLogic.PatientLogic;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.CustomExceptions.SessionEmptyException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
@@ -46,8 +49,8 @@ public class HomePanel extends BasePanel {
     private JLabel noMessagesLabel;
     private JPanel messageExtraPanel;
     private JScrollPane messageScrollPanel;
-
-    private Patient patientObject;
+    private int patientID;
+    private String patientFirstName;
 
     /**
      * Constructor for the HomePanel class
@@ -62,20 +65,23 @@ public class HomePanel extends BasePanel {
         //TODO: Read session file to get patient name.
         createActionListeners();
         if(!panelController.sessionIsEmpty()) {
-            patientObject = panelController.getSession().getLoggedInPatient();
-            String patientFirstName = patientObject.getFirstName();
+            try {
+                patientFirstName = new PatientLogic().getPatientFirstName(panelController.getSession());
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+            }
             titleLabel.setText("Welcome, " + patientFirstName + ".");
-            displayNotifications();
+            displayNotifications(panelController.getSession());
         }
     }
 
-    private void displayNotifications()
+    private void displayNotifications(Session session)
     {
         //messageContentPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
         try {
 
-            List<Notification> notifications = getNotifications();
+            List<Notification> notifications = getNotifications(session);
             messageLabel.setText("Messages ("+notifications.size()+")");
 
             if(!notifications.isEmpty()) {
@@ -93,6 +99,8 @@ public class HomePanel extends BasePanel {
             }
         } catch (DatabaseException e) {
             messageLabel.setText("ERROR: Could not get notifications from the database");
+        } catch (PatientNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
@@ -114,11 +122,8 @@ public class HomePanel extends BasePanel {
      * @return
      * @throws DatabaseException
      */
-    private List<Notification> getNotifications() throws DatabaseException {
-        //TODO: Should be in NotificationLogic
-        DataAccess dataAccess = new DataAccess();
-        return dataAccess.getNotifications(patientObject);
-//        return Collections.emptyList();
+    private List<Notification> getNotifications(Session session) throws DatabaseException, PatientNotFoundException {
+        return new NotificationLogic().getNotifications(session);
     }
 
     /**
