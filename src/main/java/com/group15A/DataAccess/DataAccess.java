@@ -555,7 +555,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_patient"),
                     result.getString("header"),
                     result.getString("message"),
-                    result.getTimestamp("booking_time")
+                    result.getTimestamp("booking_time"),
+                    result.getBoolean("is_new")
             );
 
             return notification;
@@ -695,7 +696,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_patient"),
                     result.getString("header"),
                     result.getString("message"),
-                    result.getTimestamp("timestamp")
+                    result.getTimestamp("timestamp"),
+                    result.getBoolean("is_new")
             ));
         }
 

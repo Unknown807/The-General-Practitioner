@@ -18,13 +18,13 @@ public class Notification {
     private Timestamp timestamp;
     private boolean isNew;
 
-    public Notification(Integer notifID, Integer patientID, String header, String message, Timestamp timestamp) {
+    public Notification(Integer notifID, Integer patientID, String header, String message, Timestamp timestamp, Boolean isNew) {
         this.notifID = notifID;
         this.patientID = patientID;
         this.header = header;
         this.message = message;
         this.timestamp = timestamp;
-        isNew = true;
+        this.isNew = isNew;
     }
 
     public Integer getNotifID() {
@@ -51,7 +51,7 @@ public class Notification {
         return timestamp;
     }
 
-    public boolean getIsNew()
+    public boolean isNew()
     {
         return isNew;
     }
