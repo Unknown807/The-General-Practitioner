@@ -27,6 +27,7 @@ public class ViewBookingsPanel extends BasePanel {
     private JButton newBookingButton;
     private JScrollPane bookingsScrollPanel;
     private JPanel bookingsDisplayPanel;
+    private JLabel titleLabel;
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
@@ -65,7 +66,8 @@ public class ViewBookingsPanel extends BasePanel {
             Integer patientID = (Integer) pair.getSecond();
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
-                this.messageLabel.setText("You have "+bookingsList.size()+" bookings");
+                this.messageLabel.setVisible(false);
+                this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JOptionPane.showMessageDialog(
