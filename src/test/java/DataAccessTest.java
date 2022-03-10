@@ -387,4 +387,32 @@ public class DataAccessTest extends TestCase {
         }
     }
 
+    @Test
+    public void testSetSeenNotification()
+    {
+        Notification notification = null;
+        try
+        {
+            Patient patient = dataAccess.getPatient(1);
+            notification = dataAccess.createNotification(patient, "Test", "This is a test");
+            assertTrue(notification.getIsNew());
+
+            notification = dataAccess.setNotificationSeen(notification);
+
+            assertFalse(notification.getIsNew());
+
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            fail();
+        } finally {
+            if (notification!=null) {
+                try {
+                    dataAccess.deleteNotification(notification.getNotifID());
+                } catch (DatabaseException e) {
+                    e.printStackTrace();
+                    fail();
+                }
+            }
+        }
+    }
 }
