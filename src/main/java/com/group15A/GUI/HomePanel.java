@@ -3,13 +3,8 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.NotificationLogic;
 import com.group15A.BusinessLogic.PatientLogic;
 import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.CustomExceptions.PatientNotFoundException;
-import com.group15A.CustomExceptions.SessionEmptyException;
-import com.group15A.DataAccess.DataAccess;
-import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Notification;
-import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
@@ -17,13 +12,7 @@ import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.xml.crypto.Data;
 import java.awt.*;
-import java.security.Timestamp;
-import java.security.cert.CollectionCertStoreParameters;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,6 +38,7 @@ public class HomePanel extends BasePanel {
     private JLabel noMessagesLabel;
     private JPanel messageExtraPanel;
     private JScrollPane messageScrollPanel;
+    private JButton viewProfileButton;
     private int patientID;
     private String patientFirstName;
 

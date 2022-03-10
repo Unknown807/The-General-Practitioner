@@ -11,5 +11,6 @@ public enum PageType {
     HOME,
     CHOOSE_DOCTOR,
     VIEW_BOOKINGS,
-    ADD_BOOKING
+    ADD_BOOKING,
+    VIEW_PROFILE,
 }
