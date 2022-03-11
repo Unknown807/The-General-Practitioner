@@ -8,6 +8,7 @@ import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
+import com.group15A.Utils.DataModification;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Validator.Validator;
@@ -57,7 +58,7 @@ public class AddBookingLogic implements IAddBooking {
                 bookingDateTime
         );
 
-        this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ JWidgetShortcuts.shortTimestamp(bookingDateTime)+" with Dr "+doctor.getFullName());
+        this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
 
         return newBooking;
     }

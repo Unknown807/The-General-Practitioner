@@ -74,7 +74,7 @@ public class HomePanel extends BasePanel {
 
                 NotificationDisplay notificationDisplay = new NotificationDisplay(
                         notification.getHeader(),
-                        "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
+                        "("+DataModification.shortDate(notification.getTimestamp())+")",
                         notification.getMessage()
                 );
 
