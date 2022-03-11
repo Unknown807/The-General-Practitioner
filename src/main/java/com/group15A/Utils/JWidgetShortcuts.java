@@ -93,13 +93,20 @@ public class JWidgetShortcuts {
         return gbc;
     }
 
-
+    /**
+     * Regenerate the given JPanel
+     * @param panel The panel to be refreshed
+     */
     public static void clearJPanel(JPanel panel) {
         panel.removeAll();
         panel.revalidate();
         panel.repaint();
     }
 
+    /**
+     * Shows the database exception and then closes the application
+     * @param panel The panel on which to show the error message
+     */
     public static void showDatabaseExceptionPopupAndExit(JPanel panel) {
         JOptionPane.showMessageDialog(
                 panel,
