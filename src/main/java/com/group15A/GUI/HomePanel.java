@@ -58,6 +58,14 @@ public class HomePanel extends BasePanel {
         }
     }
 
+    /**
+     * For each notification in `notifList`,
+     * if it's marked as new,
+     * then create a NotificationDisplay and add it
+     * to the list of notifications on the page
+     *
+     * Then display the number of new bookings
+     */
     private void displayNotifications() {
         //messageContentPanel.setLayout(new GridBagLayout());
         JWidgetShortcuts.clearJPanel(messageContentPanel);
@@ -93,8 +101,7 @@ public class HomePanel extends BasePanel {
     }
 
 
-    /** TODO: Implement
-     *
+    /**
      * Mark a given notification's isNew attribute to false
      */
     private void markAsRead(Notification notification) {
