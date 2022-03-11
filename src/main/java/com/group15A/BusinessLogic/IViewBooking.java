@@ -2,7 +2,6 @@ package com.group15A.BusinessLogic;
 
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
-
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public interface IViewBooking {
-    public List<Booking> getBookings(Integer patientID) throws Exception;
+    List<Booking> getBookings(Integer patientID) throws Exception;
 
-    public Doctor getDoctor(Integer doctorID) throws Exception;
+    Doctor getDoctor(Integer doctorID) throws Exception;
 }

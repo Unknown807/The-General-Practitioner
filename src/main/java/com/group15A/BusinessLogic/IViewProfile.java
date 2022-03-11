@@ -8,5 +8,5 @@ import com.group15A.DataModel.Doctor;
  * @author Milovan Gveric
  */
 public interface IViewProfile {
-    public void updatePatientDoctor(Integer patientID, Doctor newDoctor) throws Exception;
+    void updatePatientDoctor(Integer patientID, Doctor newDoctor) throws Exception;
 }
