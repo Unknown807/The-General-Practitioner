@@ -13,9 +13,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.*;
 
 /**
  * Contains backend functionality that relates to registering
@@ -81,11 +81,13 @@ public class RegisterLogic implements IRegister {
                 (chosenDoctor == null) ? ErrorCode.DOCTOR_NOT_CHOSEN : null
         );
 
+        // Checks if any errors occurred and passes the list of them to display in the UI
         List<ErrorCode> errorsList = errorsStream.filter(Objects::nonNull).collect(Collectors.toList());
         if (errorsList.size() > 0) {
             throw new CustomException("Invalid Form Details", errorsList);
         }
 
+        // Attempt to convert to Date object from SimpleDateFormat, as new Date(String) is deprecated
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date dateConv;
         try {
@@ -94,6 +96,7 @@ public class RegisterLogic implements IRegister {
             throw new CustomException("Invalid date", Arrays.asList(ErrorCode.WRONG_DATE));
         }
 
+        // Hash password
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
         Patient loggedInPatient = this.dataAccessLayer.registerPatient(
