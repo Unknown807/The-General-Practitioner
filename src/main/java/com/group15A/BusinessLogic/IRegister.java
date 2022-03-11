@@ -10,6 +10,6 @@ import com.group15A.DataModel.Patient;
  * @author Wenbo Wu
  */
 public interface IRegister {
-    public Patient register(String fName, String mName, String lName, String DoB, String gender, String phoneNo,
-                            String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws Exception;
+    Patient register(String fName, String mName, String lName, String DoB, String gender, String phoneNo,
+                     String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws Exception;
 }

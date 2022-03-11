@@ -9,5 +9,5 @@ import com.group15A.Session;
  * @author Wenbo Wu
  */
 public interface ILogIn {
-    public Session login(String email, String password, Boolean stayLoggedIn) throws Exception;
+    Session login(String email, String password, Boolean stayLoggedIn) throws Exception;
 }

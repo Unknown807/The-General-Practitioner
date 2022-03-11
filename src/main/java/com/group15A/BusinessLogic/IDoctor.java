@@ -10,5 +10,5 @@ import java.util.List;
  * @author Wenbo Wu
  */
 public interface IDoctor {
-    public List<Doctor> getDoctors() throws Exception;
+    List<Doctor> getDoctors() throws Exception;
 }

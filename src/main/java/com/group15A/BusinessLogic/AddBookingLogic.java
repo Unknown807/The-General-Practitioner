@@ -10,13 +10,14 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Utils.DataModification;
 import com.group15A.Utils.ErrorCode;
-import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Validator.Validator;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
 
 /**
+ * Contains backend functionality that relates to adding new bookings for users
+ *
  * @author Milovan Gveric
  */
 public class AddBookingLogic implements IAddBooking {
@@ -24,7 +25,7 @@ public class AddBookingLogic implements IAddBooking {
     private DataAccess dataAccessLayer;
 
     /**
-     * Constructor for the doctor logic
+     * Constructor for the add booking logic
      * @throws DatabaseException if there was an issue connecting to the database
      */
     public AddBookingLogic() throws DatabaseException {
@@ -32,6 +33,16 @@ public class AddBookingLogic implements IAddBooking {
         this.dataAccessLayer = new DataAccess();
     }
 
+    /**
+     * Verifies the new booking info and calls the DAL method to insert the new
+     * booking into the database
+     * @param date when the booking takes place
+     * @param hour the hour the booking starts
+     * @param minute the minute the booking starts
+     * @param patientID which patient the booking relates to
+     * @return the finalised booking and its details
+     * @throws CustomException If any issues connecting to the database or creating the new booking
+     */
     @Override
     public Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws CustomException {
         ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
@@ -58,16 +69,31 @@ public class AddBookingLogic implements IAddBooking {
                 bookingDateTime
         );
 
+        // Show a new notification that the booking has been made to the user on the home panel
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
 
         return newBooking;
     }
 
+    /**
+     * Gets the doctor associated with the passed in patient
+     * @param patient
+     * @return the patient's doctor
+     * @throws DatabaseException if issues connecting to the database
+     * @throws DoctorNotFoundException if the doctor was not found in the database
+     */
     @Override
     public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException {
         return this.dataAccessLayer.getDoctor(patient);
     }
 
+    /**
+     * Get the patient from the integer id
+     * @param patientID
+     * @return the patient
+     * @throws DatabaseException if issues connecting to the database
+     * @throws PatientNotFoundException if the patient with the passed in ID was not found
+     */
     @Override
     public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
         return this.dataAccessLayer.getPatient(patientID);

@@ -2,7 +2,6 @@ package com.group15A.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Timestamp;
 
 /**
  * A collection of methods that can be used on Java Swing widgets
@@ -93,13 +92,20 @@ public class JWidgetShortcuts {
         return gbc;
     }
 
-
+    /**
+     * Regenerate the given JPanel
+     * @param panel The panel to be refreshed
+     */
     public static void clearJPanel(JPanel panel) {
         panel.removeAll();
         panel.revalidate();
         panel.repaint();
     }
 
+    /**
+     * Shows the database exception and then closes the application
+     * @param panel The panel on which to show the error message
+     */
     public static void showDatabaseExceptionPopupAndExit(JPanel panel) {
         JOptionPane.showMessageDialog(
                 panel,

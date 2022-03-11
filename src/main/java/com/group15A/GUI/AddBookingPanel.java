@@ -1,7 +1,6 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.AddBookingLogic;
-import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
@@ -15,8 +14,13 @@ import com.group15A.Utils.ReceiveType;
 import javax.swing.*;
 
 /**
+ * To allow for communication to the business layer and to take care of event handling
+ *
+ * addBookingPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * in order to show it in the UI
  *
  * @author Filip Fois
+ * @author Milovan Gveric
  */
 public class AddBookingPanel extends BasePanel {
     private JPanel addBookingPanel;
@@ -38,15 +42,19 @@ public class AddBookingPanel extends BasePanel {
     private AddBookingLogic addBookingLogic;
 
     /**
+     * Constructor for AddBookingPanel class
      *
+     * Add options to combo boxes,
+     * create action listeners,
+     * create addBookingLogic field
      */
     public AddBookingPanel(MultiPanelWindow panelController)
     {
-        super("Make new booking", "addBookingPanel", panelController);
+        super("New Booking", "addBookingPanel", panelController);
         JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
         JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
         int year = 2022;
-        JWidgetShortcuts.addItemsToCombo(yearCombo,year,year+5,1,null);
+        JWidgetShortcuts.addItemsToCombo(yearCombo,year,year+10,1,null);
 
         JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
         JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");
@@ -79,19 +87,16 @@ public class AddBookingPanel extends BasePanel {
         }
     }
 
+    /**
+     * Update the name of the doctor in the title label
+     * @param patientID The ID of the patient
+     */
     private void updateDoctorLabels(Integer patientID) {
         try {
             Patient patient = this.addBookingLogic.getPatient(patientID);
             Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
             this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
             this.bookingErrorLabel.setVisible(false);
-
-        } catch(DatabaseException e) {
-            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
-
-        } catch (DoctorNotFoundException e) {
-            this.bookingErrorLabel.setText("The requested doctor is unavailable");
-            this.bookingErrorLabel.setVisible(true);
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
         }
@@ -107,6 +112,12 @@ public class AddBookingPanel extends BasePanel {
         createBookingButton.addActionListener(e -> this.createNewBooking());
     }
 
+    /**
+     * Pass given data to `addBookingLogic.createNewBooking()`,
+     * if successful take the user to the view booking page
+     *
+     * Show relevant error labels when needed
+     */
     private void createNewBooking() {
         try {
             this.addBookingLogic.createNewBooking(
@@ -122,11 +133,14 @@ public class AddBookingPanel extends BasePanel {
                     PageType.VIEW_BOOKINGS,
                     new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
             );
+
         } catch (DoctorNotFoundException e) {
             this.bookingErrorLabel.setVisible(true);
             this.bookingErrorLabel.setText("The requested doctor is unavailable");
+
         } catch (DatabaseException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
+
         } catch (CustomException e) {
             this.bookingErrorLabel.setVisible(true);
             this.bookingErrorLabel.setText("The requested booking slot is unavailable");

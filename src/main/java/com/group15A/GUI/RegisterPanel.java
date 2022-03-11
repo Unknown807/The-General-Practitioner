@@ -175,7 +175,7 @@ public class RegisterPanel extends BasePanel {
 
     /**
      * Try to register patient by passing given inputs to
-     * registerLogic.register method
+     * registerLogic.register() method
      *
      * If registration is successful, go to the home panel,
      * otherwise, show relevant error labels for invalid inputs

@@ -14,7 +14,7 @@ import javax.swing.*;
 /**
  * To allow for communication to the business layer and to take care of event handling
  *
- * profilePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * viewProfilePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
@@ -26,7 +26,7 @@ public class ViewProfilePanel extends BasePanel {
     private JPanel doctorPanel;
     private JButton changeDoctorButton;
     private JLabel titleLabel;
-    private JLabel doctorSectionLabl;
+    private JLabel doctorSectionLabel;
 
     private ViewProfileLogic viewProfileLogic;
 
@@ -48,12 +48,19 @@ public class ViewProfilePanel extends BasePanel {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewProfilePanel);
         }
     }
-
+    /**
+     * @return return viewProfilePanel
+     */
     @Override
     public JPanel getPagePanel() {
         return this.viewProfilePanel;
     }
 
+    /**
+     * Receives chosen doctor and update's the patient's doctor in the database,
+     * then goes back to the previous page (i.e., the home page)
+     * @param pair consists of a key of what data to expect and the value of the data (i.e., the doctor)
+     */
     @Override
     public void receiveData(ReceivePair pair) {
         if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
@@ -69,6 +76,9 @@ public class ViewProfilePanel extends BasePanel {
         }
     }
 
+    /**
+     * Add action listeners to the given events
+     */
     @Override
     public void createActionListeners() {
         backButton.addActionListener(e -> this.panelController.showPage(PageType.HOME));

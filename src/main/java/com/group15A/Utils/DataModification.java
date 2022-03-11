@@ -1,9 +1,7 @@
 package com.group15A.Utils;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * A class storing methods related to changing given data to a different format.

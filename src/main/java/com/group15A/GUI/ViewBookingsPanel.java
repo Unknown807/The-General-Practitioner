@@ -67,6 +67,15 @@ public class ViewBookingsPanel extends BasePanel {
         }
     }
 
+    /**
+     * For each booking in `bookingList`,
+     * create a label containing information about the booking,
+     * then add it the `bookingLabelList` to be displayed
+     *
+     * The colour of each booking alternates
+     *
+     * @throws CustomException when patient's doctor cannot be accessed
+     */
     public void displayBookings() throws CustomException {
         JWidgetShortcuts.clearJPanel(bookingsDisplayPanel);
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
