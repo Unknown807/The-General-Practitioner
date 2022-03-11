@@ -13,7 +13,7 @@
 
 ## Installation ##
 * Unzip the project
-* Run/import the `/src/main/resources/TheGP_Database_22_Feb.sql` script with MySQL to create the local database  
+* Run/import the `/src/main/resources/TheGP_Databe.sql` script with MySQL to create the local database (if the "raw" one doesn't work, try the other one, as a bug may appear on MySQL)
 
 ## Set up ##
 
