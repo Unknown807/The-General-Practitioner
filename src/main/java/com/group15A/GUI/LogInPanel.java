@@ -50,7 +50,7 @@ public class LogInPanel extends BasePanel {
      */
     public LogInPanel(MultiPanelWindow panelController)
     {
-        super("Please Sign In", "logInPanel", panelController);
+        super("Log in", "logInPanel", panelController);
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();

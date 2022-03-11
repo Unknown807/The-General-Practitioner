@@ -95,7 +95,7 @@ public class RegisterPanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
-        super("Enter Your Details", "registerPanel", panelController);
+        super("Register", "registerPanel", panelController);
 
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));

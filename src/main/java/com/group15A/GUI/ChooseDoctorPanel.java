@@ -28,7 +28,6 @@ public class ChooseDoctorPanel extends BasePanel {
     private JButton registerButton;
     private JPanel doctorListPanel;
     private JScrollPane doctorListScrollPane;
-    private JScrollPane contentScrollPanel;
     private JLabel promptLabel;
 
     private PageType returningPage;
@@ -46,7 +45,7 @@ public class ChooseDoctorPanel extends BasePanel {
      */
     public ChooseDoctorPanel(MultiPanelWindow panelController)
     {
-        super("Choose Your New Doctor", "chooseDoctorPanel", panelController);
+        super("New doctor", "chooseDoctorPanel", panelController);
         createActionListeners();
 
         try {
