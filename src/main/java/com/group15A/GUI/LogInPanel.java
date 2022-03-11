@@ -101,7 +101,7 @@ public class LogInPanel extends BasePanel {
         try {
             Session newSession = logInLogic.login(
                     emailField.getText(),
-                    passwordField.getPassword().toString(),
+                    new String(passwordField.getPassword()),
                     stayLoggedIn
             );
             panelController.setSession(newSession);
