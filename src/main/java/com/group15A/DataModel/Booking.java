@@ -1,7 +1,6 @@
 package com.group15A.DataModel;
 
 import java.sql.Timestamp;
-import java.time.LocalTime;
 import java.util.Objects;
 
 /**
@@ -18,6 +17,14 @@ public class Booking {
     private Timestamp bookingTime;
     private Timestamp timestamp;
 
+    /**
+     *
+     * @param bookingID the bookingID when patient do the booking
+     * @param doctorID the doctor id
+     * @param patientID the patient id
+     * @param bookingTime the time the booking
+     * @param timestamp time booking has been created
+     */
     public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
@@ -58,6 +65,12 @@ public class Booking {
         return timestamp;
     }
 
+    /**
+     * Method for equality testing
+     *
+     * @param o
+     * @return whether object 'o' is equal to Booking 'this'
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,11 +79,21 @@ public class Booking {
         return Objects.equals(bookingID, booking.bookingID) && Objects.equals(doctorID, booking.doctorID) && Objects.equals(patientID, booking.patientID) && Objects.equals(bookingTime, booking.bookingTime) && Objects.equals(timestamp, booking.timestamp);
     }
 
+    /**
+     * Hashing for Booking object
+     *
+     * @return hashed object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(bookingID, doctorID, patientID, bookingTime, timestamp);
     }
 
+    /**
+     * toString method for Booking
+     *
+     * @return a textual representation of Booking and its data
+     */
     @Override
     public String toString() {
         return "Booking{" +
