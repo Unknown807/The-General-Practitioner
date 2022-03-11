@@ -30,7 +30,7 @@
                 </constraints>
                 <properties>
                   <font size="20" style="1"/>
-                  <text value="Messages"/>
+                  <text value="New messages"/>
                 </properties>
               </component>
               <scrollpane id="f1288" binding="messageScrollPanel">
