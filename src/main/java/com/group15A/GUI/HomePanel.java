@@ -6,10 +6,7 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataModel.Notification;
 import com.group15A.Session;
-import com.group15A.Utils.JWidgetShortcuts;
-import com.group15A.Utils.PageType;
-import com.group15A.Utils.ReceivePair;
-import com.group15A.Utils.ReceiveType;
+import com.group15A.Utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +76,7 @@ public class HomePanel extends BasePanel {
                 for (Notification notification : notifications) {
                     NotificationDisplay notificationDisplay = new NotificationDisplay(
                             notification.getHeader(),
-                            "("+JWidgetShortcuts.shortTimestamp(notification.getTimestamp())+")",
+                            "("+ DataModification.shortDate(notification.getTimestamp())+")",
                             notification.getMessage()
                     );
                     //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
