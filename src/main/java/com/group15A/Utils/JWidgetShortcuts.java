@@ -93,17 +93,5 @@ public class JWidgetShortcuts {
         return gbc;
     }
 
-    /**
-     * Receive a full timestamp and return a shortened string version, with
-     * the second and nanosecond removed
-     * (only date, hour and minute).
-     *
-     * @param timestamp The timestamp to be shortened
-     * @return shortened timestamp string
-     */
-    public static String shortTimestamp(Timestamp timestamp)
-    {
-        return timestamp.toString().substring(0,16);
-    }
 
 }
