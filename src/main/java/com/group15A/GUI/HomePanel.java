@@ -5,10 +5,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
-import com.group15A.Utils.JWidgetShortcuts;
-import com.group15A.Utils.PageType;
-import com.group15A.Utils.ReceivePair;
-import com.group15A.Utils.ReceiveType;
+import com.group15A.Utils.*;
 
 import javax.swing.*;
 import java.awt.*;

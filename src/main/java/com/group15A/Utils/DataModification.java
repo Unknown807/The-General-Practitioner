@@ -1,5 +1,10 @@
 package com.group15A.Utils;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * A class storing methods related to changing given data to a different format.
  *
@@ -19,4 +24,31 @@ public class DataModification
         }
         return newString;
     }
+
+    /**
+     * Receive a timestamp and return a shortened string version in format:
+     * "dayName, dayNumber nonthName, yearNumber, hour:minute"
+     *
+     * @param timestamp The timestamp to be shortened
+     * @return shortened timestamp string
+     */
+    public static String fullDate(Timestamp timestamp)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM, yyyy, HH:mm");
+        return dateFormat.format(timestamp);
+    }
+
+    /**
+     * Receive a timestamp and return a shortened string version in format:
+     * "dayNumber/monthNumber/yearNumber, hour:minute"
+     *
+     * @param timestamp The timestamp to be shortened
+     * @return shortened timestamp string
+     */
+    public static String shortDate(Timestamp timestamp)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy, HH:mm");
+        return dateFormat.format(timestamp);
+    }
+
 }

@@ -5,10 +5,7 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
-import com.group15A.Utils.JWidgetShortcuts;
-import com.group15A.Utils.PageType;
-import com.group15A.Utils.ReceivePair;
-import com.group15A.Utils.ReceiveType;
+import com.group15A.Utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +25,7 @@ public class ViewBookingsPanel extends BasePanel {
     private JButton newBookingButton;
     private JScrollPane bookingsScrollPanel;
     private JPanel bookingsDisplayPanel;
+    private JLabel titleLabel;
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
@@ -60,7 +58,8 @@ public class ViewBookingsPanel extends BasePanel {
             Integer patientID = (Integer) pair.getSecond();
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
-                this.messageLabel.setText("Bookings ("+bookingsList.size()+")");
+                this.messageLabel.setVisible(false);
+                this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
@@ -78,8 +77,9 @@ public class ViewBookingsPanel extends BasePanel {
         Boolean colorFlag = true;
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
+            //TODO: Refactor bookingLabel as its own GUI form
             JLabel bookingLabel = new JLabel();
-            bookingLabel.setText("Booking on "+ JWidgetShortcuts.shortTimestamp(b.getBookingTime())+" with Dr "+doctor.getFullName());
+            bookingLabel.setText(DataModification.fullDate(b.getBookingTime())+"\n with Dr "+doctor.getFullName());
             bookingLabel.setFont(new Font("", Font.BOLD, 25));
             bookingLabel.setForeground(colorFlag ? color1 : color2);
             bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
