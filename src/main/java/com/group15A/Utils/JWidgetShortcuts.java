@@ -2,7 +2,6 @@ package com.group15A.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Timestamp;
 
 /**
  * A collection of methods that can be used on Java Swing widgets
