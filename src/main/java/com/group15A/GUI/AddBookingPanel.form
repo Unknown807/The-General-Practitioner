@@ -158,7 +158,7 @@
                   <font size="14" style="0"/>
                   <foreground color="-65536"/>
                   <text value="Dr FirstName Lastname is not available at that time"/>
-                  <visible value="true"/>
+                  <visible value="false"/>
                 </properties>
               </component>
               <component id="1bb74" class="javax.swing.JLabel" binding="promptLabel">

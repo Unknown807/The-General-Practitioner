@@ -1,5 +1,6 @@
 package com.group15A.DataModel;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.Objects;
  * @author Milovan Gveric
  * @author Wenbo Wu
  */
-public class Patient {
+public class Patient implements Serializable {
     private Integer patientID;
     private String email;
     private String passHash;

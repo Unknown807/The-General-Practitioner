@@ -95,7 +95,7 @@ public class RegisterPanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public RegisterPanel(MultiPanelWindow panelController) {
-        super("Enter Your Details", "registerPanel", panelController);
+        super("Register", "registerPanel", panelController);
 
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
@@ -111,13 +111,7 @@ public class RegisterPanel extends BasePanel {
             registerLogic = new RegisterLogic();
 
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                      registerPanel,
-                        "Please connect to the database and restart the program.",
-                   "ERROR: Database not connected",
-                        JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(registerPanel);
         }
     }
 
@@ -192,9 +186,9 @@ public class RegisterPanel extends BasePanel {
                 firstNameField.getText(),
                 middleNameField.getText(),
                 lastNameField.getText(),
-                yearCombo.getSelectedItem().toString()+"-"+
-                    monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(),
+            yearCombo.getSelectedItem().toString()+"-"+
+                monthCombo.getSelectedItem().toString()+"-"+
+                dayCombo.getSelectedItem().toString(),
                 sexCombo.getSelectedItem().toString(),
                 phoneField.getText(),
                 emailField.getText(),
@@ -207,6 +201,7 @@ public class RegisterPanel extends BasePanel {
             Session currentSession = panelController.getSession();
             currentSession.setLoggedInPatient(newPatient);
             currentSession.setKeepLoggedIn(false);
+            panelController.refreshPages();
             currentSession.saveToFile();
 
             panelController.showPage(PageType.HOME);
@@ -229,7 +224,11 @@ public class RegisterPanel extends BasePanel {
     {
         List<ErrorCode> errorCodes = e.getErrorList();
         for (ErrorCode errorCode : errorCodes) {
-            errorLabelCodes.get(errorCode).setVisible(true);
+            System.out.println(errorCode);
+            JLabel errLabel = errorLabelCodes.get(errorCode);
+            if (errLabel != null) {
+                errLabel.setVisible(true);
+            }
         }
     }
 

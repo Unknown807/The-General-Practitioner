@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface IDataAccess
 {
-    Patient getPatient(String email, String password) throws CustomException;
+    Patient getPatient(String email) throws CustomException;
 
     Patient getPatient(int patientID) throws CustomException;
 

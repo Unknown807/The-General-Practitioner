@@ -33,24 +33,21 @@ public class DataAccess implements IDataAccess
     /**
      * Get the patient with the given email and password
      * @param email The patient's email
-     * @param password The patient's password
      * @return The patient
      * @throws PatientNotFoundException if the user was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient getPatient(String email, String password) throws PatientNotFoundException, DatabaseException
+    public Patient getPatient(String email) throws PatientNotFoundException, DatabaseException
     {
         try {
-            String query = "CALL find_patient(?, ?);";
+            String query = "CALL find_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
             statement.setString(1, email);
-            statement.setString(2, password);
 
             ResultSet result = statement.executeQuery();
-            Patient patient = getPatientFromDB(result);
 
-            return patient;
+            return getPatientFromDB(result);
         } catch (PatientNotFoundException ex)
         {
             throw ex;
@@ -143,7 +140,7 @@ public class DataAccess implements IDataAccess
 
             statement.executeQuery();
 
-            return getPatient(patient.getEmail(), patient.getPassHash());
+            return getPatient(patient.getEmail());
         } catch (SQLIntegrityConstraintViolationException ex) {
             throw new EmailInUseException();
         } catch (Exception ex)
@@ -164,7 +161,7 @@ public class DataAccess implements IDataAccess
     {
         updatePatientFull(patient, getDoctor(patient));
 
-        return getPatient(patient.getEmail(), patient.getPassHash());
+        return getPatient(patient.getEmail());
     }
 
     /**
@@ -383,8 +380,8 @@ public class DataAccess implements IDataAccess
             result.next();
             Booking booking = new Booking(
                     result.getInt("id_booking"),
-                    result.getInt("id_patient"),
                     result.getInt("id_doctor"),
+                    result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             );
@@ -471,8 +468,8 @@ public class DataAccess implements IDataAccess
         while (result.next()) {
             bookings.add(new Booking(
                     result.getInt("id_booking"),
-                    result.getInt("id_patient"),
                     result.getInt("id_doctor"),
+                    result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
                     result.getTimestamp("timestamp")
             ));
@@ -558,7 +555,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_patient"),
                     result.getString("header"),
                     result.getString("message"),
-                    result.getTimestamp("booking_time")
+                    result.getTimestamp("booking_time"),
+                    result.getBoolean("is_new")
             );
 
             return notification;
@@ -636,10 +634,31 @@ public class DataAccess implements IDataAccess
 
             statement.executeQuery();
 
-            return getNotification(notification.getNotifID());
+            notification.setIsNew(false);
+            return notification;
         } catch(Exception ex)
         {
+            ex.printStackTrace();
             throw new DatabaseException("Could not update the notification");
+        }
+    }
+
+    /**
+     * Delete the booking from the database
+     * @param booking The booking
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteBooking(Booking booking) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+
+            statement.executeQuery();
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not delete the booking");
         }
     }
 
@@ -677,7 +696,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_patient"),
                     result.getString("header"),
                     result.getString("message"),
-                    result.getTimestamp("timestamp")
+                    result.getTimestamp("timestamp"),
+                    result.getBoolean("is_new")
             ));
         }
 
@@ -699,6 +719,24 @@ public class DataAccess implements IDataAccess
         } catch (Exception ex)
         {
             throw new DatabaseException("Could not delete the patient from the database");
+        }
+    }
+
+    /**
+     * Delete the notification with the given id
+     * @param notificationID The notification id
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteNotification(int notificationID) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_notification(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, notificationID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the notification from the database");
         }
     }
 

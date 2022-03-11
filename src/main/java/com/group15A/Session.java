@@ -11,7 +11,7 @@ import java.io.*;
  * @author Andrei Constantin
  */
 public class Session implements Serializable {
-    private Patient loggedInPatient = null;
+    private int loggedInPatientID;
     private boolean keepLoggedIn = false;
 
     /**
@@ -21,12 +21,12 @@ public class Session implements Serializable {
      */
     public Session(Patient patient, boolean keepLoggedIn)
     {
-        this.loggedInPatient = patient;
-        this.keepLoggedIn = keepLoggedIn;
+        setKeepLoggedIn(keepLoggedIn);
+        setLoggedInPatient(patient);
     }
 
-    public Patient getLoggedInPatient() {
-        return loggedInPatient;
+    public int getLoggedInPatientID() {
+        return loggedInPatientID;
     }
 
     public boolean isKeepLoggedIn() {
@@ -38,7 +38,7 @@ public class Session implements Serializable {
     }
 
     public void setLoggedInPatient(Patient patient) {
-        this.loggedInPatient = patient;
+        this.loggedInPatientID = (patient == null) ? -1 : patient.getPatientID();
     }
 
     /**
@@ -68,7 +68,7 @@ public class Session implements Serializable {
      * Load the session from disk
      * @return The session. If the session was not found, return null
      */
-    public static Session loadFromFile()
+    public static Session loadFromFile() throws Exception
     {
         var fileName = getFileName();
         try(ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(fileName)))
@@ -76,8 +76,9 @@ public class Session implements Serializable {
             return (Session) inStream.readObject();
         }
         catch(Exception ex) {
-            System.err.println(ex.getMessage());
-            return null;
+            throw ex;
+            /*System.err.println(ex.getMessage());
+            return null;*/
         }
     }
 

@@ -2,6 +2,10 @@ import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 import junit.framework.TestCase;
 import org.junit.Test;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import static org.junit.Assert.*;
 
 public class ValidatorTest extends TestCase {
@@ -93,23 +97,23 @@ public class ValidatorTest extends TestCase {
     }
 
     @Test
-    public void testVerifyDoBIncorrectFormatAndCorrectErrorCode() {
-        assertEquals(this.validator.verifyDoB("03-03-2002"), ErrorCode.WRONG_DATE);
+    public void testVerifyDateIncorrectFormatAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDate("03-03-2002"), ErrorCode.WRONG_DATE);
     }
 
     @Test
-    public void testVerifyDoBFailureAndCorrectErrorCode() {
-        assertEquals(this.validator.verifyDoB("not_a_date_at_all"), ErrorCode.WRONG_DATE);
+    public void testVerifyDateFailureAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDate("not_a_date_at_all"), ErrorCode.WRONG_DATE);
     }
 
     @Test
-    public void testVerifyDoBCorrectFormatNoZeroPadding() {
-        assertNull(this.validator.verifyDoB("2002-1-5"));
+    public void testVerifyDateCorrectFormatNoZeroPadding() {
+        assertNull(this.validator.verifyDate("2002-1-5"));
     }
 
     @Test
-    public void testVerifyDoBCorrectFormat() {
-        assertNull(this.validator.verifyDoB("2002-01-05"));
+    public void testVerifyDateCorrectFormat() {
+        assertNull(this.validator.verifyDate("2002-01-05"));
     }
 
     @Test
@@ -235,6 +239,50 @@ public class ValidatorTest extends TestCase {
     @Test
     public void testMatchingPasswords() {
         assertNull(this.validator.verifyMatchingPasswords("password1", "password1"));
+    }
+
+    @Test
+    public void testVerifyTimestampHourNotNumAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("hello", "55"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampMinuteNotNumAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("9", "hello"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampWrongHourRangeAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("8", "2"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampWrongMinuteRangeAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("9", "60"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampSuccess() {
+        assertNull(this.validator.verifyTimestamp("9", "55"));
+    }
+
+    @Test
+    public void testBookingDateBeforeTodayAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyDateBeforeToday("2015-05-04 12:00:00.00"), ErrorCode.IMPOSSIBLE_BOOKING);
+    }
+
+    @Test
+    public void testBookingDateAfterTodaySuccess() {
+        // Two days in advance
+        String later = new Timestamp(System.currentTimeMillis()+172800000).toString();
+        assertNull(this.validator.verifyDateBeforeToday(later));
+    }
+
+    @Test
+    public void testBookingDateAfterTodayVeryCloseSuccess() {
+        // One hour in advance
+        String later = new Timestamp(System.currentTimeMillis()+3600000).toString();
+        assertNull(this.validator.verifyDateBeforeToday(later));
     }
 
 }

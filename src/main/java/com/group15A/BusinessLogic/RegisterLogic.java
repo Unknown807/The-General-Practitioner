@@ -5,19 +5,15 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
-import com.group15A.Session;
+import com.group15A.Utils.DataModification;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
-import com.mysql.cj.protocol.a.authentication.Sha256PasswordPlugin;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,11 +59,19 @@ public class RegisterLogic implements IRegister {
      */
     @Override
     public Patient register(String fName, String mName, String lName, String DoB, String gender, String phoneNo, String email, String confirmEmail, String password, String confirmPassword, Doctor chosenDoctor) throws CustomException {
+
+        // Capitalize alphabetic strings
+        fName = DataModification.capitalize(fName);
+        mName = DataModification.capitalize(mName);
+        lName = DataModification.capitalize(lName);
+        email = email.toLowerCase();
+        confirmEmail = confirmEmail.toLowerCase();
+
         Stream<ErrorCode> errorsStream = Stream.of(
                 this.validator.verifyFirstName(fName),
                 this.validator.verifyMiddleName(mName),
                 this.validator.verifyLastName(lName),
-                this.validator.verifyDoB(DoB),
+                this.validator.verifyDate(DoB),
                 this.validator.verifyGender(gender),
                 this.validator.verifyPhoneNo(phoneNo),
                 this.validator.verifyEmail(email),

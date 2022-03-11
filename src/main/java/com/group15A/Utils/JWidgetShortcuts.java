@@ -1,6 +1,8 @@
 package com.group15A.Utils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.sql.Timestamp;
 
 /**
  * A collection of methods that can be used on Java Swing widgets
@@ -70,6 +72,42 @@ public class JWidgetShortcuts {
         comboBox.addItem(
             (item < 10) ? "0"+item : ""+item
         );
+    }
+
+    /**
+     * Return a preset GridBagContraints styling that
+     * aligns Components vertically and makes them
+     * fill space on the horizontal axis.
+     *
+     * @return The GridBagConstraints with the stack style.
+     */
+    public static GridBagConstraints getStackGBC()
+    {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        return gbc;
+    }
+
+
+    public static void clearJPanel(JPanel panel) {
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    public static void showDatabaseExceptionPopupAndExit(JPanel panel) {
+        JOptionPane.showMessageDialog(
+                panel,
+                "Please connect to the database and restart the program.",
+                "ERROR: Database not connected",
+                JOptionPane.ERROR_MESSAGE
+        );
+        System.exit(0);
     }
 
 }
