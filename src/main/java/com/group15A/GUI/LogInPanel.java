@@ -1,8 +1,10 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogInLogic;
+import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.Session;
+import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 
@@ -52,6 +54,12 @@ public class LogInPanel extends BasePanel {
         // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         registerButton.setMargin(new Insets(0,0,0,0));
         createActionListeners();
+
+        try {
+            this.logInLogic = new LogInLogic();
+        } catch (DatabaseException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(logInPanel);
+        }
     }
 
     /**
@@ -89,30 +97,21 @@ public class LogInPanel extends BasePanel {
     private void logInPatient() {
         Boolean stayLoggedIn = stayLoggedInCheckBox.isSelected();
         logInErrorLabel.setVisible(false);
-        try {
-            logInLogic = new LogInLogic();
 
+        try {
             Session newSession = logInLogic.login(
                     emailField.getText(),
-                    passwordField.getPassword().toString(),
+                    new String(passwordField.getPassword()),
                     stayLoggedIn
             );
             panelController.setSession(newSession);
             panelController.showPage(PageType.HOME);
-        }
-        catch (DatabaseException e) {
-            // Show error pop up if database is not connected and close program
-            JOptionPane.showMessageDialog(
-                    null,
-                            "Please connect to or update the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
-        }
-        catch (Exception e) {
+            logInErrorLabel.setVisible(false);
+
+        } catch (CustomException e) {
             logInErrorLabel.setVisible(true);
         }
+
         passwordField.setText("");
     }
 

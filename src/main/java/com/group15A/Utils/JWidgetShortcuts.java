@@ -94,4 +94,20 @@ public class JWidgetShortcuts {
     }
 
 
+    public static void clearJPanel(JPanel panel) {
+        panel.removeAll();
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    public static void showDatabaseExceptionPopupAndExit(JPanel panel) {
+        JOptionPane.showMessageDialog(
+                panel,
+                "Please connect to the database and restart the program.",
+                "ERROR: Database not connected",
+                JOptionPane.ERROR_MESSAGE
+        );
+        System.exit(0);
+    }
+
 }

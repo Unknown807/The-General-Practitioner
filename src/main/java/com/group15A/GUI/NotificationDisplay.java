@@ -22,6 +22,7 @@ public class NotificationDisplay {
     {
         return notificationDisplayPanel;
     }
+
     public JPanel getContentPanel()
     {
         return contentPanel;

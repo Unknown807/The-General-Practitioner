@@ -43,18 +43,22 @@ public class LogInLogic implements ILogIn {
      * patient from the database
      */
     @Override
-    public Session login(String email, String password, Boolean stayLoggedIn) throws Exception {
-//        ErrorCode passError = this.validator.verifyEmail(email);
-//        ErrorCode emailError = this.validator.verifyPassword(password);
-//
-//        // doesn't matter if null is passed in as the same error is made visible in the ui if an error is caught regardless
-//        if (passError != null || emailError != null) {
-//            throw new CustomException("Invalid Email or Password in LogIn", Arrays.asList(passError, emailError));
-//        }
+    public Session login(String email, String password, Boolean stayLoggedIn) throws CustomException {
+        ErrorCode passError = this.validator.verifyEmail(email);
+        ErrorCode emailError = this.validator.verifyPassword(password);
 
-        String passHash = BCrypt.hashpw(password, BCrypt.gensalt()); // can remove while testing UI
-        Patient loggedInPatient = this.dataAccessLayer.getPatient(email);
-        Session session = new Session(loggedInPatient, stayLoggedIn);
+        // doesn't matter if null is passed in as the same error is made visible in the ui if an error is caught regardless
+        if (passError != null || emailError != null) {
+            throw new CustomException("Invalid Email or Password Format in LogIn", Arrays.asList(passError, emailError));
+        }
+
+        Patient patientToLogIn = this.dataAccessLayer.getPatient(email);
+        
+        if (!BCrypt.checkpw(password, patientToLogIn.getPassHash())) {
+            throw new CustomException("Invalid Password", Arrays.asList(ErrorCode.WRONG_PASSWORD));
+        }
+
+        Session session = new Session(patientToLogIn, stayLoggedIn);
         session.saveToFile();
         return session;
     }

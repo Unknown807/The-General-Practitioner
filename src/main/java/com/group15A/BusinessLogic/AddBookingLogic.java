@@ -3,11 +3,13 @@ package com.group15A.BusinessLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Utils.ErrorCode;
+import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Validator.Validator;
 
 import java.sql.Timestamp;
@@ -38,15 +40,24 @@ public class AddBookingLogic implements IAddBooking {
             throw new CustomException("Invalid time values", Arrays.asList(timestampError, dateError));
         }
 
+        String timestamp = date+" "+hour+":"+minute+":00";
+        ErrorCode impossibleDate = this.validator.verifyDateBeforeToday(timestamp);
+
+        if (impossibleDate != null) {
+            throw new CustomException("Can't book on a past date", Arrays.asList(impossibleDate));
+        }
+
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
-        Timestamp bookingDateTime = Timestamp.valueOf(date+" "+hour+":"+minute+":00");
+        Timestamp bookingDateTime = Timestamp.valueOf(timestamp);
 
         Booking newBooking = this.dataAccessLayer.createBooking(
                 patient,
                 doctor,
                 bookingDateTime
         );
+
+        this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ JWidgetShortcuts.shortTimestamp(bookingDateTime)+" with Dr "+doctor.getFullName());
 
         return newBooking;
     }
@@ -57,7 +68,7 @@ public class AddBookingLogic implements IAddBooking {
     }
 
     @Override
-    public Patient getPatient(Integer patientID) throws CustomException {
+    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
         return this.dataAccessLayer.getPatient(patientID);
     }
 

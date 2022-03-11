@@ -395,11 +395,11 @@ public class DataAccessTest extends TestCase {
         {
             Patient patient = dataAccess.getPatient(1);
             notification = dataAccess.createNotification(patient, "Test", "This is a test");
-            assertTrue(notification.getIsNew());
+            assertTrue(notification.isNew());
 
             notification = dataAccess.setNotificationSeen(notification);
 
-            assertFalse(notification.getIsNew());
+            assertFalse(notification.isNew());
 
         } catch(Exception ex) {
             ex.printStackTrace();

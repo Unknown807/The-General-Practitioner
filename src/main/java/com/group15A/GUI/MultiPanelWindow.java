@@ -4,6 +4,7 @@ import com.group15A.CustomExceptions.SessionEmptyException;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.ReceiveType;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -121,6 +122,8 @@ public class MultiPanelWindow extends JFrame {
         BasePanel nextPanel = this.cards.get(page);
         this.setTitle(nextPanel.getWindowTitle());
         this.cardLayout.show(panelCards, nextPanel.getPanelFieldName());
+        // To trigger any passive events in pages, such as dynamically updating notifications on the home panel
+        nextPanel.receiveData(new ReceivePair(ReceiveType.EVENT, null));
         for (ReceivePair pair: pairs) {
             nextPanel.receiveData(pair);
         }

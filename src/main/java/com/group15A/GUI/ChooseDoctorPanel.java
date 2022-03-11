@@ -54,13 +54,7 @@ public class ChooseDoctorPanel extends BasePanel {
             doctorButtons = new ArrayList<JButton>();
             doctorsList = doctorLogic.getDoctors();
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    chooseDoctorPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(chooseDoctorPanel);
         }
 
         addDoctorsToPanel();

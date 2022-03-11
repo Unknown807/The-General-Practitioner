@@ -111,13 +111,7 @@ public class RegisterPanel extends BasePanel {
             registerLogic = new RegisterLogic();
 
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                      registerPanel,
-                        "Please connect to the database and restart the program.",
-                   "ERROR: Database not connected",
-                        JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(registerPanel);
         }
     }
 

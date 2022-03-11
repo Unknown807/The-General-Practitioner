@@ -44,13 +44,7 @@ public class ViewBookingsPanel extends BasePanel {
             bookingLabelsList = new ArrayList<>();
             viewBookingLogic = new ViewBookingLogic();
         } catch (DatabaseException e) {
-            JOptionPane.showMessageDialog(
-                    viewBookingsPanel,
-                    "Please connect to the database and restart the program.",
-                    "ERROR: Database not connected",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            System.exit(0);
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
         }
     }
 
@@ -68,24 +62,14 @@ public class ViewBookingsPanel extends BasePanel {
                 this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
-                JOptionPane.showMessageDialog(
-                        viewBookingsPanel,
-                        "Please connect to the database and restart the program.",
-                        "ERROR: Database not connected",
-                        JOptionPane.ERROR_MESSAGE
-                );
-                System.exit(0);
+                JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
             }
         }
     }
 
     public void displayBookings() throws CustomException {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.weightx = 1;
-        gbc.weighty = 1;
+        JWidgetShortcuts.clearJPanel(bookingsDisplayPanel);
+        GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
 
         Color color1 = new Color(144, 176, 30);
         Color color2 = new Color(30, 176, 132);
