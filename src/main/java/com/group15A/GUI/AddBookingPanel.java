@@ -42,11 +42,11 @@ public class AddBookingPanel extends BasePanel {
      */
     public AddBookingPanel(MultiPanelWindow panelController)
     {
-        super("New Booking", "addBookingPanel", panelController);
+        super("Make new booking", "addBookingPanel", panelController);
         JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
         JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
         int year = 2022;
-        JWidgetShortcuts.addItemsToCombo(yearCombo,year,year+10,1,null);
+        JWidgetShortcuts.addItemsToCombo(yearCombo,year,year+5,1,null);
 
         JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
         JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");

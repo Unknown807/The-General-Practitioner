@@ -22,7 +22,11 @@ import javax.swing.*;
 public class ViewProfilePanel extends BasePanel {
     private JPanel viewProfilePanel;
     private JButton backButton;
+    private JPanel contentPanel;
+    private JPanel doctorPanel;
     private JButton changeDoctorButton;
+    private JLabel titleLabel;
+    private JLabel doctorSectionLabl;
 
     private ViewProfileLogic viewProfileLogic;
 
@@ -35,7 +39,7 @@ public class ViewProfilePanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public ViewProfilePanel(MultiPanelWindow panelController) {
-        super("View Your Profile", "viewProfilePanel", panelController);
+        super("My profile", "viewProfilePanel", panelController);
         createActionListeners();
 
         try {

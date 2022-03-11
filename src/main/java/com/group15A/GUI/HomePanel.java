@@ -48,7 +48,7 @@ public class HomePanel extends BasePanel {
      *                        events from this panel to call showPage
      */
     public HomePanel(MultiPanelWindow panelController) {
-        super("Welcome", "homePanel", panelController);
+        super("Home", "homePanel", panelController);
         createActionListeners();
 
         try {
@@ -88,7 +88,7 @@ public class HomePanel extends BasePanel {
                 unseen++;
             }
 
-            messageLabel.setText("Messages ("+unseen+")");
+            messageLabel.setText("New Messages ("+unseen+")");
         }
     }
 

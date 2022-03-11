@@ -36,7 +36,7 @@ public class ViewBookingsPanel extends BasePanel {
      */
     public ViewBookingsPanel(MultiPanelWindow panelController)
     {
-        super("View Bookings", "viewBookingPanel", panelController);
+        super("My bookings", "viewBookingPanel", panelController);
        // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
         createActionListeners();
 
