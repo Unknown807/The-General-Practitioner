@@ -8,7 +8,6 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.util.Arrays;
 
 /**
@@ -39,6 +38,7 @@ public class LogInLogic implements ILogIn {
      *
      * @param email The email account
      * @param password The password
+     * @param stayLoggedIn flag for saving session when user logs out, so no re-login required next time
      * @throws Exception if there was an issue with the format of the email or password or with retrieving the
      * patient from the database
      */
