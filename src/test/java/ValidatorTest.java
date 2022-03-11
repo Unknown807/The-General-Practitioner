@@ -237,4 +237,29 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyMatchingPasswords("password1", "password1"));
     }
 
+    @Test
+    public void testVerifyTimestampHourNotNumAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("hello", "55"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampMinuteNotNumAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("9", "hello"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampWrongHourRangeAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("8", "2"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampWrongMinuteRangeAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyTimestamp("9", "60"), ErrorCode.WRONG_TIME);
+    }
+
+    @Test
+    public void testVerifyTimestampSuccess() {
+        assertNull(this.validator.verifyTimestamp("9", "55"));
+    }
+
 }
