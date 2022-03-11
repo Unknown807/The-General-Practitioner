@@ -1,6 +1,5 @@
 package com.group15A.GUI;
 
-import com.group15A.CustomExceptions.SessionEmptyException;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
@@ -152,7 +151,7 @@ public class MultiPanelWindow extends JFrame {
         try{
             setSession(Session.loadFromFile());
         } catch (Exception e) {
-            System.err.println("Session file not found.\n"+e.getMessage());
+            System.out.println("Session file not found.\n"+e.getMessage());
         }
         createPages();
     }
