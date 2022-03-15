@@ -376,7 +376,7 @@ public class DataAccessTest extends TestCase {
             if (notification!=null) {
                 try {
                     dataAccess.deleteNotification(notification.getNotifID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     e.printStackTrace();
                     fail();
                 }
@@ -405,7 +405,7 @@ public class DataAccessTest extends TestCase {
             if (notification!=null) {
                 try {
                     dataAccess.deleteNotification(notification.getNotifID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     e.printStackTrace();
                     fail();
                 }
