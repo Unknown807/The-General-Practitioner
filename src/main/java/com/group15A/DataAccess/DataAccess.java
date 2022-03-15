@@ -30,6 +30,22 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Set up the connection to the database
+     * @throws DatabaseException if the connection could not be established
+     */
+    private void setupConnection() throws DatabaseException
+    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not connect to the database");
+        }
+    }
+
+    //region Patient
+    /**
      * Get the patient with the given email and password
      * @param email The patient's email
      * @return The patient
@@ -173,6 +189,87 @@ public class DataAccess implements IDataAccess
         return getPatient(patient.getEmail());
     }
 
+
+    /**
+     * Change the doctor of the given patient
+     * @param patient The patient
+     * @param doctor The new doctor
+     * @return The corresponding patient from the database
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    @Override
+    public Patient changeDoctor(Patient patient, Doctor doctor) throws DatabaseException
+    {
+        try {
+            updatePatientFull(patient, doctor);
+            return getPatient(patient.getPatientID());
+        }catch(CustomException ex)
+        {
+            throw new DatabaseException(ex.getMessage());
+        }
+    }
+
+    /**
+     * Update the given patient with the new information, including a new doctor
+     * @param patient The modified patient
+     * @param doctor The new doctor
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
+     */
+    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException
+    {
+        if(patient==null)
+            throw new NullDataException("Null patient in the updatePatient method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the updatePatient method");
+
+        try {
+            String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setString(2, patient.getEmail());
+            statement.setString(3, patient.getPassHash());
+            statement.setString(4, patient.getFirstName());
+            statement.setString(5, patient.getMiddleName());
+            statement.setString(6, patient.getLastName());
+            if(patient.getDob()==null)
+                throw new CustomException("Date cannot be null");
+            statement.setDate(7, new Date(patient.getDob().getTime()));
+            statement.setString(8, patient.getGender());
+            statement.setString(9, patient.getPhoneNo());
+            statement.setInt(10, doctor.getDoctorID());
+
+            statement.executeQuery();
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not update the patient");
+        }
+    }
+
+    /**
+     * Delete the patient with the given id
+     * @param patientID The patient id
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deletePatient(int patientID) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patientID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the patient from the database");
+        }
+    }
+
+    //endregion
+
+    //region Doctor
     /**
      * Get the corresponding doctor for the given patient
      * @param patient The patient
@@ -254,64 +351,7 @@ public class DataAccess implements IDataAccess
         return doctor;
     }
 
-    /**
-     * Update the given patient with the new information, including a new doctor
-     * @param patient The modified patient
-     * @param doctor The new doctor
-     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
-     * @throws DatabaseException if there was a problem querying the database
-     * @throws EmailInUseException if the email address is already in use
-     */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException
-    {
-        if(patient==null)
-            throw new NullDataException("Null patient in the updatePatient method");
-        if(doctor==null)
-            throw new NullDataException("Null doctor in the updatePatient method");
 
-        try {
-            String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, patient.getPatientID());
-            statement.setString(2, patient.getEmail());
-            statement.setString(3, patient.getPassHash());
-            statement.setString(4, patient.getFirstName());
-            statement.setString(5, patient.getMiddleName());
-            statement.setString(6, patient.getLastName());
-            if(patient.getDob()==null)
-                throw new CustomException("Date cannot be null");
-            statement.setDate(7, new Date(patient.getDob().getTime()));
-            statement.setString(8, patient.getGender());
-            statement.setString(9, patient.getPhoneNo());
-            statement.setInt(10, doctor.getDoctorID());
-
-            statement.executeQuery();
-        } catch (SQLIntegrityConstraintViolationException ex) {
-            throw new EmailInUseException();
-        } catch (Exception ex)
-        {
-            throw new DatabaseException("Could not update the patient");
-        }
-    }
-
-    /**
-     * Change the doctor of the given patient
-     * @param patient The patient
-     * @param doctor The new doctor
-     * @return The corresponding patient from the database
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    @Override
-    public Patient changeDoctor(Patient patient, Doctor doctor) throws DatabaseException
-    {
-        try {
-            updatePatientFull(patient, doctor);
-            return getPatient(patient.getPatientID());
-        }catch(CustomException ex)
-        {
-            throw new DatabaseException(ex.getMessage());
-        }
-    }
 
     /**
      * Get the full list of doctors from the database
@@ -345,6 +385,9 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    //endregion
+
+    //region Certification
     /**
      * Get the certifications of the specified doctor
      * @param doctor The doctor
@@ -377,6 +420,9 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    //endregion
+
+    //region Booking
     /**
      * Get the booking with the specified id
      * @param bookingID The booking id
@@ -550,6 +596,29 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Delete the booking from the database
+     * @param booking The booking
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deleteBooking(Booking booking) throws DatabaseException
+    {
+        try{
+            String query = "CALL delete_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+
+            statement.executeQuery();
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not delete the booking");
+        }
+    }
+
+
+    //endregion
+
+    //region Notification
+    /**
      * Get the notification with the given id from the database
      * @param notificationID The id of the notification
      * @return The notification
@@ -659,25 +728,6 @@ public class DataAccess implements IDataAccess
     }
 
     /**
-     * Delete the booking from the database
-     * @param booking The booking
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    public void deleteBooking(Booking booking) throws DatabaseException
-    {
-        try{
-            String query = "CALL delete_booking(?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, booking.getBookingID());
-
-            statement.executeQuery();
-        } catch(Exception ex)
-        {
-            throw new DatabaseException("Could not delete the booking");
-        }
-    }
-
-    /**
      * Get all notifications from the database
      * @return The notifications
      * @throws DatabaseException if there was a problem querying the database
@@ -719,23 +769,6 @@ public class DataAccess implements IDataAccess
         return notifications;
     }
 
-    /**
-     * Delete the patient with the given id
-     * @param patientID The patient id
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    public void deletePatient(int patientID) throws DatabaseException
-    {
-        try{
-            String query = "CALL delete_patient(?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, patientID);
-            statement.executeQuery();
-        } catch (Exception ex)
-        {
-            throw new DatabaseException("Could not delete the patient from the database");
-        }
-    }
 
     /**
      * Delete the notification with the given id
@@ -755,18 +788,6 @@ public class DataAccess implements IDataAccess
         }
     }
 
-    /**
-     * Set up the connection to the database
-     * @throws DatabaseException if the connection could not be established
-     */
-    private void setupConnection() throws DatabaseException
-    {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
-        }catch (Exception ex)
-        {
-            throw new DatabaseException("Could not connect to the database");
-        }
-    }
+    //endregion
+
 }
