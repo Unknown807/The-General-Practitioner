@@ -736,10 +736,22 @@ public class DataAccess implements IDataAccess
      * @param message The main body of the notification
      * @return The Notification from the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException
+    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createNotification method");
+        if(isNullOrEmpty(header))
+            throw new NullDataException("Null header in the createNotification method");
+        if(isNullOrEmpty(message))
+            throw new NullDataException("Null message in the createNotification method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createNotification method");
+
         try {
             String query = "CALL insert_notification(?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
