@@ -1,5 +1,6 @@
 package com.group15A.DataAccess;
 
+import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 
@@ -48,9 +49,27 @@ public class DataAccessValidator
             return false;
         if(isNullOrEmpty(doctor.getLastName()))
             return false;
-        if(dateAfterToday(doctor.getDob()))
+        if(doctor.getDob()==null || dateAfterToday(doctor.getDob()))
             return false;
 
+        return true;
+    }
+
+    /**
+     * Check if the given booking is valid or not
+     * @param booking The booking to be checked
+     * @return true if the booking is valid, false otherwise
+     */
+    protected static boolean validateBooking(Booking booking)
+    {
+        if(booking.getBookingID()<0)
+            return false;
+        if(booking.getPatientID()<0)
+            return false;
+        if(booking.getDoctorID()<0)
+            return false;
+        if(booking.getBookingTime()==null)
+            return false;
         return true;
     }
 
