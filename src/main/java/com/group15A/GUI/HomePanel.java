@@ -35,6 +35,7 @@ public class HomePanel extends BasePanel {
     private JPanel messageExtraPanel;
     private JScrollPane messageScrollPanel;
     private JButton viewProfileButton;
+    private JButton myActivityButton;
 
     private HomeLogic homeLogic;
     private List<Notification> notifList;
@@ -158,6 +159,8 @@ public class HomePanel extends BasePanel {
         });
 
         viewProfileButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
+
+        myActivityButton.addActionListener(e -> this.panelController.showPage(PageType.LOGGING));
     }
 
     /**
