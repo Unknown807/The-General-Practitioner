@@ -104,7 +104,7 @@ public class ViewBookingsPanel extends BasePanel {
             bookingsDisplayPanel.add(bookingMessageDisplay, gbc);
 
             // Copied from HomePanel.java
-            bookingDisplay.getRescheduleButton().addActionListener(e -> {
+            bookingDisplay.getButton().addActionListener(e -> {
                 this.rescheduleBooking(b);
             });
 

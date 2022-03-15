@@ -6,7 +6,7 @@ import javax.swing.*;
  * The BookingDisplay class is a JPanel
  * that displays booking details in a stylised presentation
  */
-public class BookingDisplay {
+public class BookingDisplay extends MessagePanel{
     private JPanel bookingDisplayPanel;
     private JPanel contentPanel;
     private JPanel headingContentPanel;
@@ -16,18 +16,15 @@ public class BookingDisplay {
 
     public BookingDisplay(String time, String doctor)
     {
-        this.doctorLabel.setText("With Dr. "+doctor);
-        this.bookingInfoLabel.setText("Booking on "+time);
+        super(
+                "",
+                "With Dr. "+doctor,
+                "Booking on "+time,
+                "Reschedule"
+        );
+
+
     }
 
-    public JPanel getMainPanel()
-    {
-        return bookingDisplayPanel;
-    }
-
-    public JButton getRescheduleButton()
-    {
-        return rescheduleButton;
-    }
 
 }
