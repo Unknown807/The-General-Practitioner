@@ -35,6 +35,7 @@ public class ViewProfileLogic implements IViewProfile {
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor oldDoctor = this.dataAccessLayer.getDoctor(patient);
 
+        // Patient should not be able to switch to their existing doctor
         if (oldDoctor.getDoctorID().equals(newDoctor.getDoctorID())) {
             throw new SameDoctorException();
         }

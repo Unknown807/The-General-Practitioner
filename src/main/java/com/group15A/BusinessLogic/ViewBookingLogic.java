@@ -5,6 +5,9 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,9 +34,18 @@ public class ViewBookingLogic implements IViewBooking {
      */
     @Override
     public List<Booking> getBookings(Integer patientID) throws CustomException {
-        return this.dataAccessLayer.getBookings(
-                this.dataAccessLayer.getPatient(patientID)
-        );
+        List<Booking> patientBookings = this.dataAccessLayer.getBookings(this.dataAccessLayer.getPatient(patientID));
+        List<Booking> patientNewBookings = new ArrayList<>();
+        Timestamp today = new Timestamp(System.currentTimeMillis());
+
+        // Remove all old bookings from the return list
+        for (Booking b : patientBookings) {
+            if (b.getBookingTime().after(today)) {
+                patientNewBookings.add(b);
+            }
+        }
+
+        return patientNewBookings;
     }
 
     /**
