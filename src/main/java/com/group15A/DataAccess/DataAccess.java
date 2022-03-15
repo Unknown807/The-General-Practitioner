@@ -178,6 +178,7 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information provided in the object
      * @param patient The modified patient
      * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
      */
@@ -195,18 +196,14 @@ public class DataAccess implements IDataAccess
      * @param patient The patient
      * @param doctor The new doctor
      * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient changeDoctor(Patient patient, Doctor doctor) throws DatabaseException
+    public Patient changeDoctor(Patient patient, Doctor doctor) throws CustomException
     {
-        try {
-            updatePatientFull(patient, doctor);
-            return getPatient(patient.getPatientID());
-        }catch(CustomException ex)
-        {
-            throw new DatabaseException(ex.getMessage());
-        }
+        updatePatientFull(patient, doctor);
+        return getPatient(patient.getPatientID());
     }
 
     /**
