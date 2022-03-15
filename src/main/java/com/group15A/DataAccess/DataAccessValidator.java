@@ -2,6 +2,7 @@ package com.group15A.DataAccess;
 
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
 
 import javax.print.Doc;
@@ -69,6 +70,24 @@ public class DataAccessValidator
         if(booking.getDoctorID()<0)
             return false;
         if(booking.getBookingTime()==null)
+            return false;
+        return true;
+    }
+
+    /**
+     * Check if the given notification is valid or not
+     * @param notification The notification to be checked
+     * @return true if the notification is valid, false otherwise
+     */
+    protected static boolean validateNotification(Notification notification)
+    {
+        if(notification.getNotifID()<0)
+            return false;
+        if(notification.getPatientID()<0)
+            return false;
+        if(isNullOrEmpty(notification.getMessage()))
+            return false;
+        if(isNullOrEmpty(notification.getHeader()))
             return false;
         return true;
     }
