@@ -803,10 +803,17 @@ public class DataAccess implements IDataAccess
      * @param notification The notification
      * @return The corresponding notification in the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Notification setNotificationSeen(Notification notification) throws DatabaseException
+    public Notification setNotificationSeen(Notification notification) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(notification==null)
+            throw new NullDataException("Null notification in the setNotificationSeen method");
+        if(!validateNotification(notification))
+            throw new InvalidDataException("Invalid notification in the setNotification method");
+
         try{
             String query = "CALL notificationNotNew(?);";
             PreparedStatement statement = connection.prepareCall(query);
