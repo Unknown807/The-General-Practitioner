@@ -1,7 +1,4 @@
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.EmailInUseException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.*;
 import junit.framework.TestCase;
@@ -65,7 +62,7 @@ public class DataAccessTest extends TestCase {
             try {
                 if(patientFromDb!=null)
                     dataAccess.deletePatient(patientFromDb.getPatientID());
-            } catch (DatabaseException ex) {
+            } catch (CustomException ex) {
                 System.err.println(ex.getMessage());
             }
         }
@@ -98,7 +95,7 @@ public class DataAccessTest extends TestCase {
                     dataAccess.deletePatient(patientFromDb.getPatientID());
                 if(secondPatient!=null)
                     dataAccess.deletePatient(secondPatient.getPatientID());
-            } catch (DatabaseException ex) {
+            } catch (CustomException ex) {
                 System.err.println(ex.getMessage());
             }
         }
@@ -151,7 +148,7 @@ public class DataAccessTest extends TestCase {
             try {
                 if(patientFromDb!=null)
                     dataAccess.deletePatient(patientFromDb.getPatientID());
-            } catch (DatabaseException dbEx) {
+            } catch (CustomException dbEx) {
                 System.err.println(dbEx.getMessage());
                 return false;
             }
@@ -162,7 +159,7 @@ public class DataAccessTest extends TestCase {
             try {
                 if(patientFromDb!=null)
                     dataAccess.deletePatient(patientFromDb.getPatientID());
-            } catch (DatabaseException ex) {
+            } catch (CustomException ex) {
                 System.err.println(ex.getMessage());
             }
         }
@@ -196,7 +193,7 @@ public class DataAccessTest extends TestCase {
             if(patient!=null) {
                 try {
                     dataAccess.deletePatient(patient.getPatientID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     System.err.println(e.getMessage());
                 }
             }
@@ -234,7 +231,7 @@ public class DataAccessTest extends TestCase {
             if(patient!=null) {
                 try {
                     dataAccess.deletePatient(patient.getPatientID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     System.err.println(e.getMessage());
                 }
             }
@@ -268,7 +265,7 @@ public class DataAccessTest extends TestCase {
             if(patient!=null) {
                 try {
                     dataAccess.deletePatient(patient.getPatientID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     System.err.println(e.getMessage());
                 }
             }
@@ -308,7 +305,7 @@ public class DataAccessTest extends TestCase {
             if(patient!=null) {
                 try {
                     dataAccess.deletePatient(patient.getPatientID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     System.err.println(e.getMessage());
                 }
             }
@@ -379,7 +376,7 @@ public class DataAccessTest extends TestCase {
             if (notification!=null) {
                 try {
                     dataAccess.deleteNotification(notification.getNotifID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     e.printStackTrace();
                     fail();
                 }
@@ -408,7 +405,7 @@ public class DataAccessTest extends TestCase {
             if (notification!=null) {
                 try {
                     dataAccess.deleteNotification(notification.getNotifID());
-                } catch (DatabaseException e) {
+                } catch (CustomException e) {
                     e.printStackTrace();
                     fail();
                 }

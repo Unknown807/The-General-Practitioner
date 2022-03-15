@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.group15A.DataAccess.DataAccessValidator.*;
+
 /**
  * Used to connect to the database and query the database using stored procedures.
  *
@@ -30,15 +32,34 @@ public class DataAccess implements IDataAccess
     }
 
     /**
+     * Set up the connection to the database
+     * @throws DatabaseException if the connection could not be established
+     */
+    private void setupConnection() throws DatabaseException
+    {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not connect to the database");
+        }
+    }
+
+    //region Patient
+    /**
      * Get the patient with the given email and password
      * @param email The patient's email
      * @return The patient
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws PatientNotFoundException if the user was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient getPatient(String email) throws PatientNotFoundException, DatabaseException
+    public Patient getPatient(String email) throws NullDataException, PatientNotFoundException, DatabaseException
     {
+        if(email==null || email.isBlank() || email.isEmpty())
+            throw new NullDataException("Null email in getPatient()");
         try {
             String query = "CALL find_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -89,12 +110,15 @@ public class DataAccess implements IDataAccess
      * Get the patient with the given id
      * @param patientID the patient's id
      * @return The patient
+     * @throws InvalidDataException if an invalid value was sent as a parameter
      * @throws PatientNotFoundException if the user was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient getPatient(int patientID) throws PatientNotFoundException, DatabaseException
+    public Patient getPatient(int patientID) throws InvalidDataException, PatientNotFoundException, DatabaseException
     {
+        if(patientID<0)
+            throw new InvalidDataException("Negative patient ID in the getPatient method");
         try {
             String query = "CALL get_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -104,11 +128,9 @@ public class DataAccess implements IDataAccess
             Patient patient = getPatientFromDB(result);
 
             return patient;
-        } catch (PatientNotFoundException ex)
-        {
+        } catch (PatientNotFoundException ex) {
             throw ex;
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new DatabaseException("Could not get patient from the database");
         }
     }
@@ -118,12 +140,24 @@ public class DataAccess implements IDataAccess
      * @param patient The new patient
      * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if there was a problem querying the database
      * @throws EmailInUseException if the email address is already in use
      */
     @Override
-    public Patient registerPatient(Patient patient, Doctor doctor) throws EmailInUseException, DatabaseException
+    public Patient registerPatient(Patient patient, Doctor doctor) throws NullDataException, EmailInUseException, DatabaseException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the registerPatient method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the registerPatient method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the registerPatient method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the registerPatient method");
+
         try {
             String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -152,8 +186,10 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information provided in the object
      * @param patient The modified patient
      * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
     public Patient updatePatient(Patient patient) throws CustomException
@@ -163,15 +199,109 @@ public class DataAccess implements IDataAccess
         return getPatient(patient.getEmail());
     }
 
+
+    /**
+     * Change the doctor of the given patient
+     * @param patient The patient
+     * @param doctor The new doctor
+     * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
+     */
+    @Override
+    public Patient changeDoctor(Patient patient, Doctor doctor) throws CustomException
+    {
+        updatePatientFull(patient, doctor);
+        return getPatient(patient.getPatientID());
+    }
+
+    /**
+     * Update the given patient with the new information, including a new doctor
+     * @param patient The modified patient
+     * @param doctor The new doctor
+     * @throws InvalidDataException if the data is invalid
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws EmailInUseException if the email address is already in use
+     */
+    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException, InvalidDataException
+    {
+        if(patient==null)
+            throw new NullDataException("Null patient in the updatePatient method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the updatePatient method");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the updatePatientFull method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the updatePatientFull method");
+
+        try {
+            String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            statement.setString(2, patient.getEmail());
+            statement.setString(3, patient.getPassHash());
+            statement.setString(4, patient.getFirstName());
+            statement.setString(5, patient.getMiddleName());
+            statement.setString(6, patient.getLastName());
+            if(patient.getDob()==null)
+                throw new CustomException("Date cannot be null");
+            statement.setDate(7, new Date(patient.getDob().getTime()));
+            statement.setString(8, patient.getGender());
+            statement.setString(9, patient.getPhoneNo());
+            statement.setInt(10, doctor.getDoctorID());
+
+            statement.executeQuery();
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            throw new EmailInUseException();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not update the patient");
+        }
+    }
+
+    /**
+     * Delete the patient with the given id
+     * @param patientID The patient id
+     * @throws InvalidDataException if an invalid value was sent as a parameter
+     * @throws DatabaseException if there was a problem querying the database
+     */
+    public void deletePatient(int patientID) throws InvalidDataException, DatabaseException
+    {
+        if(patientID<0)
+            throw new InvalidDataException("Negative patient ID in the deletePatient method");
+
+        try{
+            String query = "CALL delete_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patientID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the patient from the database");
+        }
+    }
+
+    //endregion
+
+    //region Doctor
     /**
      * Get the corresponding doctor for the given patient
      * @param patient The patient
      * @return The patient's doctor
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DoctorNotFoundException if the doctor was not found
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
-    public Doctor getDoctor(Patient patient) throws DoctorNotFoundException, DatabaseException
+    public Doctor getDoctor(Patient patient) throws NullDataException, DoctorNotFoundException, DatabaseException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getDoctor(patient) method overload");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getDoctor(patient) method overload");
+
         try {
             String query = "CALL find_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -194,11 +324,15 @@ public class DataAccess implements IDataAccess
      * Get the doctor with the given id
      * @param doctorID The id of the doctor
      * @return The doctor
+     * @throws InvalidDataException if the data is invalid
      * @throws DoctorNotFoundException if the doctor was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Doctor getDoctor(int doctorID) throws DoctorNotFoundException, DatabaseException {
+    public Doctor getDoctor(int doctorID) throws DoctorNotFoundException, DatabaseException, InvalidDataException {
+        if(doctorID<0)
+            throw new InvalidDataException("Negative doctor ID in the getDoctor(doctorID) method overload");
+
         try {
             String query = "CALL get_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -244,58 +378,6 @@ public class DataAccess implements IDataAccess
         return doctor;
     }
 
-    /**
-     * Update the given patient with the new information, including a new doctor
-     * @param patient The modified patient
-     * @param doctor The new doctor
-     * @throws DatabaseException if there was a problem querying the database
-     * @throws EmailInUseException if the email address is already in use
-     */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException, EmailInUseException
-    {
-        try {
-            String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, patient.getPatientID());
-            statement.setString(2, patient.getEmail());
-            statement.setString(3, patient.getPassHash());
-            statement.setString(4, patient.getFirstName());
-            statement.setString(5, patient.getMiddleName());
-            statement.setString(6, patient.getLastName());
-            if(patient.getDob()==null)
-                throw new CustomException("Date cannot be null");
-            statement.setDate(7, new Date(patient.getDob().getTime()));
-            statement.setString(8, patient.getGender());
-            statement.setString(9, patient.getPhoneNo());
-            statement.setInt(10, doctor.getDoctorID());
-
-            statement.executeQuery();
-        } catch (SQLIntegrityConstraintViolationException ex) {
-            throw new EmailInUseException();
-        } catch (Exception ex)
-        {
-            throw new DatabaseException("Could not update the patient");
-        }
-    }
-
-    /**
-     * Change the doctor of the given patient
-     * @param patient The patient
-     * @param doctor The new doctor
-     * @return The corresponding patient from the database
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    @Override
-    public Patient changeDoctor(Patient patient, Doctor doctor) throws DatabaseException
-    {
-        try {
-            updatePatientFull(patient, doctor);
-            return getPatient(patient.getPatientID());
-        }catch(CustomException ex)
-        {
-            throw new DatabaseException(ex.getMessage());
-        }
-    }
 
     /**
      * Get the full list of doctors from the database
@@ -329,15 +411,25 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    //endregion
+
+    //region Certification
     /**
      * Get the certifications of the specified doctor
      * @param doctor The doctor
      * @return The certifications
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Certification> getCertifications(Doctor doctor) throws DatabaseException
+    public List<Certification> getCertifications(Doctor doctor) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the getCertifications method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the getCertifications method");
+
         try {
             String query = "CALL get_certifications_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -361,15 +453,21 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    //endregion
+
+    //region Booking
     /**
      * Get the booking with the specified id
      * @param bookingID The booking id
      * @return The booking
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Booking getBooking(int bookingID) throws DatabaseException
+    public Booking getBooking(int bookingID) throws DatabaseException, InvalidDataException
     {
+        if(bookingID<0)
+            throw new InvalidDataException("Negative booking ID in the getBooking(bookingID) method");
         try {
             String query = "CALL get_booking(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -416,11 +514,18 @@ public class DataAccess implements IDataAccess
     /**
      * Get all bookings of the given doctor
      * @return The bookings
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Booking> getBookings(Doctor doctor) throws DatabaseException
+    public List<Booking> getBookings(Doctor doctor) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the getBookings(doctor) method overload");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the getBookings(doctor) method overload");
+
         try {
             String query = "CALL get_bookings_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -437,11 +542,18 @@ public class DataAccess implements IDataAccess
     /**
      * Get all bookings of the given patient
      * @return The bookings
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Booking> getBookings(Patient patient) throws DatabaseException
+    public List<Booking> getBookings(Patient patient) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getBookings(patient) method overload.");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getBookings(patient) method overload");
+
         try {
             String query = "CALL get_bookings_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -483,11 +595,25 @@ public class DataAccess implements IDataAccess
      * @param doctor The doctor
      * @param bookingTime The date and time of the booking
      * @return The Booking from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createBooking method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the createBooking method");
+        if(bookingTime==null)
+            throw new NullDataException("Null booking time in the createBooking method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createBooking method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the createBooking method");
+
         try {
             String query = "CALL insert_booking(?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -510,11 +636,18 @@ public class DataAccess implements IDataAccess
      * Update the booking with the new details
      * @param booking The modified booking
      * @return The corresponding booking from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Booking updateBooking(Booking booking) throws DatabaseException
+    public Booking updateBooking(Booking booking) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(booking==null)
+            throw new NullDataException("Null booking in the updateBooking method");
+        if(!validateBooking(booking))
+            throw new InvalidDataException("Invalid booking the updateBooking method");
+
         try {
             String query = "CALL update_booking(?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -533,6 +666,36 @@ public class DataAccess implements IDataAccess
         }
     }
 
+    /**
+     * Delete the booking from the database
+     * @param booking The booking
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
+     */
+    public void deleteBooking(Booking booking) throws DatabaseException, NullDataException, InvalidDataException
+    {
+        if(booking==null)
+            throw new NullDataException("Null booking in the deleteBooking method");
+        if(!validateBooking(booking))
+            throw new InvalidDataException("Invalid booking in the deleteBooking method");
+
+        try{
+            String query = "CALL delete_booking(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, booking.getBookingID());
+
+            statement.executeQuery();
+        } catch(Exception ex)
+        {
+            throw new DatabaseException("Could not delete the booking");
+        }
+    }
+
+
+    //endregion
+
+    //region Notification
     /**
      * Get the notification with the given id from the database
      * @param notificationID The id of the notification
@@ -573,10 +736,22 @@ public class DataAccess implements IDataAccess
      * @param message The main body of the notification
      * @return The Notification from the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException
+    public Notification createNotification(Patient patient, String header, String message) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createNotification method");
+        if(isNullOrEmpty(header))
+            throw new NullDataException("Null header in the createNotification method");
+        if(isNullOrEmpty(message))
+            throw new NullDataException("Null message in the createNotification method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createNotification method");
+
         try {
             String query = "CALL insert_notification(?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -599,11 +774,17 @@ public class DataAccess implements IDataAccess
      * Get the notifications of the given patient
      * @param patient The patient
      * @return The patient's notifications
-     * @throws DatabaseException
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Notification> getNotifications(Patient patient) throws DatabaseException
+    public List<Notification> getNotifications(Patient patient) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getNotifications method");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getNotification method");
         try {
             String query = "CALL get_notifications_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -622,10 +803,17 @@ public class DataAccess implements IDataAccess
      * @param notification The notification
      * @return The corresponding notification in the database
      * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Notification setNotificationSeen(Notification notification) throws DatabaseException
+    public Notification setNotificationSeen(Notification notification) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(notification==null)
+            throw new NullDataException("Null notification in the setNotificationSeen method");
+        if(!validateNotification(notification))
+            throw new InvalidDataException("Invalid notification in the setNotification method");
+
         try{
             String query = "CALL notificationNotNew(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -639,25 +827,6 @@ public class DataAccess implements IDataAccess
         {
             ex.printStackTrace();
             throw new DatabaseException("Could not update the notification");
-        }
-    }
-
-    /**
-     * Delete the booking from the database
-     * @param booking The booking
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    public void deleteBooking(Booking booking) throws DatabaseException
-    {
-        try{
-            String query = "CALL delete_booking(?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, booking.getBookingID());
-
-            statement.executeQuery();
-        } catch(Exception ex)
-        {
-            throw new DatabaseException("Could not delete the booking");
         }
     }
 
@@ -703,31 +872,17 @@ public class DataAccess implements IDataAccess
         return notifications;
     }
 
-    /**
-     * Delete the patient with the given id
-     * @param patientID The patient id
-     * @throws DatabaseException if there was a problem querying the database
-     */
-    public void deletePatient(int patientID) throws DatabaseException
-    {
-        try{
-            String query = "CALL delete_patient(?);";
-            PreparedStatement statement = connection.prepareCall(query);
-            statement.setInt(1, patientID);
-            statement.executeQuery();
-        } catch (Exception ex)
-        {
-            throw new DatabaseException("Could not delete the patient from the database");
-        }
-    }
 
     /**
      * Delete the notification with the given id
      * @param notificationID The notification id
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
-    public void deleteNotification(int notificationID) throws DatabaseException
+    public void deleteNotification(int notificationID) throws DatabaseException, InvalidDataException
     {
+        if(notificationID<0)
+            throw new InvalidDataException("Negative notification ID in the deleteNotification method");
         try{
             String query = "CALL delete_notification(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -739,18 +894,6 @@ public class DataAccess implements IDataAccess
         }
     }
 
-    /**
-     * Set up the connection to the database
-     * @throws DatabaseException if the connection could not be established
-     */
-    private void setupConnection() throws DatabaseException
-    {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/thegeneralpractitioner?user="+DB_USER+"&password="+DB_PASSWORD+"");
-        }catch (Exception ex)
-        {
-            throw new DatabaseException("Could not connect to the database");
-        }
-    }
+    //endregion
+
 }
