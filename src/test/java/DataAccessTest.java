@@ -3,7 +3,6 @@ import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.*;
 import junit.framework.TestCase;
 import org.junit.Test;
-import org.mockito.internal.matchers.Not;
 
 import java.sql.SQLException;
 import java.sql.Time;

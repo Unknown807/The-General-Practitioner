@@ -3,6 +3,7 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.ViewProfileLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.SameDoctorException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
@@ -70,6 +71,13 @@ public class ViewProfilePanel extends BasePanel {
                         (Doctor) pair.getSecond()
                 );
                 this.panelController.showPage(PageType.HOME);
+            } catch (SameDoctorException e) {
+                JOptionPane.showMessageDialog(
+                        viewProfilePanel,
+                        "You can't change to the same doctor as you already have",
+                        "ERROR: Same Doctor",
+                        JOptionPane.ERROR_MESSAGE
+                );
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewProfilePanel);
             }

@@ -4,6 +4,7 @@ import com.group15A.BusinessLogic.AddBookingLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
+import com.group15A.CustomExceptions.ExistingBookingException;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Utils.JWidgetShortcuts;
@@ -37,7 +38,6 @@ public class AddBookingPanel extends BasePanel {
     private JPanel timeSelectionPanel;
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
-    private Doctor doctor;
 
     private AddBookingLogic addBookingLogic;
 
@@ -140,6 +140,10 @@ public class AddBookingPanel extends BasePanel {
 
         } catch (DatabaseException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
+
+        } catch (ExistingBookingException e) {
+            this.bookingErrorLabel.setVisible(true);
+            this.bookingErrorLabel.setText("A booking with that time already exists");
 
         } catch (CustomException e) {
             this.bookingErrorLabel.setVisible(true);

@@ -2,6 +2,7 @@ package com.group15A.BusinessLogic;
 
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.SameDoctorException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
@@ -33,6 +34,12 @@ public class ViewProfileLogic implements IViewProfile {
     public void updatePatientDoctor(Integer patientID, Doctor newDoctor) throws CustomException {
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor oldDoctor = this.dataAccessLayer.getDoctor(patient);
+
+        // Patient should not be able to switch to their existing doctor
+        if (oldDoctor.getDoctorID().equals(newDoctor.getDoctorID())) {
+            throw new SameDoctorException();
+        }
+
         this.dataAccessLayer.changeDoctor(patient, newDoctor);
         this.dataAccessLayer.createNotification(patient, "Doctor Changed", "You changed your doctor from "+oldDoctor.getFullName()+" to "+newDoctor.getFullName());
     }
