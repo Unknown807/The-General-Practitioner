@@ -438,11 +438,14 @@ public class DataAccess implements IDataAccess
      * Get the booking with the specified id
      * @param bookingID The booking id
      * @return The booking
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Booking getBooking(int bookingID) throws DatabaseException
+    public Booking getBooking(int bookingID) throws DatabaseException, InvalidDataException
     {
+        if(bookingID<0)
+            throw new InvalidDataException("Negative booking ID in the getBooking(bookingID) method");
         try {
             String query = "CALL get_booking(?);";
             PreparedStatement statement = connection.prepareCall(query);
