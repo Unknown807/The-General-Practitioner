@@ -29,8 +29,7 @@ public class MessagePanel
         
         for(JComponent component : widgets.keySet()){
             if(widgets.get(component).equals("")){
-                component.setVisible(false);
-                contentPanel.remove(component);
+               component.setVisible(false);
             }
             else{
                 if(component instanceof JButton){

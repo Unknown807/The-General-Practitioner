@@ -62,7 +62,7 @@ public class HomePanel extends BasePanel {
     /**
      * For each notification in `notifList`,
      * if it's marked as new,
-     * then create a NotificationDisplay and add it
+     * then create a MessagePanel and add it
      * to the list of notifications on the page
      *
      * Then display the number of new bookings
@@ -81,10 +81,11 @@ public class HomePanel extends BasePanel {
                     continue;
                 }
 
-                MessagePanel notificationDisplay = new NotificationDisplay(
+                MessagePanel notificationDisplay = new MessagePanel(
                         notification.getHeader(),
                         "("+DataModification.shortDate(notification.getTimestamp())+")",
-                        notification.getMessage()
+                        notification.getMessage(),
+                        "Mark as read"
                 );
 
                 //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));

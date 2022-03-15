@@ -1,5 +1,6 @@
 package com.group15A.GUI;
 
+import com.google.protobuf.Message;
 import com.group15A.BusinessLogic.ViewBookingLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
@@ -87,7 +88,11 @@ public class ViewBookingsPanel extends BasePanel {
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
             //TODO: Refactor bookingLabel as its own GUI form
-            BookingDisplay bookingDisplay = new BookingDisplay(DataModification.fullDate(b.getBookingTime()),doctor.getFullName());
+            MessagePanel bookingDisplay = new MessagePanel(
+                    "",
+                    "With Dr. "+doctor.getFullName(),
+                    "Booking on "+DataModification.fullDate(b.getBookingTime()),
+                    "Reschedule");
             JPanel bookingMessageDisplay = bookingDisplay.getMainPanel();
             //
 //            JLabel bookingLabel = new JLabel();
