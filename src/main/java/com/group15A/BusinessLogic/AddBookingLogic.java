@@ -1,9 +1,6 @@
 package com.group15A.BusinessLogic;
 
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.DoctorNotFoundException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
@@ -79,11 +76,12 @@ public class AddBookingLogic implements IAddBooking {
      * Gets the doctor associated with the passed in patient
      * @param patient
      * @return the patient's doctor
+     * @throws NullDataException if the patient is null
      * @throws DatabaseException if issues connecting to the database
      * @throws DoctorNotFoundException if the doctor was not found in the database
      */
     @Override
-    public Doctor getPatientDoctor(Patient patient) throws DatabaseException, DoctorNotFoundException {
+    public Doctor getPatientDoctor(Patient patient) throws NullDataException, DatabaseException, DoctorNotFoundException {
         return this.dataAccessLayer.getDoctor(patient);
     }
 
@@ -91,11 +89,13 @@ public class AddBookingLogic implements IAddBooking {
      * Get the patient from the integer id
      * @param patientID
      * @return the patient
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if issues connecting to the database
      * @throws PatientNotFoundException if the patient with the passed in ID was not found
      */
     @Override
-    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
+    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException, InvalidDataException
+    {
         return this.dataAccessLayer.getPatient(patientID);
     }
 
