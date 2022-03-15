@@ -33,12 +33,15 @@ public class DataAccess implements IDataAccess
      * Get the patient with the given email and password
      * @param email The patient's email
      * @return The patient
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws PatientNotFoundException if the user was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient getPatient(String email) throws PatientNotFoundException, DatabaseException
+    public Patient getPatient(String email) throws NullDataException, PatientNotFoundException, DatabaseException
     {
+        if(email==null || email.isBlank() || email.isEmpty())
+            throw new NullDataException("Null email in getPatient()");
         try {
             String query = "CALL find_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);

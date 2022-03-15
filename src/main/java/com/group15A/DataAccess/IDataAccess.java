@@ -50,4 +50,6 @@ public interface IDataAccess
     List<Notification> getNotifications(Patient patient) throws CustomException;
 
     Notification setNotificationSeen(Notification notification) throws CustomException;
+
+
 }
