@@ -306,11 +306,15 @@ public class DataAccess implements IDataAccess
      * Get the doctor with the given id
      * @param doctorID The id of the doctor
      * @return The doctor
+     * @throws InvalidDataException if the data is invalid
      * @throws DoctorNotFoundException if the doctor was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Doctor getDoctor(int doctorID) throws DoctorNotFoundException, DatabaseException {
+    public Doctor getDoctor(int doctorID) throws DoctorNotFoundException, DatabaseException, InvalidDataException {
+        if(doctorID<0)
+            throw new InvalidDataException("Negative doctor ID in the getDoctor(doctorID) method overload");
+
         try {
             String query = "CALL get_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
