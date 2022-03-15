@@ -774,11 +774,17 @@ public class DataAccess implements IDataAccess
      * Get the notifications of the given patient
      * @param patient The patient
      * @return The patient's notifications
-     * @throws DatabaseException
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Notification> getNotifications(Patient patient) throws DatabaseException
+    public List<Notification> getNotifications(Patient patient) throws DatabaseException, NullDataException, InvalidDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getNotifications method");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getNotification method");
         try {
             String query = "CALL get_notifications_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
