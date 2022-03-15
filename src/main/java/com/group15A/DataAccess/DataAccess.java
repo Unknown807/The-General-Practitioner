@@ -258,11 +258,17 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information, including a new doctor
      * @param patient The modified patient
      * @param doctor The new doctor
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
      * @throws EmailInUseException if the email address is already in use
      */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws DatabaseException, EmailInUseException
+    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the updatePatient method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the updatePatient method");
+
         try {
             String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
