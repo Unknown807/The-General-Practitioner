@@ -24,7 +24,7 @@ public class DataAccessValidator
      */
     protected static boolean validatePatient(Patient patient)
     {
-        if(patient.getPatientID()<0)
+        if(patient.getPatientID()<0 && patient.getPatientID()!=-1)
             return false;
         if(isNullOrEmpty(patient.getEmail()))
             return false;
