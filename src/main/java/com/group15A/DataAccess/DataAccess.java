@@ -122,12 +122,18 @@ public class DataAccess implements IDataAccess
      * @param patient The new patient
      * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
      * @throws EmailInUseException if the email address is already in use
      */
     @Override
-    public Patient registerPatient(Patient patient, Doctor doctor) throws EmailInUseException, DatabaseException
+    public Patient registerPatient(Patient patient, Doctor doctor) throws NullDataException, EmailInUseException, DatabaseException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the registerPatient method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the registerPatient method");
+
         try {
             String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
