@@ -189,6 +189,7 @@ public class DataAccess implements IDataAccess
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws EmailInUseException if the email of the patient does not exist
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
     public Patient updatePatient(Patient patient) throws CustomException
@@ -206,6 +207,7 @@ public class DataAccess implements IDataAccess
      * @return The corresponding patient from the database
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
     public Patient changeDoctor(Patient patient, Doctor doctor) throws CustomException
@@ -218,16 +220,21 @@ public class DataAccess implements IDataAccess
      * Update the given patient with the new information, including a new doctor
      * @param patient The modified patient
      * @param doctor The new doctor
+     * @throws InvalidDataException if the data is invalid
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
      * @throws EmailInUseException if the email address is already in use
      */
-    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException
+    private void updatePatientFull(Patient patient, Doctor doctor) throws NullDataException, DatabaseException, EmailInUseException, InvalidDataException
     {
         if(patient==null)
             throw new NullDataException("Null patient in the updatePatient method");
         if(doctor==null)
             throw new NullDataException("Null doctor in the updatePatient method");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the updatePatientFull method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the updatePatientFull method");
 
         try {
             String query = "CALL update_patient(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
