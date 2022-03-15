@@ -275,11 +275,15 @@ public class DataAccess implements IDataAccess
      * Get the corresponding doctor for the given patient
      * @param patient The patient
      * @return The patient's doctor
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DoctorNotFoundException if the doctor was not found
      * @throws DatabaseException if there was a problem querying the database
      */
-    public Doctor getDoctor(Patient patient) throws DoctorNotFoundException, DatabaseException
+    public Doctor getDoctor(Patient patient) throws NullDataException, DoctorNotFoundException, DatabaseException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getDoctor(patient) method overload");
+
         try {
             String query = "CALL find_doctor(?);";
             PreparedStatement statement = connection.prepareCall(query);
