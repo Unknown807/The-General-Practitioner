@@ -638,12 +638,16 @@ public class DataAccess implements IDataAccess
      * @return The corresponding booking from the database
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Booking updateBooking(Booking booking) throws DatabaseException, NullDataException
+    public Booking updateBooking(Booking booking) throws DatabaseException, NullDataException, InvalidDataException
     {
         if(booking==null)
-            throw new NullDataException("Null booking in the updateBooking class");
+            throw new NullDataException("Null booking in the updateBooking method");
+        if(!validateBooking(booking))
+            throw new InvalidDataException("Invalid booking the updateBooking method");
+
         try {
             String query = "CALL update_booking(?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
