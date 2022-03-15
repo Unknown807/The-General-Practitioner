@@ -1,9 +1,6 @@
 package com.group15A.BusinessLogic;
 
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.DoctorNotFoundException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
@@ -14,6 +11,7 @@ import com.group15A.Validator.Validator;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Contains backend functionality that relates to adding new bookings for users
@@ -48,6 +46,7 @@ public class AddBookingLogic implements IAddBooking {
         ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
         ErrorCode dateError = this.validator.verifyDate(date);
 
+        // Check format of timestamp is correct
         if (timestampError != null || dateError != null) {
             throw new CustomException("Invalid time values", Arrays.asList(timestampError, dateError));
         }
@@ -55,6 +54,7 @@ public class AddBookingLogic implements IAddBooking {
         String timestamp = date+" "+hour+":"+minute+":00";
         ErrorCode impossibleDate = this.validator.verifyDateBeforeToday(timestamp);
 
+        // Check that the booking is booked in the past
         if (impossibleDate != null) {
             throw new CustomException("Can't book on a past date", Arrays.asList(impossibleDate));
         }
@@ -62,6 +62,11 @@ public class AddBookingLogic implements IAddBooking {
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
         Timestamp bookingDateTime = Timestamp.valueOf(timestamp);
+
+        // Finally, check if booking with the same time had already been made
+        if (!this.verifyBookingIsNew(bookingDateTime, patient)) {
+            throw new ExistingBookingException();
+        }
 
         Booking newBooking = this.dataAccessLayer.createBooking(
                 patient,
@@ -73,6 +78,18 @@ public class AddBookingLogic implements IAddBooking {
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
 
         return newBooking;
+    }
+
+    private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {
+        List<Booking> allPatientBookings = this.dataAccessLayer.getBookings(patient);
+
+        for (Booking b : allPatientBookings) {
+            if (b.getBookingTime().equals(bookingTime)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
