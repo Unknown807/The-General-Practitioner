@@ -1,7 +1,9 @@
 package com.group15A.DataAccess;
 
+import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 
+import javax.print.Doc;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,6 +33,26 @@ public class DataAccessValidator
         return true;
     }
 
+    /**
+     * Check if the given doctor is valid or not
+     * @param doctor The doctor to be checked
+     * @return true if the doctor is valid, false otherwise
+     */
+    protected static boolean validateDoctor(Doctor doctor)
+    {
+        if(doctor.getDoctorID()<0)
+            return false;
+        if(isNullOrEmpty(doctor.getEmail()))
+            return false;
+        if(isNullOrEmpty(doctor.getFirstName()))
+            return false;
+        if(isNullOrEmpty(doctor.getLastName()))
+            return false;
+        if(dateAfterToday(doctor.getDob()))
+            return false;
+
+        return true;
+    }
 
     /**
      * Check if the given date is after today
