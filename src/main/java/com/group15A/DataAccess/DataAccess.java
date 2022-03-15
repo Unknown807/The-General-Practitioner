@@ -92,12 +92,15 @@ public class DataAccess implements IDataAccess
      * Get the patient with the given id
      * @param patientID the patient's id
      * @return The patient
+     * @throws InvalidDataException if an invalid value was sent as a parameter
      * @throws PatientNotFoundException if the user was not found
      * @throws DatabaseException if there was a problem querying the database
      */
     @Override
-    public Patient getPatient(int patientID) throws PatientNotFoundException, DatabaseException
+    public Patient getPatient(int patientID) throws InvalidDataException, PatientNotFoundException, DatabaseException
     {
+        if(patientID<0)
+            throw new InvalidDataException("Negative patient ID in the getPatient method");
         try {
             String query = "CALL get_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
@@ -107,11 +110,9 @@ public class DataAccess implements IDataAccess
             Patient patient = getPatientFromDB(result);
 
             return patient;
-        } catch (PatientNotFoundException ex)
-        {
+        } catch (PatientNotFoundException ex) {
             throw ex;
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new DatabaseException("Could not get patient from the database");
         }
     }
