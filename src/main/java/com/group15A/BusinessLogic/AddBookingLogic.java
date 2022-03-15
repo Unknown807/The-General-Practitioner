@@ -76,12 +76,14 @@ public class AddBookingLogic implements IAddBooking {
      * Gets the doctor associated with the passed in patient
      * @param patient
      * @return the patient's doctor
+     * @throws InvalidDataException if the patient is invalid
      * @throws NullDataException if the patient is null
      * @throws DatabaseException if issues connecting to the database
      * @throws DoctorNotFoundException if the doctor was not found in the database
      */
     @Override
-    public Doctor getPatientDoctor(Patient patient) throws NullDataException, DatabaseException, DoctorNotFoundException {
+    public Doctor getPatientDoctor(Patient patient) throws NullDataException, DatabaseException, DoctorNotFoundException, InvalidDataException
+    {
         return this.dataAccessLayer.getDoctor(patient);
     }
 
