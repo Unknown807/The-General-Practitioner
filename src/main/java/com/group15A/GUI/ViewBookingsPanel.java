@@ -29,7 +29,7 @@ public class ViewBookingsPanel extends BasePanel {
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
-    private List<JLabel> bookingLabelsList;
+    private List<JPanel> bookingLabelsList;
 
     /**
      * Constructor for ViewBookingsPanel
@@ -80,25 +80,42 @@ public class ViewBookingsPanel extends BasePanel {
         JWidgetShortcuts.clearJPanel(bookingsDisplayPanel);
         GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
 
-        Color color1 = new Color(144, 176, 30);
-        Color color2 = new Color(30, 176, 132);
+//        Color color1 = new Color(144, 176, 30);
+//        Color color2 = new Color(30, 176, 132);
 
-        Boolean colorFlag = true;
+        // Boolean colorFlag = true;
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
             //TODO: Refactor bookingLabel as its own GUI form
-            JLabel bookingLabel = new JLabel();
-            bookingLabel.setText(DataModification.fullDate(b.getBookingTime())+"\n with Dr "+doctor.getFullName());
-            bookingLabel.setFont(new Font("", Font.BOLD, 25));
-            bookingLabel.setForeground(colorFlag ? color1 : color2);
-            bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
-            bookingLabel.setHorizontalAlignment(JLabel.CENTER);
+            BookingDisplay bookingDisplay = new BookingDisplay(DataModification.fullDate(b.getBookingTime()),doctor.getFullName());
+            JPanel bookingMessageDisplay = bookingDisplay.getMainPanel();
+            //
+//            JLabel bookingLabel = new JLabel();
+//            bookingLabel.setText(DataModification.fullDate(b.getBookingTime())+"\n with Dr "+doctor.getFullName());
+//            bookingLabel.setFont(new Font("", Font.BOLD, 25));
+//            bookingLabel.setForeground(colorFlag ? color1 : color2);
+//            bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
+//            bookingLabel.setHorizontalAlignment(JLabel.CENTER);
 
-            bookingLabelsList.add(bookingLabel);
-            bookingsDisplayPanel.add(bookingLabel, gbc);
+//            bookingLabelsList.add(bookingLabel);
+//            bookingsDisplayPanel.add(bookingLabel, gbc);
 
-            colorFlag = !colorFlag;
+            bookingLabelsList.add(bookingMessageDisplay);
+            bookingsDisplayPanel.add(bookingMessageDisplay, gbc);
+
+            // Copied from HomePanel.java
+            bookingDisplay.getRescheduleButton().addActionListener(e -> {
+                this.rescheduleBooking(b);
+            });
+
+            //colorFlag = !colorFlag;
         }
+    }
+
+    private void rescheduleBooking(Booking booking)
+    {
+        //TODO: Implement
+        System.out.println(booking.toString()); // Test code
     }
 
     /**
