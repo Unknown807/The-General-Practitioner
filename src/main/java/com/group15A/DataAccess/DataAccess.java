@@ -671,11 +671,15 @@ public class DataAccess implements IDataAccess
      * @param booking The booking
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
-    public void deleteBooking(Booking booking) throws DatabaseException, NullDataException
+    public void deleteBooking(Booking booking) throws DatabaseException, NullDataException, InvalidDataException
     {
         if(booking==null)
-            throw new NullDataException("Null booking in the deleteBooking class");
+            throw new NullDataException("Null booking in the deleteBooking method");
+        if(!validateBooking(booking))
+            throw new InvalidDataException("Invalid booking in the deleteBooking method");
+
         try{
             String query = "CALL delete_booking(?);";
             PreparedStatement statement = connection.prepareCall(query);
