@@ -544,12 +544,15 @@ public class DataAccess implements IDataAccess
      * @return The bookings
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public List<Booking> getBookings(Patient patient) throws DatabaseException, NullDataException
+    public List<Booking> getBookings(Patient patient) throws DatabaseException, NullDataException, InvalidDataException
     {
         if(patient==null)
             throw new NullDataException("Null patient in the getBookings(patient) method overload.");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getBookings(patient) method overload");
 
         try {
             String query = "CALL get_bookings_patient(?);";
