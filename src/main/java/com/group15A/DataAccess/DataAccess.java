@@ -566,11 +566,19 @@ public class DataAccess implements IDataAccess
      * @param doctor The doctor
      * @param bookingTime The date and time of the booking
      * @return The Booking from the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
      */
     @Override
-    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException, NullDataException
     {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createBooking method");
+        if(doctor==null)
+            throw new NullDataException("Null doctor in the createBooking method");
+        if(bookingTime==null)
+            throw new NullDataException("Null booking time in the createBooking method");
+
         try {
             String query = "CALL insert_booking(?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
