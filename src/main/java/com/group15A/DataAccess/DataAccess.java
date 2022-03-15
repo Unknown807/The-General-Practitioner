@@ -153,9 +153,9 @@ public class DataAccess implements IDataAccess
         if(doctor==null)
             throw new NullDataException("Null doctor in the registerPatient method");
 
-        if(validatePatient(patient))
+        if(!validatePatient(patient))
             throw new InvalidDataException("Invalid patient in the registerPatient method");
-        if(validateDoctor(doctor))
+        if(!validateDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the registerPatient method");
 
         try {
