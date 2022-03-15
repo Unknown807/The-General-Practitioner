@@ -597,9 +597,10 @@ public class DataAccess implements IDataAccess
      * @return The Booking from the database
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
+     * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException, NullDataException
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException, NullDataException, InvalidDataException
     {
         if(patient==null)
             throw new NullDataException("Null patient in the createBooking method");
@@ -607,6 +608,11 @@ public class DataAccess implements IDataAccess
             throw new NullDataException("Null doctor in the createBooking method");
         if(bookingTime==null)
             throw new NullDataException("Null booking time in the createBooking method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createBooking method");
+        if(!validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the createBooking method");
 
         try {
             String query = "CALL insert_booking(?, ?, ?);";
