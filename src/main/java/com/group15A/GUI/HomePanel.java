@@ -81,15 +81,15 @@ public class HomePanel extends BasePanel {
                     continue;
                 }
 
-                NotificationDisplay notificationDisplay = new NotificationDisplay(
+                MessagePanel notificationDisplay = new NotificationDisplay(
                         notification.getHeader(),
                         "("+DataModification.shortDate(notification.getTimestamp())+")",
                         notification.getMessage()
                 );
 
                 //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
-                notificationDisplay.getReadButton().addActionListener(e -> {
-                    notificationDisplay.getReadButton().setVisible(false);
+                notificationDisplay.getButton().addActionListener(e -> {
+                    notificationDisplay.getButton().setVisible(false);
                     this.markAsRead(notification);
                 });
                 messageContentPanel.add(notificationDisplay.getMainPanel(), gbc);
