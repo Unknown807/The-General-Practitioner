@@ -10,6 +10,11 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * Validator for the Data Access Layer
+ *
+ * @author Andrei Constantin
+ */
 public class DataAccessValidator
 {
     /**
