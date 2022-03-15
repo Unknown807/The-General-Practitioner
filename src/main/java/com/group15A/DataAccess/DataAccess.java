@@ -877,9 +877,12 @@ public class DataAccess implements IDataAccess
      * Delete the notification with the given id
      * @param notificationID The notification id
      * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
      */
-    public void deleteNotification(int notificationID) throws DatabaseException
+    public void deleteNotification(int notificationID) throws DatabaseException, InvalidDataException
     {
+        if(notificationID<0)
+            throw new InvalidDataException("Negative notification ID in the deleteNotification method");
         try{
             String query = "CALL delete_notification(?);";
             PreparedStatement statement = connection.prepareCall(query);
