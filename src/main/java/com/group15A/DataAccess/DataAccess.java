@@ -249,10 +249,14 @@ public class DataAccess implements IDataAccess
     /**
      * Delete the patient with the given id
      * @param patientID The patient id
+     * @throws InvalidDataException if an invalid value was sent as a parameter
      * @throws DatabaseException if there was a problem querying the database
      */
-    public void deletePatient(int patientID) throws DatabaseException
+    public void deletePatient(int patientID) throws InvalidDataException, DatabaseException
     {
+        if(patientID<0)
+            throw new InvalidDataException("Negative patient ID in the deletePatient method");
+
         try{
             String query = "CALL delete_patient(?);";
             PreparedStatement statement = connection.prepareCall(query);
