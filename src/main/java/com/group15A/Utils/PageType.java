@@ -13,4 +13,5 @@ public enum PageType {
     VIEW_BOOKINGS,
     ADD_BOOKING,
     VIEW_PROFILE,
+    LOGGING
 }

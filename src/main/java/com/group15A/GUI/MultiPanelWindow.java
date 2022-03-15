@@ -101,6 +101,7 @@ public class MultiPanelWindow extends JFrame {
         this.cards.put(PageType.VIEW_BOOKINGS, new ViewBookingsPanel(this));
         this.cards.put(PageType.ADD_BOOKING, new AddBookingPanel(this));
         this.cards.put(PageType.VIEW_PROFILE, new ViewProfilePanel(this));
+        this.cards.put(PageType.LOGGING, new LoggingPanel(this));
 
         PageType[] pages = PageType.values();
 
