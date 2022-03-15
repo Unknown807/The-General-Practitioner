@@ -2,6 +2,7 @@ package com.group15A.BusinessLogic;
 
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.InvalidDataException;
 import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Notification;
@@ -40,11 +41,13 @@ public class HomeLogic implements IHome {
      * Get the patient from the integer id
      * @param patientID
      * @return the patient
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if issues connecting to the database
      * @throws PatientNotFoundException if the patient with the passed in ID was not found
      */
     @Override
-    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException {
+    public Patient getPatient(Integer patientID) throws DatabaseException, PatientNotFoundException, InvalidDataException
+    {
         return this.dataAccessLayer.getPatient(patientID);
     }
 
