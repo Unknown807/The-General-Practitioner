@@ -10,6 +10,10 @@ import java.util.List;
  */
 public class NullDataException extends CustomException
 {
+    /**
+     * Constructor for the NullDataException. Creates a Custom Exception with no error codes and the given error message
+     * @param errorMessage The error message
+     */
     public NullDataException(String errorMessage)
     {
         super(errorMessage);
