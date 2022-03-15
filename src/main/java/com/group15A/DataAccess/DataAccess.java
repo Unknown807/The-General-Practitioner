@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.group15A.DataAccess.DataAccessValidator.*;
+
 /**
  * Used to connect to the database and query the database using stored procedures.
  *
@@ -139,16 +141,22 @@ public class DataAccess implements IDataAccess
      * @param doctor The doctor assigned to the patient
      * @return The corresponding patient from the database
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if there was a problem querying the database
      * @throws EmailInUseException if the email address is already in use
      */
     @Override
-    public Patient registerPatient(Patient patient, Doctor doctor) throws NullDataException, EmailInUseException, DatabaseException
+    public Patient registerPatient(Patient patient, Doctor doctor) throws NullDataException, EmailInUseException, DatabaseException, InvalidDataException
     {
         if(patient==null)
             throw new NullDataException("Null patient in the registerPatient method");
         if(doctor==null)
             throw new NullDataException("Null doctor in the registerPatient method");
+
+        if(validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the registerPatient method");
+        if(validateDoctor(doctor))
+            throw new InvalidDataException("Invalid doctor in the registerPatient method");
 
         try {
             String query = "CALL insert_patient(?, ?, ?, ?, ?, ?, ?, ?, ?);";
