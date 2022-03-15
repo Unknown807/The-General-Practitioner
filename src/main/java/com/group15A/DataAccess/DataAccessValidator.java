@@ -122,7 +122,7 @@ public class DataAccessValidator
      * @param string The string to verify
      * @return true if the string is null or empty, false otherwise
      */
-    private static boolean isNullOrEmpty(String string)
+    public static boolean isNullOrEmpty(String string)
     {
         if(string==null)
             return true;
