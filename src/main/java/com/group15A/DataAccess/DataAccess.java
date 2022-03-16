@@ -969,6 +969,27 @@ public class DataAccess implements IDataAccess
         return logs;
     }
 
+
+    /**
+     * Delete the log with the given id
+     * @param logID The log id
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
+     */
+    public void deleteLog(int logID) throws DatabaseException, InvalidDataException
+    {
+        if(logID<0)
+            throw new InvalidDataException("Negative log ID in the deleteLog method");
+        try{
+            String query = "CALL delete_log(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, logID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the log from the database");
+        }
+    }
     //endregion
 
 }
