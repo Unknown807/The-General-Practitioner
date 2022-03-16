@@ -989,7 +989,7 @@ public class DataAccess implements IDataAccess
             throw new InvalidDataException("Invalid patient in the createLog method");
 
         try {
-            String query = "CALL insert_notification(?, ?, ?);";
+            String query = "CALL insert_log(?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
             statement.setString(1, message);
             statement.setInt(2, patient.getPatientID());
@@ -1001,7 +1001,7 @@ public class DataAccess implements IDataAccess
         } catch (Exception ex)
         {
             System.err.println(ex);
-            throw new DatabaseException("Could not insert booking in the database");
+            throw new DatabaseException("Could not insert log in the database");
         }
     }
 
