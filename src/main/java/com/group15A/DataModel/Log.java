@@ -12,9 +12,7 @@ import java.util.Objects;
 public class Log {
     private Integer logID;
     private String message;
-    private Integer doctorID;
     private Integer patientID;
-    private Integer bookingID;
     private Timestamp timestamp;
 
     /**
@@ -22,40 +20,25 @@ public class Log {
      *
      * @param logID the id
      * @param message the content of the log
-     * @param doctorID  id for doctor
      * @param patientID id for patient
-     * @param bookingID id for booking
      * @param timestamp time log has been created
      */
-    public Log(Integer logID, String message, Integer doctorID, Integer patientID, Integer bookingID, Timestamp timestamp) {
+    public Log(Integer logID, String message, Integer patientID, Timestamp timestamp) {
         this.logID = logID;
         this.message = message;
-        this.doctorID = doctorID;
         this.patientID = patientID;
-        this.bookingID = bookingID;
         this.timestamp = timestamp;
     }
 
     public Integer getLogID() {return logID;}
 
-    public void setLogID(Integer logID) {
-        this.logID = logID;}
-
     public String getMessage() {return message;}
 
     public void setMessage(String message) {this.message = message;}
 
-    public Integer getDoctorID() {return doctorID;}
-
-    public void setDoctorID(Integer doctorID) {this.doctorID = doctorID;}
-
     public Integer getPatientID() {return patientID;}
 
     public void setPatientID(Integer patientID) {this.patientID = patientID;}
-
-    public Integer getBookingID() {return bookingID;}
-
-    public void setBookingID(Integer bookingID) {this.bookingID = bookingID;}
 
     public Timestamp getTimestamp() {return timestamp;}
 
@@ -72,7 +55,7 @@ public class Log {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Log log = (Log) o;
-        return Objects.equals(getLogID(), log.getLogID()) && Objects.equals(getMessage(), log.getMessage()) && Objects.equals(getDoctorID(), log.getDoctorID()) && Objects.equals(getPatientID(), log.getPatientID()) && Objects.equals(getBookingID(), log.getBookingID()) && Objects.equals(getTimestamp(), log.getTimestamp());
+        return Objects.equals(getLogID(), log.getLogID()) && Objects.equals(getMessage(), log.getMessage()) && Objects.equals(getPatientID(), log.getPatientID()) && Objects.equals(getTimestamp(), log.getTimestamp());
     }
 
     /**
@@ -82,7 +65,7 @@ public class Log {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getLogID(), getMessage(), getDoctorID(), getPatientID(), getBookingID(), getTimestamp());
+        return Objects.hash(getLogID(), getMessage(), getPatientID(), getTimestamp());
     }
 
     /**
@@ -95,9 +78,7 @@ public class Log {
         return "Log{" +
                 "logID=" + logID +
                 ", message='" + message + '\'' +
-                ", doctorID=" + doctorID +
                 ", patientID=" + patientID +
-                ", bookingID=" + bookingID +
                 ", timestamp=" + timestamp +
                 '}';
     }
