@@ -52,4 +52,6 @@ public interface IDataAccess
     Notification setNotificationSeen(Notification notification) throws CustomException;
 
     List<Log> getLogs(Patient patient) throws CustomException;
+
+    List<Log> getLogs() throws CustomException;
 }

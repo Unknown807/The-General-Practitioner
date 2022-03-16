@@ -899,6 +899,28 @@ public class DataAccess implements IDataAccess
     //region Log
 
     /**
+     * Get all logs
+     * @return The logs
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
+     */
+    @Override
+    public List<Log> getLogs() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_logs();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getLogsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get logs from the database");
+        }
+    }
+
+    /**
      * Get the logs of the given patient
      * @param patient The patient
      * @return The patient's logs
@@ -922,7 +944,7 @@ public class DataAccess implements IDataAccess
             return getLogsFromDB(result);
         }catch (Exception ex)
         {
-            throw new DatabaseException("Could not get notifications from the database");
+            throw new DatabaseException("Could not get logs from the database");
         }
     }
 
