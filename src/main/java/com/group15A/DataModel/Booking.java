@@ -20,6 +20,7 @@ public class Booking {
     private Timestamp timestamp;
     private String type;
     private String details;
+    private String prescription;
 
     /**
      *
@@ -30,8 +31,9 @@ public class Booking {
      * @param timestamp time booking has been created
      * @param type the type of the booking
      * @param details the details for the booking
+     * @param prescription
      */
-    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp, String type, String details) {
+    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp, String type, String details, String prescription) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
         this.patientID = patientID;
@@ -39,6 +41,7 @@ public class Booking {
         this.timestamp = timestamp;
         this.type = type;
         this.details = details;
+        this.prescription = prescription;
     }
 
     public Integer getBookingID() {
@@ -81,6 +84,10 @@ public class Booking {
 
     public void setDetails(String details) {this.details = details;}
 
+    public String getPrescription() {return prescription;}
+
+    public void setPrescription(String prescription) {this.prescription = prescription;}
+
     /**
      * Method for equality testing
      *
@@ -92,7 +99,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return getBookingID().equals(booking.getBookingID()) && getDoctorID().equals(booking.getDoctorID()) && getPatientID().equals(booking.getPatientID()) && getBookingTime().equals(booking.getBookingTime()) && getTimestamp().equals(booking.getTimestamp()) && getType().equals(booking.getType()) && getDetails().equals(booking.getDetails());
+        return getBookingID().equals(booking.getBookingID()) && getDoctorID().equals(booking.getDoctorID()) && getPatientID().equals(booking.getPatientID()) && getBookingTime().equals(booking.getBookingTime()) && getTimestamp().equals(booking.getTimestamp()) && getType().equals(booking.getType()) && getDetails().equals(booking.getDetails()) && getPrescription().equals(booking.getPrescription());
     }
 
     /**
@@ -102,7 +109,7 @@ public class Booking {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getBookingID(), getDoctorID(), getPatientID(), getBookingTime(), getTimestamp(), getType(), getDetails());
+        return Objects.hash(getBookingID(), getDoctorID(), getPatientID(), getBookingTime(), getTimestamp(), getType(), getDetails(), getPrescription());
     }
 
     /**
@@ -120,6 +127,7 @@ public class Booking {
                 ", timestamp=" + timestamp +
                 ", type='" + type + '\'' +
                 ", details='" + details + '\'' +
+                ", prescription='" + prescription + '\'' +
                 '}';
     }
 }
