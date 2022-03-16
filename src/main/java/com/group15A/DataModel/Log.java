@@ -1,7 +1,6 @@
 package com.group15A.DataModel;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Objects;
  * @author Wenbo Wu
  */
 public class Log {
-    private Integer LogID;
+    private Integer logID;
     private String message;
     private Integer doctorID;
     private Integer patientID;
@@ -19,17 +18,17 @@ public class Log {
     private Timestamp timestamp;
 
     /**
-     * Constructor for a logs
+     * Constructor for a log
      *
      * @param logID the id
-     * @param message the contant of the logs
+     * @param message the content of the log
      * @param doctorID  id for doctor
      * @param patientID id for patient
      * @param bookingID id for booking
-     * @param timestamp time logs has been created
+     * @param timestamp time log has been created
      */
     public Log(Integer logID, String message, Integer doctorID, Integer patientID, Integer bookingID, Timestamp timestamp) {
-        this.LogID = logID;
+        this.logID = logID;
         this.message = message;
         this.doctorID = doctorID;
         this.patientID = patientID;
@@ -37,9 +36,10 @@ public class Log {
         this.timestamp = timestamp;
     }
 
-    public Integer getLogID() {return LogID;}
+    public Integer getLogID() {return logID;}
 
-    public void setLogID(Integer logID) {LogID = logID;}
+    public void setLogID(Integer logID) {
+        this.logID = logID;}
 
     public String getMessage() {return message;}
 
@@ -93,7 +93,7 @@ public class Log {
     @Override
     public String toString() {
         return "Log{" +
-                "LogID=" + LogID +
+                "logID=" + logID +
                 ", message='" + message + '\'' +
                 ", doctorID=" + doctorID +
                 ", patientID=" + patientID +
