@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import com.google.protobuf.DescriptorProtos;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -16,6 +18,8 @@ public class Booking {
     private Integer patientID;
     private Timestamp bookingTime;
     private Timestamp timestamp;
+    private String type;
+    private String details;
 
     /**
      *
@@ -24,13 +28,17 @@ public class Booking {
      * @param patientID the patient id
      * @param bookingTime the time the booking
      * @param timestamp time booking has been created
+     * @param type the type of the booking
+     * @param details the details for the booking
      */
-    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp) {
+    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp, String type, String details) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
         this.patientID = patientID;
         this.bookingTime = bookingTime;
         this.timestamp = timestamp;
+        this.type = type;
+        this.details = details;
     }
 
     public Integer getBookingID() {
@@ -65,6 +73,14 @@ public class Booking {
         return timestamp;
     }
 
+    public String getType() {return type;}
+
+    public void setType(String type) {this.type = type;}
+
+    public String getDetails() {return details;}
+
+    public void setDetails(String details) {this.details = details;}
+
     /**
      * Method for equality testing
      *
@@ -76,7 +92,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(bookingID, booking.bookingID) && Objects.equals(doctorID, booking.doctorID) && Objects.equals(patientID, booking.patientID) && Objects.equals(bookingTime, booking.bookingTime) && Objects.equals(timestamp, booking.timestamp);
+        return getBookingID().equals(booking.getBookingID()) && getDoctorID().equals(booking.getDoctorID()) && getPatientID().equals(booking.getPatientID()) && getBookingTime().equals(booking.getBookingTime()) && getTimestamp().equals(booking.getTimestamp()) && getType().equals(booking.getType()) && getDetails().equals(booking.getDetails());
     }
 
     /**
@@ -86,7 +102,7 @@ public class Booking {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(bookingID, doctorID, patientID, bookingTime, timestamp);
+        return Objects.hash(getBookingID(), getDoctorID(), getPatientID(), getBookingTime(), getTimestamp(), getType(), getDetails());
     }
 
     /**
@@ -102,6 +118,8 @@ public class Booking {
                 ", patientID=" + patientID +
                 ", bookingTime=" + bookingTime +
                 ", timestamp=" + timestamp +
+                ", type='" + type + '\'' +
+                ", details='" + details + '\'' +
                 '}';
     }
 }
