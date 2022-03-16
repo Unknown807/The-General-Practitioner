@@ -969,6 +969,41 @@ public class DataAccess implements IDataAccess
         return logs;
     }
 
+    /**
+     * Create notification
+     * @param patient The patient
+     * @param message The content of the log
+     * @return The log from the database
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
+     */
+    public Log createLog(Patient patient, String message) throws NullDataException, InvalidDataException, DatabaseException
+    {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createLog method");
+        if(isNullOrEmpty(message))
+            throw new NullDataException("Null message in the createLog method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createLog method");
+
+        try {
+            String query = "CALL insert_notification(?, ?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setString(1, message);
+            statement.setInt(2, patient.getPatientID());
+
+            statement.executeQuery();
+
+            var logs = getLogs();
+            return logs.get(logs.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert booking in the database");
+        }
+    }
 
     /**
      * Delete the log with the given id
@@ -990,6 +1025,8 @@ public class DataAccess implements IDataAccess
             throw new DatabaseException("Could not delete the log from the database");
         }
     }
+
+
     //endregion
 
 }
