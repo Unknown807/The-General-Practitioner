@@ -13,6 +13,10 @@ import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
 import javax.swing.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
@@ -93,12 +97,26 @@ public class AddBookingPanel extends BasePanel {
                 (this.returningPage.equals(PageType.VIEW_BOOKINGS)) ? "Reschedule Booking" : "Create Booking"
             );
         } else if (pair.getFirst().equals(ReceiveType.BOOKING)) {
-            //TODO set bookingToEdit and update labels for rescheduling
+            this.bookingToEdit = (Booking) pair.getSecond();
+            this.populateBookingForm(bookingToEdit);
         }
     }
 
     /**
-     * Switches between 'reschedule' and 'create' booking strings for labels
+     * Populates the booking form with the booking to reschedule's information
+     * @param booking
+     */
+    private void populateBookingForm(Booking booking) {
+        Timestamp timestamp = booking.getBookingTime();
+        yearCombo.setSelectedItem((new SimpleDateFormat("yyyy")).format(timestamp));
+        monthCombo.setSelectedItem((new SimpleDateFormat("MM")).format(timestamp));
+        dayCombo.setSelectedItem((new SimpleDateFormat("dd")).format(timestamp));
+        hourCombo.setSelectedItem((new SimpleDateFormat("HH")).format(timestamp));
+        minuteCombo.setSelectedItem((new SimpleDateFormat("mm")).format(timestamp));
+    }
+
+    /**
+     * Switches between 'reschedule' and 'create' booking strings for descriptive labels
      * @param newBookingPageText
      */
     private void updateBookingLabels(String newBookingPageText) {
@@ -122,7 +140,7 @@ public class AddBookingPanel extends BasePanel {
         try {
             Patient patient = this.addBookingLogic.getPatient(patientID);
             Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
-            this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
+            this.promptLabel.setText("Make your appointment with Dr "+patientDoctor.getFullName());
             this.bookingErrorLabel.setVisible(false);
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
