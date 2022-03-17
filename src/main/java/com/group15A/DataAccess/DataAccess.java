@@ -853,7 +853,7 @@ public class DataAccess implements IDataAccess
      * Get a list of notifications from the given result set
      * @param result The result set
      * @return The list of notifications
-     * @throws SQLException if there was a problem retrieving the bookings
+     * @throws SQLException if there was a problem retrieving the notifications
      */
     private List<Notification> getNotificationsFromDB(ResultSet result) throws SQLException
     {
@@ -893,6 +893,139 @@ public class DataAccess implements IDataAccess
             throw new DatabaseException("Could not delete the notification from the database");
         }
     }
+
+    //endregion
+
+    //region Log
+
+    /**
+     * Get all logs
+     * @return The logs
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
+     */
+    @Override
+    public List<Log> getLogs() throws DatabaseException
+    {
+        try {
+            String query = "CALL get_logs();";
+            PreparedStatement statement = connection.prepareCall(query);
+            ResultSet result = statement.executeQuery();
+
+            return getLogsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get logs from the database");
+        }
+    }
+
+    /**
+     * Get the logs of the given patient
+     * @param patient The patient
+     * @return The patient's logs
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
+     */
+    @Override
+    public List<Log> getLogs(Patient patient) throws DatabaseException, NullDataException, InvalidDataException
+    {
+        if(patient==null)
+            throw new NullDataException("Null patient in the getLogs method");
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the getLogs method");
+        try {
+            String query = "CALL get_logs_patient(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, patient.getPatientID());
+            ResultSet result = statement.executeQuery();
+
+            return getLogsFromDB(result);
+        }catch (Exception ex)
+        {
+            throw new DatabaseException("Could not get logs from the database");
+        }
+    }
+
+    /**
+     * Get a list of logs from the given result set
+     * @param result The result set
+     * @return The list of logs
+     * @throws SQLException if there was a problem retrieving the logs
+     */
+    private List<Log> getLogsFromDB(ResultSet result) throws SQLException
+    {
+        var logs = new ArrayList<Log>();
+        while (result.next()) {
+            logs.add(new Log(
+                    result.getInt("id_log"),
+                    result.getString("message"),
+                    result.getInt("id_patient"),
+                    result.getTimestamp("timestamp")
+            ));
+        }
+
+        return logs;
+    }
+
+    /**
+     * Create notification
+     * @param patient The patient
+     * @param message The content of the log
+     * @return The log from the database
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
+     * @throws InvalidDataException if the data is invalid
+     */
+    public Log createLog(Patient patient, String message) throws NullDataException, InvalidDataException, DatabaseException
+    {
+        if(patient==null)
+            throw new NullDataException("Null patient in the createLog method");
+        if(isNullOrEmpty(message))
+            throw new NullDataException("Null message in the createLog method");
+
+        if(!validatePatient(patient))
+            throw new InvalidDataException("Invalid patient in the createLog method");
+
+        try {
+            String query = "CALL insert_log(?, ?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setString(1, message);
+            statement.setInt(2, patient.getPatientID());
+
+            statement.executeQuery();
+
+            var logs = getLogs();
+            return logs.get(logs.size()-1);
+        } catch (Exception ex)
+        {
+            System.err.println(ex);
+            throw new DatabaseException("Could not insert log in the database");
+        }
+    }
+
+    /**
+     * Delete the log with the given id
+     * @param logID The log id
+     * @throws DatabaseException if there was a problem querying the database
+     * @throws InvalidDataException if the data is invalid
+     */
+    public void deleteLog(int logID) throws DatabaseException, InvalidDataException
+    {
+        if(logID<0)
+            throw new InvalidDataException("Negative log ID in the deleteLog method");
+        try{
+            String query = "CALL delete_log(?);";
+            PreparedStatement statement = connection.prepareCall(query);
+            statement.setInt(1, logID);
+            statement.executeQuery();
+        } catch (Exception ex)
+        {
+            throw new DatabaseException("Could not delete the log from the database");
+        }
+    }
+
 
     //endregion
 

@@ -1,6 +1,7 @@
 package com.group15A.DataAccess;
 
 import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataModel.*;
 
 import java.sql.Timestamp;
@@ -51,5 +52,9 @@ public interface IDataAccess
 
     Notification setNotificationSeen(Notification notification) throws CustomException;
 
+    List<Log> getLogs(Patient patient) throws CustomException;
 
+    List<Log> getLogs() throws CustomException;
+
+    Log createLog(Patient patient, String message) throws CustomException;
 }

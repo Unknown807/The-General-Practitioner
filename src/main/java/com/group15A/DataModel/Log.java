@@ -1,7 +1,6 @@
 package com.group15A.DataModel;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -11,51 +10,35 @@ import java.util.Objects;
  * @author Wenbo Wu
  */
 public class Log {
-    private Integer LogID;
+    private Integer logID;
     private String message;
-    private Integer doctorID;
     private Integer patientID;
-    private Integer bookingID;
     private Timestamp timestamp;
 
     /**
-     * Constructor for a logs
+     * Constructor for a log
      *
      * @param logID the id
-     * @param message the contant of the logs
-     * @param doctorID  id for doctor
+     * @param message the content of the log
      * @param patientID id for patient
-     * @param bookingID id for booking
-     * @param timestamp time logs has been created
+     * @param timestamp time log has been created
      */
-    public Log(Integer logID, String message, Integer doctorID, Integer patientID, Integer bookingID, Timestamp timestamp) {
-        this.LogID = logID;
+    public Log(Integer logID, String message, Integer patientID, Timestamp timestamp) {
+        this.logID = logID;
         this.message = message;
-        this.doctorID = doctorID;
         this.patientID = patientID;
-        this.bookingID = bookingID;
         this.timestamp = timestamp;
     }
 
-    public Integer getLogID() {return LogID;}
-
-    public void setLogID(Integer logID) {LogID = logID;}
+    public Integer getLogID() {return logID;}
 
     public String getMessage() {return message;}
 
     public void setMessage(String message) {this.message = message;}
 
-    public Integer getDoctorID() {return doctorID;}
-
-    public void setDoctorID(Integer doctorID) {this.doctorID = doctorID;}
-
     public Integer getPatientID() {return patientID;}
 
     public void setPatientID(Integer patientID) {this.patientID = patientID;}
-
-    public Integer getBookingID() {return bookingID;}
-
-    public void setBookingID(Integer bookingID) {this.bookingID = bookingID;}
 
     public Timestamp getTimestamp() {return timestamp;}
 
@@ -72,7 +55,7 @@ public class Log {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Log log = (Log) o;
-        return Objects.equals(getLogID(), log.getLogID()) && Objects.equals(getMessage(), log.getMessage()) && Objects.equals(getDoctorID(), log.getDoctorID()) && Objects.equals(getPatientID(), log.getPatientID()) && Objects.equals(getBookingID(), log.getBookingID()) && Objects.equals(getTimestamp(), log.getTimestamp());
+        return Objects.equals(getLogID(), log.getLogID()) && Objects.equals(getMessage(), log.getMessage()) && Objects.equals(getPatientID(), log.getPatientID()) && Objects.equals(getTimestamp(), log.getTimestamp());
     }
 
     /**
@@ -82,7 +65,7 @@ public class Log {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getLogID(), getMessage(), getDoctorID(), getPatientID(), getBookingID(), getTimestamp());
+        return Objects.hash(getLogID(), getMessage(), getPatientID(), getTimestamp());
     }
 
     /**
@@ -93,11 +76,9 @@ public class Log {
     @Override
     public String toString() {
         return "Log{" +
-                "LogID=" + LogID +
+                "logID=" + logID +
                 ", message='" + message + '\'' +
-                ", doctorID=" + doctorID +
                 ", patientID=" + patientID +
-                ", bookingID=" + bookingID +
                 ", timestamp=" + timestamp +
                 '}';
     }
