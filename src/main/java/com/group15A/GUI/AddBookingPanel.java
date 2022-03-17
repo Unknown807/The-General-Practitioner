@@ -125,14 +125,6 @@ public class AddBookingPanel extends BasePanel {
     }
 
     /**
-     * Reschedules a booking by populating fields with current booking data
-     * @param booking the booking object to be rescheduled
-     */
-    private void rescheduleBooking(Booking booking) {
-
-    }
-
-    /**
      * Update the name of the doctor in the title label
      * @param patientID The ID of the patient
      */
@@ -156,35 +148,31 @@ public class AddBookingPanel extends BasePanel {
         goBackButton.addActionListener(e -> {
             panelController.showPage(this.returningPage);
         });
-        createBookingButton.addActionListener(e -> {
-            if (bookingToEdit == null) {
-                this.createNewBooking();
-            } else {
-                this.rescheduleBooking(bookingToEdit);
-            }
-        });
+        createBookingButton.addActionListener(e -> this.createOrEditBooking());
     }
 
-    /**
-     * Pass given data to `addBookingLogic.createNewBooking()`,
-     * if successful take the user to the view booking page
-     *
-     * Show relevant error labels when needed
-     */
-    private void createNewBooking() {
+
+    private void createOrEditBooking() {
         try {
-            this.addBookingLogic.createNewBooking(
-                    yearCombo.getSelectedItem().toString()+"-"+
-                    monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(),
-                    hourCombo.getSelectedItem().toString(),
-                    minuteCombo.getSelectedItem().toString(),
-                    this.panelController.getSession().getLoggedInPatientID()
-            );
+
+            String date = yearCombo.getSelectedItem().toString()+"-"+
+                          monthCombo.getSelectedItem().toString()+"-"+
+                          dayCombo.getSelectedItem().toString();
+
+            String hour = hourCombo.getSelectedItem().toString();
+            String minute = minuteCombo.getSelectedItem().toString();
+            Integer patientID = this.panelController.getSession().getLoggedInPatientID();
+
+            if (bookingToEdit == null) {
+                this.addBookingLogic.createNewBooking(date, hour, minute, patientID);
+            } else {
+                this.addBookingLogic.rescheduleBooking(date, hour, minute, patientID, bookingToEdit);
+            }
+
             this.bookingErrorLabel.setVisible(false);
             this.panelController.showPage(
                     PageType.VIEW_BOOKINGS,
-                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+                    new ReceivePair(ReceiveType.PATIENT_ID, patientID)
             );
 
         } catch (DoctorNotFoundException e) {

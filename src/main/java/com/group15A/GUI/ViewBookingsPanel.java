@@ -115,6 +115,7 @@ public class ViewBookingsPanel extends BasePanel {
     {
         this.panelController.showPage(
                 PageType.ADD_BOOKING,
+                new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID()),
                 new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_BOOKINGS),
                 new ReceivePair(ReceiveType.BOOKING, booking)
         );
