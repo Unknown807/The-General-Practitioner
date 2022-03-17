@@ -27,6 +27,10 @@ public class ViewProfilePanel extends BasePanel {
     private JButton changeDoctorButton;
     private JLabel titleLabel;
     private JLabel doctorSectionLabel;
+    private JPanel activityPanel;
+    private JLabel activitySectionLabel;
+    private JButton viewActivityButton;
+    private JPanel sectionsPanel;
 
     private ViewProfileLogic viewProfileLogic;
 
@@ -82,11 +86,15 @@ public class ViewProfilePanel extends BasePanel {
     @Override
     public void createActionListeners() {
         backButton.addActionListener(e -> this.panelController.showPage(PageType.HOME));
+
         changeDoctorButton.addActionListener(e -> {
             this.panelController.showPage(
                     PageType.CHOOSE_DOCTOR,
                     new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_PROFILE)
             );
         });
+
+        viewActivityButton.addActionListener(e -> this.panelController.showPage(PageType.LOG));
+
     }
 }
