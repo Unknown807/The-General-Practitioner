@@ -5,13 +5,13 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.CustomExceptions.ExistingBookingException;
+import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
-
 import javax.swing.*;
 
 /**
@@ -25,7 +25,7 @@ import javax.swing.*;
  */
 public class AddBookingPanel extends BasePanel {
     private JPanel addBookingPanel;
-    private JButton goHomeButton;
+    private JButton goBackButton;
     private JButton createBookingButton;
     private JPanel contentPanel;
     private JPanel bookingSelectionPanel;
@@ -40,6 +40,8 @@ public class AddBookingPanel extends BasePanel {
     private JLabel promptLabel;
 
     private AddBookingLogic addBookingLogic;
+    private PageType returningPage;
+    private Booking bookingToEdit;
 
     /**
      * Constructor for AddBookingPanel class
@@ -50,7 +52,7 @@ public class AddBookingPanel extends BasePanel {
      */
     public AddBookingPanel(MultiPanelWindow panelController)
     {
-        super("New Booking", "addBookingPanel", panelController);
+        super("Make Booking", "addBookingPanel", panelController);
         JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
         JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
         int year = 2022;
@@ -82,9 +84,23 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair)
     {
-        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+        if (pair.getFirst().equals(ReceiveType.PATIENT_ID)) {
             this.updateDoctorLabels((Integer) pair.getSecond());
+        } else if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {
+            this.returningPage = (PageType) pair.getSecond();
+        } else if (pair.getFirst().equals(ReceiveType.BOOKING)) {
+            //TODO set bookingToEdit and update labels for rescheduling
         }
+    }
+
+
+
+    /**
+     * Reschedules a booking by populating fields with current booking data
+     * @param booking the booking object to be rescheduled
+     */
+    private void rescheduleBooking(Booking booking) {
+
     }
 
     /**
@@ -108,8 +124,16 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        createBookingButton.addActionListener(e -> this.createNewBooking());
+        goBackButton.addActionListener(e -> {
+            panelController.showPage(this.returningPage);
+        });
+        createBookingButton.addActionListener(e -> {
+            if (bookingToEdit == null) {
+                this.createNewBooking();
+            } else {
+                this.rescheduleBooking(bookingToEdit);
+            }
+        });
     }
 
     /**

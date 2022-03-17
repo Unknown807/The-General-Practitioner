@@ -113,8 +113,11 @@ public class ViewBookingsPanel extends BasePanel {
 
     private void rescheduleBooking(Booking booking)
     {
-        //TODO: Implement
-        System.out.println(booking.toString()); // Test code
+        this.panelController.showPage(
+                PageType.ADD_BOOKING,
+                new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_BOOKINGS),
+                new ReceivePair(ReceiveType.BOOKING, booking)
+        );
     }
 
     /**
@@ -133,13 +136,6 @@ public class ViewBookingsPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-//        newBookingButton.addActionListener(e -> {
-//            panelController.showPage(
-//                    PageType.ADD_BOOKING,
-//                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
-//            );
-//        });
-
     }
 
 }
