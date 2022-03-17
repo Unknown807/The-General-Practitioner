@@ -14,35 +14,34 @@ import javax.swing.*;
  * @author Milovan Gveric
  * @author Filip Fois
  */
-public class LoggingPanel extends BasePanel {
+public class LogPanel extends BasePanel {
     private JPanel loggingPanel;
     private JButton homeButton;
     private JPanel contentPanel;
-    private JPanel messagePanel;
-    private JLabel messageLabel;
-    private JScrollPane logScrollPanel;
-    private JPanel logExtraPanel;
-    private JPanel logContentPanel;
-    private JLabel noLogsLabel;
+    private JPanel logsPanel;
 
     /**
-     * Constructor for the LoggingPanel class
+     * Constructor for the LogPanel class
      *
      * Creates action listeners for widgets
      *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
      */
-    public LoggingPanel(MultiPanelWindow panelController)
+    public LogPanel(MultiPanelWindow panelController)
     {
         super("Activity logs", "loggingPanel", panelController);
-        createActionListeners();
+
+        MessageListPanel messageListPanel = new MessageListPanel("My activity","No logs.", false);
+        logsPanel.add(messageListPanel.getPanel());
+
         try{
             displayLogs();
         }
         catch(Exception e){
 
         }
+        createActionListeners();
     }
 
     /**
@@ -79,7 +78,7 @@ public class LoggingPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        homeButton.addActionListener(e -> this.panelController.showPage(PageType.HOME));
+        homeButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
     }
 
 }
