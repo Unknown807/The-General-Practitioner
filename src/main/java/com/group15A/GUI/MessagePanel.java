@@ -57,4 +57,10 @@ public class MessagePanel
     }
 
 
+    public void stlyeOld()
+    {
+       messageTextPane.setForeground(Color.GRAY);
+        subheadingLabel.setForeground(Color.GRAY);
+        headingLabel.setForeground(Color.GRAY);
+    }
 }
