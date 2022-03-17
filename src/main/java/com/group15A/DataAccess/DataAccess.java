@@ -480,7 +480,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_doctor"),
                     result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
-                    result.getTimestamp("timestamp")
+                    result.getTimestamp("timestamp"),
+                    null, null, null // Temporary
             );
 
             return booking;
@@ -582,7 +583,8 @@ public class DataAccess implements IDataAccess
                     result.getInt("id_doctor"),
                     result.getInt("id_patient"),
                     result.getTimestamp("booking_time"),
-                    result.getTimestamp("timestamp")
+                    result.getTimestamp("timestamp"),
+                    null, null, null // Temporary
             ));
         }
         return bookings;

@@ -5,14 +5,18 @@ import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.DoctorNotFoundException;
 import com.group15A.CustomExceptions.ExistingBookingException;
+import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 import com.group15A.Utils.JWidgetShortcuts;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
 import com.group15A.Utils.ReceiveType;
-
 import javax.swing.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
@@ -25,7 +29,7 @@ import javax.swing.*;
  */
 public class AddBookingPanel extends BasePanel {
     private JPanel addBookingPanel;
-    private JButton goHomeButton;
+    private JButton goBackButton;
     private JButton createBookingButton;
     private JPanel contentPanel;
     private JPanel bookingSelectionPanel;
@@ -38,8 +42,11 @@ public class AddBookingPanel extends BasePanel {
     private JPanel timeSelectionPanel;
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
+    private JLabel bookingTitle;
 
     private AddBookingLogic addBookingLogic;
+    private PageType returningPage;
+    private Booking bookingToEdit;
 
     /**
      * Constructor for AddBookingPanel class
@@ -50,7 +57,7 @@ public class AddBookingPanel extends BasePanel {
      */
     public AddBookingPanel(MultiPanelWindow panelController)
     {
-        super("New Booking", "addBookingPanel", panelController);
+        super("Make Booking", "addBookingPanel", panelController);
         JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
         JWidgetShortcuts.addItemsToCombo(monthCombo,1,12,1,"Month");
         int year = 2022;
@@ -82,9 +89,51 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair)
     {
-        if (pair.getFirst().equals(ReceiveType.DOCTOR)) {
+        if (pair.getFirst().equals(ReceiveType.PATIENT_ID)) {
             this.updateDoctorLabels((Integer) pair.getSecond());
+        } else if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {
+            this.resetBookingForm();
+            this.returningPage = (PageType) pair.getSecond();
+            this.updateBookingLabels(
+                (this.returningPage.equals(PageType.VIEW_BOOKINGS)) ? "Reschedule Booking" : "Create Booking"
+            );
+        } else if (pair.getFirst().equals(ReceiveType.BOOKING)) {
+            this.bookingToEdit = (Booking) pair.getSecond();
+            this.populateBookingForm(bookingToEdit);
         }
+    }
+
+    /**
+     * Populates the booking form with the booking to reschedule's information
+     * @param booking
+     */
+    private void populateBookingForm(Booking booking) {
+        Timestamp timestamp = booking.getBookingTime();
+        yearCombo.setSelectedItem((new SimpleDateFormat("yyyy")).format(timestamp));
+        monthCombo.setSelectedItem((new SimpleDateFormat("MM")).format(timestamp));
+        dayCombo.setSelectedItem((new SimpleDateFormat("dd")).format(timestamp));
+        hourCombo.setSelectedItem((new SimpleDateFormat("HH")).format(timestamp));
+        minuteCombo.setSelectedItem((new SimpleDateFormat("mm")).format(timestamp));
+    }
+
+    /**
+     * Set dropdowns to their default values
+     */
+    private void resetBookingForm() {
+        yearCombo.setSelectedItem(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        monthCombo.setSelectedItem("Month");
+        dayCombo.setSelectedItem("Day");
+        hourCombo.setSelectedItem("Hour");
+        minuteCombo.setSelectedItem("Minute");
+    }
+
+    /**
+     * Switches between 'reschedule' and 'create' booking strings for descriptive labels
+     * @param newBookingPageText
+     */
+    private void updateBookingLabels(String newBookingPageText) {
+        this.bookingTitle.setText(newBookingPageText);
+        this.createBookingButton.setText(newBookingPageText);
     }
 
     /**
@@ -95,7 +144,7 @@ public class AddBookingPanel extends BasePanel {
         try {
             Patient patient = this.addBookingLogic.getPatient(patientID);
             Doctor patientDoctor = this.addBookingLogic.getPatientDoctor(patient);
-            this.promptLabel.setText("Book your appointment with Dr "+patientDoctor.getFullName());
+            this.promptLabel.setText("Make your appointment with Dr "+patientDoctor.getFullName());
             this.bookingErrorLabel.setVisible(false);
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(addBookingPanel);
@@ -108,32 +157,38 @@ public class AddBookingPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        createBookingButton.addActionListener(e -> this.createNewBooking());
+        goBackButton.addActionListener(e -> {
+            panelController.showPage(this.returningPage);
+            bookingToEdit = null;
+        });
+        createBookingButton.addActionListener(e -> this.createOrEditBooking());
     }
 
-    /**
-     * Pass given data to `addBookingLogic.createNewBooking()`,
-     * if successful take the user to the view booking page
-     *
-     * Show relevant error labels when needed
-     */
-    private void createNewBooking() {
+
+    private void createOrEditBooking() {
         try {
-            this.addBookingLogic.createNewBooking(
-                    yearCombo.getSelectedItem().toString()+"-"+
-                    monthCombo.getSelectedItem().toString()+"-"+
-                    dayCombo.getSelectedItem().toString(),
-                    hourCombo.getSelectedItem().toString(),
-                    minuteCombo.getSelectedItem().toString(),
-                    this.panelController.getSession().getLoggedInPatientID()
-            );
+
+            String date = yearCombo.getSelectedItem().toString()+"-"+
+                          monthCombo.getSelectedItem().toString()+"-"+
+                          dayCombo.getSelectedItem().toString();
+
+            String hour = hourCombo.getSelectedItem().toString();
+            String minute = minuteCombo.getSelectedItem().toString();
+            Integer patientID = this.panelController.getSession().getLoggedInPatientID();
+
+            if (bookingToEdit == null) {
+                this.addBookingLogic.createNewBooking(date, hour, minute, patientID);
+            } else {
+                this.addBookingLogic.rescheduleBooking(date, hour, minute, patientID, bookingToEdit);
+            }
+
             this.bookingErrorLabel.setVisible(false);
             this.panelController.showPage(
                     PageType.VIEW_BOOKINGS,
-                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+                    new ReceivePair(ReceiveType.PATIENT_ID, patientID)
             );
 
+            bookingToEdit = null;
         } catch (DoctorNotFoundException e) {
             this.bookingErrorLabel.setVisible(true);
             this.bookingErrorLabel.setText("The requested doctor is unavailable");

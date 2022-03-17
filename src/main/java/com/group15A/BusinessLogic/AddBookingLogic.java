@@ -9,6 +9,7 @@ import com.group15A.Utils.DataModification;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -42,31 +43,17 @@ public class AddBookingLogic implements IAddBooking {
      * @throws CustomException If any issues connecting to the database or creating the new booking
      */
     @Override
-    public Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws CustomException {
-        ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
-        ErrorCode dateError = this.validator.verifyDate(date);
-
-        // Check format of timestamp is correct
-        if (timestampError != null || dateError != null) {
-            throw new CustomException("Invalid time values", Arrays.asList(timestampError, dateError));
-        }
+    public void createNewBooking(String date, String hour, String minute, Integer patientID) throws CustomException {
+        this.correctDateTimeFormat(hour, minute, date);
 
         String timestamp = date+" "+hour+":"+minute+":00";
-        ErrorCode impossibleDate = this.validator.verifyDateBeforeToday(timestamp);
-
-        // Check that the booking is booked in the past
-        if (impossibleDate != null) {
-            throw new CustomException("Can't book on a past date", Arrays.asList(impossibleDate));
-        }
+        this.isImpossibleBooking(timestamp);
 
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
         Timestamp bookingDateTime = Timestamp.valueOf(timestamp);
 
-        // Finally, check if booking with the same time had already been made
-        if (!this.verifyBookingIsNew(bookingDateTime, patient)) {
-            throw new ExistingBookingException();
-        }
+        this.isNewBooking(bookingDateTime, patient);
 
         Booking newBooking = this.dataAccessLayer.createBooking(
                 patient,
@@ -76,8 +63,62 @@ public class AddBookingLogic implements IAddBooking {
 
         // Show a new notification that the booking has been made to the user on the home panel
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
+    }
 
-        return newBooking;
+    private void isImpossibleBooking(String timestamp) throws CustomException {
+        ErrorCode impossibleDate = this.validator.verifyDateBeforeToday(timestamp);
+
+        // Check that the booking is booked in the past
+        if (impossibleDate != null) {
+            throw new CustomException("Can't book on a past date", Arrays.asList(impossibleDate));
+        }
+    }
+
+    private void isNewBooking(Timestamp bookingDateTime, Patient patient) throws CustomException {
+        // Finally, check if booking with the same time had already been made
+        if (!this.verifyBookingIsNew(bookingDateTime, patient)) {
+            throw new ExistingBookingException();
+        }
+    }
+
+    private void correctDateTimeFormat(String hour, String minute, String date) throws CustomException {
+        ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
+        ErrorCode dateError = this.validator.verifyDate(date);
+
+        // Check format of timestamp is correct
+        if (timestampError != null || dateError != null) {
+            throw new CustomException("Invalid time values", Arrays.asList(timestampError, dateError));
+        }
+    }
+
+    /**
+     * Updates the booking information in the database for the newly rescheduled booking
+     * @param date new date
+     * @param hour new hour
+     * @param minute new minute
+     * @param patientID
+     * @param booking booking to be edited and then updated in the database
+     * @throws CustomException If any issues connecting to the database or updating the booking
+     */
+    @Override
+    public void rescheduleBooking(String date, String hour, String minute, Integer patientID, Booking booking) throws CustomException {
+        this.correctDateTimeFormat(hour, minute, date);
+
+        String oldBookingTimestamp = DataModification.fullDate(booking.getBookingTime());
+
+        booking.setBookingTime(Timestamp.valueOf(date+" "+hour+":"+minute+":00"));
+        this.isImpossibleBooking(booking.getBookingTime().toString());
+        Patient patient = this.dataAccessLayer.getPatient(patientID);
+        Doctor doctor = this.getPatientDoctor(patient);
+        this.isNewBooking(booking.getBookingTime(), patient);
+
+        this.dataAccessLayer.updateBooking(booking);
+        this.dataAccessLayer.createNotification(
+                patient,
+                "Rescheduled Booking",
+                "Changed booking with Dr "+doctor.getFullName()+", from "+oldBookingTimestamp+
+                        " to "+DataModification.fullDate(booking.getBookingTime())
+        );
     }
 
     private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {

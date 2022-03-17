@@ -15,6 +15,9 @@ public enum ReceiveType {
     // View Booking Page
     PATIENT_ID,
 
+    // Create Booking Page
+    BOOKING,
+
     // For Dynamic Events
     EVENT
 }

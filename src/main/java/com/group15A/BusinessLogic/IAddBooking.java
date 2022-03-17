@@ -10,7 +10,9 @@ import com.group15A.DataModel.Patient;
  * @author Milovan Gveric
  */
 public interface IAddBooking {
-    Booking createNewBooking(String date, String hour, String minute, Integer patientID) throws Exception;
+    void createNewBooking(String date, String hour, String minute, Integer patientID) throws Exception;
+
+    void rescheduleBooking(String date, String hour, String minute, Integer patientID, Booking booking) throws Exception;
 
     Doctor getPatientDoctor(Patient patient) throws Exception;
 

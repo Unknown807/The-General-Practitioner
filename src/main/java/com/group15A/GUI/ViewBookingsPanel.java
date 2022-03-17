@@ -70,7 +70,6 @@ public class ViewBookingsPanel extends BasePanel {
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
                 messageListPanel.hideNoMessagesLabel();
-                //this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
@@ -113,8 +112,12 @@ public class ViewBookingsPanel extends BasePanel {
 
     private void rescheduleBooking(Booking booking)
     {
-        //TODO: Implement
-        System.out.println(booking.toString()); // Test code
+        this.panelController.showPage(
+                PageType.ADD_BOOKING,
+                new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID()),
+                new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_BOOKINGS),
+                new ReceivePair(ReceiveType.BOOKING, booking)
+        );
     }
 
     /**
@@ -133,13 +136,6 @@ public class ViewBookingsPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-//        newBookingButton.addActionListener(e -> {
-//            panelController.showPage(
-//                    PageType.ADD_BOOKING,
-//                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
-//            );
-//        });
-
     }
 
 }
