@@ -1,5 +1,7 @@
 package com.group15A.DataModel;
 
+import com.google.protobuf.DescriptorProtos;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -16,6 +18,9 @@ public class Booking {
     private Integer patientID;
     private Timestamp bookingTime;
     private Timestamp timestamp;
+    private String type;
+    private String details;
+    private String prescription;
 
     /**
      *
@@ -24,46 +29,48 @@ public class Booking {
      * @param patientID the patient id
      * @param bookingTime the time the booking
      * @param timestamp time booking has been created
+     * @param type the type of the booking
+     * @param details the details for the booking
+     * @param prescription
      */
-    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp) {
+    public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp, String type, String details, String prescription) {
         this.bookingID = bookingID;
         this.doctorID = doctorID;
         this.patientID = patientID;
         this.bookingTime = bookingTime;
         this.timestamp = timestamp;
+        this.type = type;
+        this.details = details;
+        this.prescription = prescription;
     }
 
-    public Integer getBookingID() {
-        return bookingID;
-    }
+    public Integer getBookingID() {return bookingID;}
 
-    public Integer getDoctorID() {
-        return doctorID;
-    }
+    public Integer getDoctorID() {return doctorID;}
 
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
-    }
+    public void setDoctorID(Integer doctorID) {this.doctorID = doctorID;}
 
-    public Integer getPatientID() {
-        return patientID;
-    }
+    public Integer getPatientID() {return patientID;}
 
-    public void setPatientID(Integer patientID) {
-        this.patientID = patientID;
-    }
+    public void setPatientID(Integer patientID) {this.patientID = patientID;}
 
-    public Timestamp getBookingTime() {
-        return bookingTime;
-    }
+    public Timestamp getBookingTime() {return bookingTime;}
 
-    public void setBookingTime(Timestamp bookingTime) {
-        this.bookingTime = bookingTime;
-    }
+    public void setBookingTime(Timestamp bookingTime) {this.bookingTime = bookingTime;}
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+    public Timestamp getTimestamp() {return timestamp;}
+
+    public String getType() {return type;}
+
+    public void setType(String type) {this.type = type;}
+
+    public String getDetails() {return details;}
+
+    public void setDetails(String details) {this.details = details;}
+
+    public String getPrescription() {return prescription;}
+
+    public void setPrescription(String prescription) {this.prescription = prescription;}
 
     /**
      * Method for equality testing
@@ -76,7 +83,7 @@ public class Booking {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Booking booking = (Booking) o;
-        return Objects.equals(bookingID, booking.bookingID) && Objects.equals(doctorID, booking.doctorID) && Objects.equals(patientID, booking.patientID) && Objects.equals(bookingTime, booking.bookingTime) && Objects.equals(timestamp, booking.timestamp);
+        return getBookingID().equals(booking.getBookingID()) && getDoctorID().equals(booking.getDoctorID()) && getPatientID().equals(booking.getPatientID()) && getBookingTime().equals(booking.getBookingTime()) && getTimestamp().equals(booking.getTimestamp()) && getType().equals(booking.getType()) && getDetails().equals(booking.getDetails()) && getPrescription().equals(booking.getPrescription());
     }
 
     /**
@@ -86,7 +93,7 @@ public class Booking {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(bookingID, doctorID, patientID, bookingTime, timestamp);
+        return Objects.hash(getBookingID(), getDoctorID(), getPatientID(), getBookingTime(), getTimestamp(), getType(), getDetails(), getPrescription());
     }
 
     /**
@@ -102,6 +109,9 @@ public class Booking {
                 ", patientID=" + patientID +
                 ", bookingTime=" + bookingTime +
                 ", timestamp=" + timestamp +
+                ", type='" + type + '\'' +
+                ", details='" + details + '\'' +
+                ", prescription='" + prescription + '\'' +
                 '}';
     }
 }
