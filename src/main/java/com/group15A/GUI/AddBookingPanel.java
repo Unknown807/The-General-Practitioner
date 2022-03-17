@@ -38,6 +38,7 @@ public class AddBookingPanel extends BasePanel {
     private JPanel timeSelectionPanel;
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
+    private JLabel bookingTitle;
 
     private AddBookingLogic addBookingLogic;
     private PageType returningPage;
@@ -88,12 +89,22 @@ public class AddBookingPanel extends BasePanel {
             this.updateDoctorLabels((Integer) pair.getSecond());
         } else if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {
             this.returningPage = (PageType) pair.getSecond();
+            this.updateBookingLabels(
+                (this.returningPage.equals(PageType.VIEW_BOOKINGS)) ? "Reschedule Booking" : "Create Booking"
+            );
         } else if (pair.getFirst().equals(ReceiveType.BOOKING)) {
             //TODO set bookingToEdit and update labels for rescheduling
         }
     }
 
-
+    /**
+     * Switches between 'reschedule' and 'create' booking strings for labels
+     * @param newBookingPageText
+     */
+    private void updateBookingLabels(String newBookingPageText) {
+        this.bookingTitle.setText(newBookingPageText);
+        this.createBookingButton.setText(newBookingPageText);
+    }
 
     /**
      * Reschedules a booking by populating fields with current booking data
