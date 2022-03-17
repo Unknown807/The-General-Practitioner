@@ -1,5 +1,6 @@
 package com.group15A.GUI;
 
+import com.google.protobuf.Message;
 import com.group15A.BusinessLogic.ViewBookingLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
@@ -23,13 +24,14 @@ public class ViewBookingsPanel extends BasePanel {
     private JPanel bookingsPanel;
     private JLabel messageLabel;
     private JButton newBookingButton;
-    private JScrollPane bookingsScrollPanel;
     private JPanel bookingsDisplayPanel;
     private JLabel titleLabel;
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
-    private List<JLabel> bookingLabelsList;
+    private List<JPanel> bookingLabelsList;
+
+    private MessageListPanel messageListPanel;
 
     /**
      * Constructor for ViewBookingsPanel
@@ -38,6 +40,15 @@ public class ViewBookingsPanel extends BasePanel {
     {
         super("My bookings", "viewBookingPanel", panelController);
        // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
+
+        messageListPanel = new MessageListPanel(
+                "My bookings",
+                "No bookings.",
+                true
+        );
+
+        bookingsPanel.add(messageListPanel.getPanel());
+
         createActionListeners();
 
         try {
@@ -58,8 +69,8 @@ public class ViewBookingsPanel extends BasePanel {
             Integer patientID = (Integer) pair.getSecond();
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
-                this.messageLabel.setVisible(false);
-                this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
+                messageListPanel.hideNoMessagesLabel();
+                //this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
@@ -68,6 +79,7 @@ public class ViewBookingsPanel extends BasePanel {
     }
 
     /**
+     * TODO: Update documentation to match use of MessageListPanel
      * For each booking in `bookingList`,
      * create a label containing information about the booking,
      * then add it the `bookingLabelList` to be displayed
@@ -77,28 +89,32 @@ public class ViewBookingsPanel extends BasePanel {
      * @throws CustomException when patient's doctor cannot be accessed
      */
     public void displayBookings() throws CustomException {
-        JWidgetShortcuts.clearJPanel(bookingsDisplayPanel);
-        GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
+        messageListPanel.clearMessages();
 
-        Color color1 = new Color(144, 176, 30);
-        Color color2 = new Color(30, 176, 132);
-
-        Boolean colorFlag = true;
         for (Booking b : bookingsList) {
             Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
-            //TODO: Refactor bookingLabel as its own GUI form
-            JLabel bookingLabel = new JLabel();
-            bookingLabel.setText(DataModification.fullDate(b.getBookingTime())+"\n with Dr "+doctor.getFullName());
-            bookingLabel.setFont(new Font("", Font.BOLD, 25));
-            bookingLabel.setForeground(colorFlag ? color1 : color2);
-            bookingLabel.setBorder(BorderFactory.createLineBorder(colorFlag ? color1 : color2, 2));
-            bookingLabel.setHorizontalAlignment(JLabel.CENTER);
 
-            bookingLabelsList.add(bookingLabel);
-            bookingsDisplayPanel.add(bookingLabel, gbc);
+            MessagePanel bookingMessage = messageListPanel.addMessage(
+                    "",
+                    "With Dr. "+doctor.getFullName(),
+                    "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
+                    "Reschedule");
 
-            colorFlag = !colorFlag;
+
+            bookingLabelsList.add(bookingMessage.getMainPanel());
+
+            // Copied from HomePanel.java
+            bookingMessage.getButton().addActionListener(e -> {
+                this.rescheduleBooking(b);
+            });
+
         }
+    }
+
+    private void rescheduleBooking(Booking booking)
+    {
+        //TODO: Implement
+        System.out.println(booking.toString()); // Test code
     }
 
     /**
@@ -117,12 +133,12 @@ public class ViewBookingsPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        newBookingButton.addActionListener(e -> {
-            panelController.showPage(
-                    PageType.ADD_BOOKING,
-                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
-            );
-        });
+//        newBookingButton.addActionListener(e -> {
+//            panelController.showPage(
+//                    PageType.ADD_BOOKING,
+//                    new ReceivePair(ReceiveType.DOCTOR, this.panelController.getSession().getLoggedInPatientID())
+//            );
+//        });
 
     }
 

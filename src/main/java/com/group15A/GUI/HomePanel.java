@@ -25,19 +25,20 @@ public class HomePanel extends BasePanel {
     private JButton logOutButton;
     private JPanel contentScrollPane;
     private JLabel titleLabel;
-    private JPanel messagePanel;
+    private JPanel notificationPanel;
     private JPanel navigationPanel;
     private JButton viewBookingsButton;
     private JButton newBookingButton;
     private JPanel messageContentPanel;
     private JLabel messageLabel;
     private JLabel noMessagesLabel;
-    private JPanel messageExtraPanel;
-    private JScrollPane messageScrollPanel;
     private JButton viewProfileButton;
+    private JButton myActivityButton;
 
     private HomeLogic homeLogic;
     private List<Notification> notifList;
+
+    private MessageListPanel messageListPanel;
 
     /**
      * Constructor for the HomePanel class
@@ -49,54 +50,53 @@ public class HomePanel extends BasePanel {
      */
     public HomePanel(MultiPanelWindow panelController) {
         super("Home", "homePanel", panelController);
-        createActionListeners();
+
+        messageListPanel = new MessageListPanel("New messages","No messages.", true);
+        notificationPanel.add(messageListPanel.getPanel());
 
         try {
             this.homeLogic = new HomeLogic();
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
         }
+
+        createActionListeners();
     }
 
     /**
+     * TODO: Update documentation to match use of MessageListPanel
      * For each notification in `notifList`,
      * if it's marked as new,
-     * then create a NotificationDisplay and add it
+     * then create a MessagePanel and add it
      * to the list of notifications on the page
      *
      * Then display the number of new bookings
      */
     private void displayNotifications() {
-        //messageContentPanel.setLayout(new GridBagLayout());
-        JWidgetShortcuts.clearJPanel(messageContentPanel);
-        GridBagConstraints gbc = JWidgetShortcuts.getStackGBC();
+        messageListPanel.clearMessages();
 
-        int unseen = 0;
         if(!notifList.isEmpty()) {
-            noMessagesLabel.setVisible(false);
+            messageListPanel.hideNoMessagesLabel();
             for (int i=notifList.size()-1; i>=0; i--) {
                 Notification notification = notifList.get(i);
                 if (!notification.isNew()) {
                     continue;
                 }
 
-                NotificationDisplay notificationDisplay = new NotificationDisplay(
+                MessagePanel notificationDisplay = messageListPanel.addMessage(
                         notification.getHeader(),
-                        "("+DataModification.shortDate(notification.getTimestamp())+")",
-                        notification.getMessage()
+                        "("+DataModification.shortDateTime(notification.getTimestamp())+")",
+                        notification.getMessage(),
+                        "Mark as read"
                 );
 
-                //notificationDisplay.getContentPanel().setBorder(new EmptyBorder(8,8,8,8));
-                notificationDisplay.getReadButton().addActionListener(e -> {
-                    notificationDisplay.getReadButton().setVisible(false);
+                notificationDisplay.getButton().addActionListener(e -> {
+                    notificationDisplay.getButton().setVisible(false);
                     this.markAsRead(notification);
                 });
-                messageContentPanel.add(notificationDisplay.getMainPanel(), gbc);
 
-                unseen++;
             }
 
-            messageLabel.setText("New Messages ("+unseen+")");
         }
     }
 
@@ -158,6 +158,7 @@ public class HomePanel extends BasePanel {
         });
 
         viewProfileButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
+
     }
 
     /**
