@@ -44,37 +44,21 @@ public class Booking {
         this.prescription = prescription;
     }
 
-    public Integer getBookingID() {
-        return bookingID;
-    }
+    public Integer getBookingID() {return bookingID;}
 
-    public Integer getDoctorID() {
-        return doctorID;
-    }
+    public Integer getDoctorID() {return doctorID;}
 
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
-    }
+    public void setDoctorID(Integer doctorID) {this.doctorID = doctorID;}
 
-    public Integer getPatientID() {
-        return patientID;
-    }
+    public Integer getPatientID() {return patientID;}
 
-    public void setPatientID(Integer patientID) {
-        this.patientID = patientID;
-    }
+    public void setPatientID(Integer patientID) {this.patientID = patientID;}
 
-    public Timestamp getBookingTime() {
-        return bookingTime;
-    }
+    public Timestamp getBookingTime() {return bookingTime;}
 
-    public void setBookingTime(Timestamp bookingTime) {
-        this.bookingTime = bookingTime;
-    }
+    public void setBookingTime(Timestamp bookingTime) {this.bookingTime = bookingTime;}
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+    public Timestamp getTimestamp() {return timestamp;}
 
     public String getType() {return type;}
 
