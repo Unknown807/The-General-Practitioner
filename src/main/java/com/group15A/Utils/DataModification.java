@@ -32,7 +32,13 @@ public class DataModification
      */
     public static String fullDate(Timestamp timestamp)
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM, yyyy, HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMMM, yyyy");
+        return dateFormat.format(timestamp);
+    }
+
+    public static String getTime(Timestamp timestamp)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(timestamp);
     }
 
@@ -43,10 +49,11 @@ public class DataModification
      * @param timestamp The timestamp to be shortened
      * @return shortened timestamp string
      */
-    public static String shortDate(Timestamp timestamp)
+    public static String shortDateTime(Timestamp timestamp)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd/MM/yyyy, HH:mm");
         return dateFormat.format(timestamp);
     }
+
 
 }
