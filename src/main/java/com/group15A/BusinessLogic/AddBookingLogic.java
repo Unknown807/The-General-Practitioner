@@ -104,12 +104,21 @@ public class AddBookingLogic implements IAddBooking {
     public void rescheduleBooking(String date, String hour, String minute, Integer patientID, Booking booking) throws CustomException {
         this.correctDateTimeFormat(hour, minute, date);
 
+        String oldBookingTimestamp = DataModification.fullDate(booking.getBookingTime());
+
         booking.setBookingTime(Timestamp.valueOf(date+" "+hour+":"+minute+":00"));
         this.isImpossibleBooking(booking.getBookingTime().toString());
         Patient patient = this.dataAccessLayer.getPatient(patientID);
+        Doctor doctor = this.getPatientDoctor(patient);
         this.isNewBooking(booking.getBookingTime(), patient);
 
         this.dataAccessLayer.updateBooking(booking);
+        this.dataAccessLayer.createNotification(
+                patient,
+                "Rescheduled Booking",
+                "Changed booking with Dr "+doctor.getFullName()+", from "+oldBookingTimestamp+
+                        " to "+DataModification.fullDate(booking.getBookingTime())
+        );
     }
 
     private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {

@@ -70,7 +70,6 @@ public class ViewBookingsPanel extends BasePanel {
             try {
                 bookingsList = this.viewBookingLogic.getBookings(patientID);
                 messageListPanel.hideNoMessagesLabel();
-                //this.titleLabel.setText("Your bookings (" + bookingsList.size() + ")");
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);

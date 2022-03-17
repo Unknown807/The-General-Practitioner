@@ -92,6 +92,7 @@ public class AddBookingPanel extends BasePanel {
         if (pair.getFirst().equals(ReceiveType.PATIENT_ID)) {
             this.updateDoctorLabels((Integer) pair.getSecond());
         } else if (pair.getFirst().equals(ReceiveType.RETURN_PAGE)) {
+            this.resetBookingForm();
             this.returningPage = (PageType) pair.getSecond();
             this.updateBookingLabels(
                 (this.returningPage.equals(PageType.VIEW_BOOKINGS)) ? "Reschedule Booking" : "Create Booking"
@@ -113,6 +114,17 @@ public class AddBookingPanel extends BasePanel {
         dayCombo.setSelectedItem((new SimpleDateFormat("dd")).format(timestamp));
         hourCombo.setSelectedItem((new SimpleDateFormat("HH")).format(timestamp));
         minuteCombo.setSelectedItem((new SimpleDateFormat("mm")).format(timestamp));
+    }
+
+    /**
+     * Set dropdowns to their default values
+     */
+    private void resetBookingForm() {
+        yearCombo.setSelectedItem(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        monthCombo.setSelectedItem("Month");
+        dayCombo.setSelectedItem("Day");
+        hourCombo.setSelectedItem("Hour");
+        minuteCombo.setSelectedItem("Minute");
     }
 
     /**
@@ -147,6 +159,7 @@ public class AddBookingPanel extends BasePanel {
     {
         goBackButton.addActionListener(e -> {
             panelController.showPage(this.returningPage);
+            bookingToEdit = null;
         });
         createBookingButton.addActionListener(e -> this.createOrEditBooking());
     }
@@ -175,6 +188,7 @@ public class AddBookingPanel extends BasePanel {
                     new ReceivePair(ReceiveType.PATIENT_ID, patientID)
             );
 
+            bookingToEdit = null;
         } catch (DoctorNotFoundException e) {
             this.bookingErrorLabel.setVisible(true);
             this.bookingErrorLabel.setText("The requested doctor is unavailable");
