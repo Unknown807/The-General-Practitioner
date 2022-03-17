@@ -71,6 +71,10 @@ public class MessageListPanel {
     {
         getNoMessagesLabel().setVisible(false);
     }
+    public void showNoMessagesLabel()
+    {
+        getNoMessagesLabel().setVisible(true);
+    }
 
     public void setHeaderText(String string)
     {
