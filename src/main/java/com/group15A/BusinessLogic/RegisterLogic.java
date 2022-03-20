@@ -42,6 +42,18 @@ public class RegisterLogic implements IRegister {
         this.validator = new Validator();
     }
 
+    /**
+     * TODO: Explain the thrown exceptions.
+     * Create a notification detailing that the given patient
+     * has been registered and added to the database
+     *
+     * Called when a patient successfully registers
+     *
+     * @param patient The patient that the notification is sent to
+     * @throws InvalidDataException
+     * @throws NullDataException
+     * @throws DatabaseException
+     */
     public void registerNotification(Patient patient) throws InvalidDataException, NullDataException, DatabaseException {
         dataAccessLayer.createNotification(
                 patient,
