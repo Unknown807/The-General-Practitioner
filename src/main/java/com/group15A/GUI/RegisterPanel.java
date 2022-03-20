@@ -3,7 +3,9 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
+import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.*;
@@ -201,9 +203,9 @@ public class RegisterPanel extends BasePanel {
             Session currentSession = panelController.getSession();
             currentSession.setLoggedInPatient(newPatient);
             currentSession.setKeepLoggedIn(false);
+            registerLogic.registerNotification(newPatient);
             panelController.refreshPages();
             currentSession.saveToFile();
-
             panelController.showPage(PageType.HOME);
         } catch (CustomException e) {
             clearErrorLabels();

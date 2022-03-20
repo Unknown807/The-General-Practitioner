@@ -2,6 +2,8 @@ package com.group15A.BusinessLogic;
 
 import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.CustomExceptions.CustomException;
+import com.group15A.CustomExceptions.InvalidDataException;
+import com.group15A.CustomExceptions.NullDataException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
@@ -38,6 +40,14 @@ public class RegisterLogic implements IRegister {
     public RegisterLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
         this.validator = new Validator();
+    }
+
+    public void registerNotification(Patient patient) throws InvalidDataException, NullDataException, DatabaseException {
+        dataAccessLayer.createNotification(
+                patient,
+                "Welcome to the GP, "+patient.getFirstName(),
+                "Your patient account has been created."
+                );
     }
 
     /**
