@@ -43,6 +43,9 @@ public class AddBookingPanel extends BasePanel {
     private JLabel bookingErrorLabel;
     private JLabel promptLabel;
     private JLabel bookingTitle;
+    private JComboBox typeComboBox;
+    private JPanel typeLabel;
+    private JLabel typeTitle;
 
     private AddBookingLogic addBookingLogic;
     private PageType returningPage;
