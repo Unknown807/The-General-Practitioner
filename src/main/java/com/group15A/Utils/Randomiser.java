@@ -22,7 +22,8 @@ public class Randomiser {
             "Diabetes drugs",
             "Contraception pills",
             "Chronic disease medication",
-            "Sore throat medicine"
+            "Sore throat medicine",
+            "Oral Health medication"
     };
 
     private final String[] details = new String[] {
