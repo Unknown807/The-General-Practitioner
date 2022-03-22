@@ -22,6 +22,6 @@ public class Randomiser {
     }
 
     public String getRandDetails() {
-
+        return details[randomGen.nextInt(details.length)];
     }
 }
