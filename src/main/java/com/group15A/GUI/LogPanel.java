@@ -1,15 +1,11 @@
 package com.group15A.GUI;
 
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.InvalidDataException;
-import com.group15A.CustomExceptions.NullDataException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.BusinessLogic.LogLogic;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Log;
 import com.group15A.DataModel.Patient;
-import com.group15A.Utils.DataModification;
-import com.group15A.Utils.PageType;
-import com.group15A.Utils.ReceivePair;
+import com.group15A.Utils.*;
 
 import javax.swing.*;
 import java.util.List;
@@ -17,7 +13,7 @@ import java.util.List;
 /**
  * To allow for communication to the business layer and to take care of event handling
  *
- * homePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * loggingPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
@@ -29,6 +25,9 @@ public class LogPanel extends BasePanel {
     private JPanel contentPanel;
     private JPanel logsPanel;
     private MessageListPanel messageListPanel;
+
+    private List<Log> userLogs;
+    private LogLogic logLogic;
 
     /**
      * Constructor for the LogPanel class
@@ -42,15 +41,15 @@ public class LogPanel extends BasePanel {
     {
         super("Activity logs", "loggingPanel", panelController);
 
-        messageListPanel = new MessageListPanel("My activity","No logs.", false);
+        messageListPanel = new MessageListPanel("My activity","No logs.", true);
         logsPanel.add(messageListPanel.getPanel());
 
         try{
-            displayLogs();
+            this.logLogic = new LogLogic();
+        } catch(DatabaseException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(loggingPanel);
         }
-        catch(Exception e){
 
-        }
         createActionListeners();
     }
 
@@ -58,18 +57,14 @@ public class LogPanel extends BasePanel {
      * For each message provided by the LogLogic object,
      * create a LogDisplay object and add it to the log display panel.
      */
-    private void displayLogs() throws DatabaseException, InvalidDataException, PatientNotFoundException, NullDataException {
-        DataAccess dataAccess = new DataAccess();
-        Patient patient = dataAccess.getPatient(panelController.getSession().getLoggedInPatientID());
-        List<Log> logs = dataAccess.getLogs(patient);
-
+    private void displayLogs() throws CustomException {
         messageListPanel.clearMessages();
-        for(Log log : logs){
+        for (Log log: userLogs) {
             messageListPanel.addMessage(
-                    "",
-                    DataModification.shortDateTime(log.getTimestamp()),
-                    log.getMessage(),
-                    ""
+                "",
+                DataModification.shortDateTime(log.getTimestamp()),
+                log.getMessage(),
+                ""
             );
         }
     }
@@ -90,7 +85,15 @@ public class LogPanel extends BasePanel {
     @Override
     public void receiveData(ReceivePair pair)
     {
-
+        if (pair.getFirst().equals(ReceiveType.EVENT)) {
+            try {
+                this.userLogs = this.logLogic.getLogs(panelController.getSession().getLoggedInPatientID());
+                this.displayLogs();
+            } catch (CustomException e) {
+                e.printStackTrace();
+                JWidgetShortcuts.showDatabaseExceptionPopupAndExit(loggingPanel);
+            }
+        }
     }
 
     /**
