@@ -40,7 +40,7 @@ public interface IDataAccess
 
     List<Booking> getBookings(Patient patient) throws CustomException;
 
-    Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws CustomException;
+    Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime, String type) throws CustomException;
 
     Booking updateBooking(Booking booking) throws CustomException;
 

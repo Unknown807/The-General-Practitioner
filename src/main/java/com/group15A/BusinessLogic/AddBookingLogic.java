@@ -59,7 +59,8 @@ public class AddBookingLogic implements IAddBooking {
         Booking newBooking = this.dataAccessLayer.createBooking(
                 patient,
                 doctor,
-                bookingDateTime
+                bookingDateTime,
+                "Check-up"
         );
 
         // Show a new notification that the booking has been made to the user on the home panel
