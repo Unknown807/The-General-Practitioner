@@ -290,6 +290,7 @@
                             <item value=""/>
                             <item value="Male"/>
                             <item value="Female"/>
+                            <item value="Other"/>
                           </model>
                         </properties>
                       </component>

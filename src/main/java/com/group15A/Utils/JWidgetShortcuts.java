@@ -51,8 +51,8 @@ public class JWidgetShortcuts {
             comboBox.addItem(unchosen);
         }
 
-        int start = reverse ? words.length-1 : 0;
-        int end   = reverse ? 0 : words.length-1;
+        int start = reverse ? words.length : 0;
+        int end   = reverse ? 0 : words.length;
         int steps = reverse ? -1 : 1;
 
         for(int i = start; i != end; i+=steps){
