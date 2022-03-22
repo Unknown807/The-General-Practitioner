@@ -43,8 +43,9 @@ public class AddBookingLogic implements IAddBooking {
      * @throws CustomException If any issues connecting to the database or creating the new booking
      */
     @Override
-    public void createNewBooking(String date, String hour, String minute, Integer patientID) throws CustomException {
+    public void createNewBooking(String date, String hour, String minute, String type, Integer patientID) throws CustomException {
         this.correctDateTimeFormat(hour, minute, date);
+        this.correctBookingType(type);
 
         String timestamp = date+" "+hour+":"+minute+":00";
         this.isImpossibleBooking(timestamp);
@@ -63,6 +64,14 @@ public class AddBookingLogic implements IAddBooking {
 
         // Show a new notification that the booking has been made to the user on the home panel
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
+    }
+
+    private void correctBookingType(String type) throws CustomException {
+        ErrorCode wrongType = this.validator.verifyBookingType(type);
+
+        if (wrongType != null) {
+            throw new CustomException("Wrong booking type", Arrays.asList(wrongType));
+        }
     }
 
     private void isImpossibleBooking(String timestamp) throws CustomException {
@@ -101,12 +110,14 @@ public class AddBookingLogic implements IAddBooking {
      * @throws CustomException If any issues connecting to the database or updating the booking
      */
     @Override
-    public void rescheduleBooking(String date, String hour, String minute, Integer patientID, Booking booking) throws CustomException {
+    public void rescheduleBooking(String date, String hour, String minute, String type, Integer patientID, Booking booking) throws CustomException {
         this.correctDateTimeFormat(hour, minute, date);
+        this.correctBookingType(type);
 
         String oldBookingTimestamp = DataModification.fullDate(booking.getBookingTime());
 
         booking.setBookingTime(Timestamp.valueOf(date+" "+hour+":"+minute+":00"));
+        booking.setType(type);
         this.isImpossibleBooking(booking.getBookingTime().toString());
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
