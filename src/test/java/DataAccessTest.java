@@ -318,7 +318,7 @@ public class DataAccessTest extends TestCase {
             Patient patient = dataAccess.getPatient(1);
             Doctor doctor = dataAccess.getDoctor(patient);
             var time = Timestamp.valueOf(LocalDateTime.of(2022, Calendar.SEPTEMBER, 5, 15, 15, 0));
-            Booking booking = dataAccess.createBooking(patient, doctor, time);
+            Booking booking = dataAccess.createBooking(patient, doctor, time, "Check-up");
             dataAccess.deleteBooking(booking);
 
             assertEquals(booking.getPatientID(), patient.getPatientID());
@@ -338,7 +338,7 @@ public class DataAccessTest extends TestCase {
             Patient patient = dataAccess.getPatient(1);
             Doctor doctor = dataAccess.getDoctor(patient);
             var time = Timestamp.valueOf(LocalDateTime.of(2022, Calendar.SEPTEMBER, 5, 15, 15, 0));
-            Booking booking = dataAccess.createBooking(patient, doctor, time);
+            Booking booking = dataAccess.createBooking(patient, doctor, time, "Check-up");
             var newTime= Timestamp.valueOf(LocalDateTime.of(2023, Calendar.OCTOBER, 5, 15, 15, 0));
             booking.setBookingTime(newTime);
             booking = dataAccess.updateBooking(booking);

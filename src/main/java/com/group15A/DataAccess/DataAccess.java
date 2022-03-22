@@ -600,13 +600,14 @@ public class DataAccess implements IDataAccess
      * @param patient The patient
      * @param doctor The doctor
      * @param bookingTime The date and time of the booking
+     * @param type The type of booking
      * @return The Booking from the database
      * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
      * @throws DatabaseException if there was an error querying the database
      * @throws InvalidDataException if the data is invalid
      */
     @Override
-    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime) throws DatabaseException, NullDataException, InvalidDataException
+    public Booking createBooking(Patient patient, Doctor doctor, Timestamp bookingTime, String type) throws DatabaseException, NullDataException, InvalidDataException
     {
         if(patient==null)
             throw new NullDataException("Null patient in the createBooking method");
@@ -614,6 +615,8 @@ public class DataAccess implements IDataAccess
             throw new NullDataException("Null doctor in the createBooking method");
         if(bookingTime==null)
             throw new NullDataException("Null booking time in the createBooking method");
+        if(isNullOrEmpty(type))
+            throw new NullDataException("Null type in the createBooking method");
 
         if(!validatePatient(patient))
             throw new InvalidDataException("Invalid patient in the createBooking method");
@@ -621,11 +624,14 @@ public class DataAccess implements IDataAccess
             throw new InvalidDataException("Invalid doctor in the createBooking method");
 
         try {
-            String query = "CALL insert_booking(?, ?, ?);";
+            String query = "CALL insert_booking(?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, patient.getPatientID());
             statement.setInt(2, doctor.getDoctorID());
             statement.setTimestamp(3, bookingTime);
+            statement.setString(4, type);
+            statement.setString(5, null);
+            statement.setString(6, null);
 
             statement.executeQuery();
 
@@ -655,12 +661,15 @@ public class DataAccess implements IDataAccess
             throw new InvalidDataException("Invalid booking the updateBooking method");
 
         try {
-            String query = "CALL update_booking(?, ?, ?, ?);";
+            String query = "CALL update_booking(?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareCall(query);
             statement.setInt(1, booking.getBookingID());
             statement.setInt(2, booking.getPatientID());
             statement.setInt(3, booking.getDoctorID());
             statement.setTimestamp(4, booking.getBookingTime());
+            statement.setString(5, booking.getType());
+            statement.setString(6, booking.getDetails());
+            statement.setString(7, booking.getPrescription());
 
             statement.executeQuery();
 
