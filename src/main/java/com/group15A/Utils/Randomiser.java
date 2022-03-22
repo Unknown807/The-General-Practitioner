@@ -11,8 +11,6 @@ public class Randomiser {
 
     };
 
-    private final Integer presLength = prescriptions.length;
-    private final Integer detailsLength = details.length;
     private Random randomGen;
 
     public Randomiser() {
@@ -20,7 +18,7 @@ public class Randomiser {
     }
 
     public String getRandPrescription() {
-
+        return prescriptions[randomGen.nextInt(prescriptions.length)];
     }
 
     public String getRandDetails() {
