@@ -68,6 +68,12 @@ public class AddBookingPanel extends BasePanel {
 
         JWidgetShortcuts.addItemsToCombo(hourCombo,9,17,1,"Hour");
         JWidgetShortcuts.addItemsToCombo(minuteCombo,0,55,5,"Minute");
+        JWidgetShortcuts.addItemsToCombo(typeComboBox, new String[]{
+                "Other", "Routine Checkup", "Emergency Checkup",
+                "Telephone Session", "Surgery", "Physical Checkup",
+                "Mental Health Checkup", "Blood Testing",
+                "General Consultation"
+        }, false, "Type");
         createActionListeners();
 
         try {
@@ -117,6 +123,7 @@ public class AddBookingPanel extends BasePanel {
         dayCombo.setSelectedItem((new SimpleDateFormat("dd")).format(timestamp));
         hourCombo.setSelectedItem((new SimpleDateFormat("HH")).format(timestamp));
         minuteCombo.setSelectedItem((new SimpleDateFormat("mm")).format(timestamp));
+        typeComboBox.setSelectedItem(booking.getType());
     }
 
     /**
@@ -128,6 +135,7 @@ public class AddBookingPanel extends BasePanel {
         dayCombo.setSelectedItem("Day");
         hourCombo.setSelectedItem("Hour");
         minuteCombo.setSelectedItem("Minute");
+        typeComboBox.setSelectedItem("Type");
     }
 
     /**
@@ -178,11 +186,12 @@ public class AddBookingPanel extends BasePanel {
             String hour = hourCombo.getSelectedItem().toString();
             String minute = minuteCombo.getSelectedItem().toString();
             Integer patientID = this.panelController.getSession().getLoggedInPatientID();
+            String type = typeComboBox.getSelectedItem().toString();
 
             if (bookingToEdit == null) {
-                this.addBookingLogic.createNewBooking(date, hour, minute, patientID);
+                this.addBookingLogic.createNewBooking(date, hour, minute, type, patientID);
             } else {
-                this.addBookingLogic.rescheduleBooking(date, hour, minute, patientID, bookingToEdit);
+                this.addBookingLogic.rescheduleBooking(date, hour, minute, type, patientID, bookingToEdit);
             }
 
             this.bookingErrorLabel.setVisible(false);

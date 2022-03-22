@@ -99,7 +99,6 @@ public class ViewBookingsPanel extends BasePanel {
                     "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
                     "Reschedule");
 
-
             bookingLabelsList.add(bookingMessage.getMainPanel());
 
             // Copied from HomePanel.java

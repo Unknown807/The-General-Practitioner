@@ -203,9 +203,7 @@
                     </constraints>
                     <properties>
                       <font size="22" style="0"/>
-                      <model>
-                        <item value="Other"/>
-                      </model>
+                      <model/>
                     </properties>
                   </component>
                   <component id="21313" class="javax.swing.JLabel" binding="typeTitle">

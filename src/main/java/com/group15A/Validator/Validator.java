@@ -4,6 +4,9 @@ import com.group15A.Utils.ErrorCode;
 import org.apache.commons.validator.GenericValidator;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -213,4 +216,18 @@ public class Validator {
         return null;
     }
 
+    public ErrorCode verifyBookingType(String type) {
+        List<String> types = Arrays.asList(
+            "Other", "Routine Checkup", "Emergency Checkup",
+            "Telephone Session", "Surgery", "Physical Checkup",
+            "Mental Health Checkup", "Blood Testing",
+            "General Consultation"
+        );
+
+        if (!types.contains(type)) {
+            return ErrorCode.WRONG_BOOKING_TYPE;
+        }
+
+        return null;
+    }
 }
