@@ -33,15 +33,22 @@ public class ViewBookingLogic implements IViewBooking {
      * @throws CustomException if issues getting bookings, or with patient
      */
     @Override
-    public List<Booking> getBookings(Integer patientID) throws CustomException {
+    public List<Booking> getBookings(Integer patientID, Boolean pastBookingFlag) throws CustomException {
         List<Booking> patientBookings = this.dataAccessLayer.getBookings(this.dataAccessLayer.getPatient(patientID));
         List<Booking> patientNewBookings = new ArrayList<>();
         Timestamp today = new Timestamp(System.currentTimeMillis());
 
         // Remove all old bookings from the return list
         for (Booking b : patientBookings) {
-            if (b.getBookingTime().after(today)) {
-                patientNewBookings.add(b);
+
+            if (pastBookingFlag) {
+                if (b.getBookingTime().before(today)) {
+                    patientNewBookings.add(b);
+                }
+            } else {
+                if (b.getBookingTime().after(today)) {
+                    patientNewBookings.add(b);
+                }
             }
         }
 
