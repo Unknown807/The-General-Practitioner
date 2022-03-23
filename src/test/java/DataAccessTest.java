@@ -411,4 +411,28 @@ public class DataAccessTest extends TestCase {
             }
         }
     }
+
+    @Test
+    public void testCreateLog()
+    {
+        Log log = null;
+        try {
+            Patient patient = dataAccess.getPatient(1);
+            String test = "Test log";
+            log = dataAccess.createLog(patient, test);
+
+            assertEquals(log.getMessage(), test);
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(log!=null)
+                    dataAccess.deleteLog(log.getLogID());
+            } catch (CustomException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
 }
