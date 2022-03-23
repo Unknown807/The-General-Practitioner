@@ -171,6 +171,7 @@ public class HomePanel extends BasePanel {
         viewBookingsButton.addActionListener(e -> {
             panelController.showPage(
                     PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.NEW_BOOKINGS, null),
                     new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
             );
         });

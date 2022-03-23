@@ -14,6 +14,8 @@ public enum ReceiveType {
 
     // View Booking Page
     PATIENT_ID,
+    NEW_BOOKINGS,
+    PAST_BOOKINGS,
 
     // Create Booking Page
     BOOKING,

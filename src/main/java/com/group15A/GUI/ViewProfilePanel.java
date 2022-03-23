@@ -32,6 +32,8 @@ public class ViewProfilePanel extends BasePanel {
     private JLabel activitySectionLabel;
     private JButton viewActivityButton;
     private JPanel sectionsPanel;
+    private JPanel bookingsPanel;
+    private JButton viewPastBookingsButton;
 
     private ViewProfileLogic viewProfileLogic;
 
@@ -104,5 +106,10 @@ public class ViewProfilePanel extends BasePanel {
 
         viewActivityButton.addActionListener(e -> this.panelController.showPage(PageType.LOG));
 
+        viewPastBookingsButton.addActionListener(e -> this.panelController.showPage(
+                PageType.VIEW_BOOKINGS,
+                new ReceivePair(ReceiveType.PAST_BOOKINGS, null),
+                new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+        ));
     }
 }

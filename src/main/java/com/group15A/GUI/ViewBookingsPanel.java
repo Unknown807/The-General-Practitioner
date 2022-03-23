@@ -35,13 +35,17 @@ public class ViewBookingsPanel extends BasePanel {
 
     private MessageListPanel messageListPanel;
 
+    private Boolean pastBookingFlag = false;
+
     /**
      * Constructor for ViewBookingsPanel
      */
     public ViewBookingsPanel(MultiPanelWindow panelController)
     {
         super("My bookings", "viewBookingPanel", panelController);
-       // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
+        // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
+
+        dateErrorLabel.setVisible(false);
 
         messageListPanel = new MessageListPanel(
                 "My bookings",
@@ -78,7 +82,21 @@ public class ViewBookingsPanel extends BasePanel {
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
             }
+        } else if (pair.getFirst().equals(ReceiveType.NEW_BOOKINGS)) {
+            toggleSearch(false);
+            pastBookingFlag = false;
+
+        } else if (pair.getFirst().equals(ReceiveType.PAST_BOOKINGS)) {
+            toggleSearch(true);
+            pastBookingFlag = true;
+
         }
+    }
+
+    private void toggleSearch(Boolean flag) {
+        searchButton.setVisible(flag);
+        monthComboBox.setVisible(flag);
+        yearComboBox.setVisible(flag);
     }
 
     /**
@@ -95,15 +113,32 @@ public class ViewBookingsPanel extends BasePanel {
         messageListPanel.clearMessages();
         messageListPanel.showNoMessagesLabel();
 
+        String message;
+        Randomiser randomiser = new Randomiser();
+
         if(!bookingsList.isEmpty()){
             messageListPanel.hideNoMessagesLabel();
             for (Booking b : bookingsList) {
                 Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
 
+                if (pastBookingFlag) {
+                    b.setPrescription(randomiser.getRandPrescription());
+                    b.setDetails(randomiser.getRandDetails());
+
+                    message = "Booking on "+
+                            DataModification.getTime(b.getBookingTime())+
+                            ": Doctor assigned prescription: "+b.getPrescription()+
+                            ", details include: "+b.getDetails();
+                } else {
+                    message = "Booking at "+
+                            DataModification.getTime(b.getBookingTime())+
+                            " on "+DataModification.fullDate(b.getBookingTime());
+                }
+
                 MessagePanel bookingMessage = messageListPanel.addMessage(
                         "",
                         "With Dr. "+doctor.getFullName(),
-                        "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
+                        message,
                         "Reschedule");
 
                 bookingLabelsList.add(bookingMessage.getMainPanel());
