@@ -1,6 +1,5 @@
 package com.group15A.GUI;
 
-import com.google.protobuf.Message;
 import com.group15A.BusinessLogic.ViewBookingLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
@@ -9,7 +8,6 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.Utils.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +24,10 @@ public class ViewBookingsPanel extends BasePanel {
     private JButton newBookingButton;
     private JPanel bookingsDisplayPanel;
     private JLabel titleLabel;
+    private JComboBox monthComboBox;
+    private JButton searchButton;
+    private JComboBox yearComboBox;
+    private JLabel dateErrorLabel;
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
@@ -46,7 +48,9 @@ public class ViewBookingsPanel extends BasePanel {
                 "No bookings.",
                 true
         );
-
+        JWidgetShortcuts.addItemsToCombo(monthComboBox,1,12,1,"Month");
+        int year = 2022;
+        JWidgetShortcuts.addItemsToCombo(yearComboBox,2022,year+10,1,"Year");
         bookingsPanel.add(messageListPanel.getPanel());
 
         createActionListeners();
@@ -89,23 +93,27 @@ public class ViewBookingsPanel extends BasePanel {
      */
     public void displayBookings() throws CustomException {
         messageListPanel.clearMessages();
+        messageListPanel.showNoMessagesLabel();
 
-        for (Booking b : bookingsList) {
-            Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
+        if(!bookingsList.isEmpty()){
+            messageListPanel.hideNoMessagesLabel();
+            for (Booking b : bookingsList) {
+                Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
 
-            MessagePanel bookingMessage = messageListPanel.addMessage(
-                    "",
-                    "With Dr. "+doctor.getFullName(),
-                    "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
-                    "Reschedule");
+                MessagePanel bookingMessage = messageListPanel.addMessage(
+                        "",
+                        "With Dr. "+doctor.getFullName(),
+                        "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
+                        "Reschedule");
 
-            bookingLabelsList.add(bookingMessage.getMainPanel());
+                bookingLabelsList.add(bookingMessage.getMainPanel());
 
-            // Copied from HomePanel.java
-            bookingMessage.getButton().addActionListener(e -> {
-                this.rescheduleBooking(b);
-            });
+                // Copied from HomePanel.java
+                bookingMessage.getButton().addActionListener(e -> {
+                    this.rescheduleBooking(b);
+                });
 
+            }
         }
     }
 
@@ -116,6 +124,21 @@ public class ViewBookingsPanel extends BasePanel {
                 new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID()),
                 new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_BOOKINGS),
                 new ReceivePair(ReceiveType.BOOKING, booking)
+        );
+    }
+
+    /**
+     * TODO: Implement
+     *
+     * Display only bookings within the given month-year
+     */
+    private void filterBookings()
+    {
+        //Test code
+        System.out.println(
+                monthComboBox.getSelectedItem().toString()
+                +", "+
+                yearComboBox.getSelectedItem().toString()
         );
     }
 
@@ -135,6 +158,8 @@ public class ViewBookingsPanel extends BasePanel {
     public void createActionListeners()
     {
         goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
+        searchButton.addActionListener(e -> {filterBookings();});
     }
+
 
 }

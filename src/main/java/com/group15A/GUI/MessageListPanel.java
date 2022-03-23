@@ -14,14 +14,16 @@ public class MessageListPanel {
     private JPanel messageExtraPanel;
     private GridBagConstraints gbc;
     private String headerText;
+    private String noMessagesText;
     private boolean showCount;
 
     public MessageListPanel(String headerText, String noMessagesText, boolean showCount)
     {
         this.headerText = headerText;
         this.showCount = showCount;
+        this.noMessagesText = noMessagesText;
         this.headerLabel.setText(this.headerText);
-        this.noMessagesLabel.setText(noMessagesText);
+        this.noMessagesLabel.setText(this.noMessagesText);
 
         gbc = JWidgetShortcuts.getStackGBC();
     }
@@ -37,7 +39,7 @@ public class MessageListPanel {
     private void updateCount()
     {
         if(showCount) {
-            setHeaderText(headerText + " (" + messageContentPanel.getComponentCount() + ")");
+            setHeaderText(headerText + " (" + (messageContentPanel.getComponentCount()-1) + ")");
         }
     }
 
@@ -64,7 +66,10 @@ public class MessageListPanel {
     public void clearMessages()
     {
         JWidgetShortcuts.clearJPanel(getContentPanel());
+        messageContentPanel.add(noMessagesLabel);
         updateCount();
+        showNoMessagesLabel();
+
     }
 
     public void hideNoMessagesLabel()
@@ -81,4 +86,7 @@ public class MessageListPanel {
         getHeaderLabel().setText(string);
     }
 
+    private void createUIComponents() {
+        noMessagesLabel = new JLabel(noMessagesText);
+    }
 }

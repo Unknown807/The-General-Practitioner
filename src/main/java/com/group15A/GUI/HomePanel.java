@@ -8,7 +8,6 @@ import com.group15A.Session;
 import com.group15A.Utils.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -33,12 +32,16 @@ public class HomePanel extends BasePanel {
     private JLabel messageLabel;
     private JLabel noMessagesLabel;
     private JButton viewProfileButton;
+    private JTabbedPane messagesTabbedPane;
+    private JPanel inboxPanel;
+    private JPanel archivePanel;
     private JButton myActivityButton;
 
     private HomeLogic homeLogic;
     private List<Notification> notifList;
 
-    private MessageListPanel messageListPanel;
+    private MessageListPanel newMessageList;
+    private MessageListPanel oldMessageList;
 
     /**
      * Constructor for the HomePanel class
@@ -51,8 +54,20 @@ public class HomePanel extends BasePanel {
     public HomePanel(MultiPanelWindow panelController) {
         super("Home", "homePanel", panelController);
 
-        messageListPanel = new MessageListPanel("New messages","No messages.", true);
-        notificationPanel.add(messageListPanel.getPanel());
+        newMessageList = new MessageListPanel(
+                "New messages",
+                "No new messages.",
+                true
+        );
+
+        oldMessageList = new MessageListPanel(
+                "Archived messages",
+                "No archived messages.",
+                true
+        );
+
+        inboxPanel.add(newMessageList.getPanel());
+        archivePanel.add(oldMessageList.getPanel());
 
         try {
             this.homeLogic = new HomeLogic();
@@ -73,27 +88,37 @@ public class HomePanel extends BasePanel {
      * Then display the number of new bookings
      */
     private void displayNotifications() {
-        messageListPanel.clearMessages();
+        newMessageList.clearMessages();
+        oldMessageList.clearMessages();
+        newMessageList.showNoMessagesLabel();
+        oldMessageList.showNoMessagesLabel();
 
         if(!notifList.isEmpty()) {
-            messageListPanel.hideNoMessagesLabel();
             for (int i=notifList.size()-1; i>=0; i--) {
                 Notification notification = notifList.get(i);
                 if (!notification.isNew()) {
-                    continue;
+                    oldMessageList.hideNoMessagesLabel();
+                    oldMessageList.addMessage(
+                            notification.getHeader(),
+                            "(" + DataModification.shortDateTime(notification.getTimestamp()) + ")",
+                            notification.getMessage(),
+                            ""
+                    );
                 }
+                else{
+                    newMessageList.hideNoMessagesLabel();
+                    MessagePanel newNotificationDisplay = newMessageList.addMessage(
+                            notification.getHeader(),
+                            "(" + DataModification.shortDateTime(notification.getTimestamp()) + ")",
+                            notification.getMessage(),
+                            "Mark as read"
+                    );
 
-                MessagePanel notificationDisplay = messageListPanel.addMessage(
-                        notification.getHeader(),
-                        "("+DataModification.shortDateTime(notification.getTimestamp())+")",
-                        notification.getMessage(),
-                        "Mark as read"
-                );
-
-                notificationDisplay.getButton().addActionListener(e -> {
-                    notificationDisplay.getButton().setVisible(false);
-                    this.markAsRead(notification);
-                });
+                    newNotificationDisplay.getButton().addActionListener(e -> {
+                        newNotificationDisplay.getButton().setVisible(false);
+                        this.markAsRead(notification);
+                    });
+                }
 
             }
 
