@@ -435,4 +435,41 @@ public class DataAccessTest extends TestCase {
             }
         }
     }
+
+    @Test
+    public void testGetLogs()
+    {
+        Patient patient = null;
+        Log log = null;
+
+        try
+        {
+            //Create a new patient
+            patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
+            Doctor doctor = dataAccess.getDoctors().get(0);
+            patient = dataAccess.registerPatient(patient, doctor);
+
+            //Create the log
+            log = dataAccess.createLog(patient, "Test log");
+            var logs = dataAccess.getLogs(patient);
+
+            assertEquals(logs.size(), 1);
+            assertEquals(logs.get(0), log);
+
+        }catch(Exception ex) {
+            ex.printStackTrace();
+            fail();
+        } finally {
+            //Delete the dummy data from the database
+            try {
+                if(log!=null)
+                    dataAccess.deleteLog(log.getLogID());
+                if(patient!=null)
+                    dataAccess.deletePatient(patient.getPatientID());
+            } catch (CustomException ex) {
+                ex.printStackTrace();
+                System.err.println(ex.getMessage());
+            }
+        }
+    }
 }
