@@ -59,14 +59,18 @@ public class LogPanel extends BasePanel {
      */
     private void displayLogs() throws CustomException {
         messageListPanel.clearMessages();
-        for (Log log: userLogs) {
-            messageListPanel.addMessage(
-                "",
-                DataModification.shortDateTime(log.getTimestamp()),
-                log.getMessage(),
-                ""
-            );
+        if(!userLogs.isEmpty()){
+            messageListPanel.hideNoMessagesLabel();
+            for (Log log: userLogs) {
+                messageListPanel.addMessage(
+                        "",
+                        DataModification.shortDateTime(log.getTimestamp()),
+                        log.getMessage(),
+                        ""
+                );
+            }
         }
+
     }
 
 
