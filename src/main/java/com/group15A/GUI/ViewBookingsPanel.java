@@ -76,7 +76,7 @@ public class ViewBookingsPanel extends BasePanel {
         if (pair.getFirst().equals(ReceiveType.PATIENT_ID)) {
             Integer patientID = (Integer) pair.getSecond();
             try {
-                bookingsList = this.viewBookingLogic.getBookings(patientID);
+                bookingsList = this.viewBookingLogic.getBookings(patientID, pastBookingFlag);
                 messageListPanel.hideNoMessagesLabel();
                 this.displayBookings();
             } catch (CustomException e) {
@@ -122,11 +122,15 @@ public class ViewBookingsPanel extends BasePanel {
                 Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
 
                 if (pastBookingFlag) {
-                    b.setPrescription(randomiser.getRandPrescription());
-                    b.setDetails(randomiser.getRandDetails());
+                    if (b.getPrescription() == null) {
+                        b.setPrescription(randomiser.getRandPrescription());
+                        b.setDetails(randomiser.getRandDetails());
+                        // TODO: once values set, update them in db
+                    }
 
-                    message = "Booking on "+
+                    message = "Booking at "+
                             DataModification.getTime(b.getBookingTime())+
+                            " on "+DataModification.fullDate(b.getBookingTime())+
                             ": Doctor assigned prescription: "+b.getPrescription()+
                             ", details include: "+b.getDetails();
                 } else {
@@ -144,10 +148,13 @@ public class ViewBookingsPanel extends BasePanel {
                 bookingLabelsList.add(bookingMessage.getMainPanel());
 
                 // Copied from HomePanel.java
-                bookingMessage.getButton().addActionListener(e -> {
-                    this.rescheduleBooking(b);
-                });
-
+                if (!pastBookingFlag) {
+                    bookingMessage.getButton().addActionListener(e -> {
+                        this.rescheduleBooking(b);
+                    });
+                } else {
+                    bookingMessage.getButton().setVisible(false);
+                }
             }
         }
     }
