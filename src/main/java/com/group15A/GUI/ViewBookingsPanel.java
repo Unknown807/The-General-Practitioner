@@ -52,9 +52,9 @@ public class ViewBookingsPanel extends BasePanel {
                 "No bookings.",
                 true
         );
-        JWidgetShortcuts.addItemsToCombo(monthComboBox,1,12,1,"Month");
+        JWidgetShortcuts.addItemsToCombo(monthComboBox,1,12,1,"Month (All)");
         int year = 2022;
-        JWidgetShortcuts.addItemsToCombo(yearComboBox,2022,year+10,1,"Year");
+        JWidgetShortcuts.addItemsToCombo(yearComboBox,2022,year+10,1,"Year (All)");
         bookingsPanel.add(messageListPanel.getPanel());
 
         createActionListeners();
@@ -83,20 +83,12 @@ public class ViewBookingsPanel extends BasePanel {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
             }
         } else if (pair.getFirst().equals(ReceiveType.NEW_BOOKINGS)) {
-            toggleSearch(false);
             pastBookingFlag = false;
 
         } else if (pair.getFirst().equals(ReceiveType.PAST_BOOKINGS)) {
-            toggleSearch(true);
             pastBookingFlag = true;
 
         }
-    }
-
-    private void toggleSearch(Boolean flag) {
-        searchButton.setVisible(flag);
-        monthComboBox.setVisible(flag);
-        yearComboBox.setVisible(flag);
     }
 
     /**
@@ -176,12 +168,21 @@ public class ViewBookingsPanel extends BasePanel {
      */
     private void filterBookings()
     {
-        //Test code
-        System.out.println(
-                monthComboBox.getSelectedItem().toString()
-                +", "+
-                yearComboBox.getSelectedItem().toString()
-        );
+        try {
+            bookingsList = this.viewBookingLogic.filterBookings(
+                    monthComboBox.getSelectedItem().toString(),
+                    yearComboBox.getSelectedItem().toString(),
+                    panelController.getSession().getLoggedInPatientID(),
+                    pastBookingFlag
+            );
+            dateErrorLabel.setVisible(false);
+            this.displayBookings();
+        } catch (DatabaseException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
+        } catch (CustomException e) {
+            e.printStackTrace();
+            dateErrorLabel.setVisible(true);
+        }
     }
 
     /**
