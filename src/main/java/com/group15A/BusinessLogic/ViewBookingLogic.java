@@ -5,9 +5,13 @@ import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Booking;
 import com.group15A.DataModel.Doctor;
+import com.group15A.Utils.ErrorCode;
+import com.group15A.Validator.Validator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -17,6 +21,7 @@ import java.util.List;
  */
 public class ViewBookingLogic implements IViewBooking {
     private DataAccess dataAccessLayer;
+    private Validator validator;
 
     /**
      * Constructor for the view booking logic
@@ -24,6 +29,7 @@ public class ViewBookingLogic implements IViewBooking {
      */
     public ViewBookingLogic() throws DatabaseException {
         this.dataAccessLayer = new DataAccess();
+        this.validator = new Validator();
     }
 
     /**
@@ -55,6 +61,47 @@ public class ViewBookingLogic implements IViewBooking {
         return patientNewBookings;
     }
 
+    @Override
+    public List<Booking> filterBookings(String month, String year, Integer patientID, Boolean pastBookingFlag) throws CustomException {
+        if (!this.validator.isNum(year) && !this.validator.isNum(month) && !month.equals("Month (All)") && !year.equals("Year (All)")) {
+            throw new CustomException("Month or Year aren't numbers", Arrays.asList(ErrorCode.WRONG_DATE));
+        }
+
+        List<Booking> allBookings = this.getBookings(patientID, pastBookingFlag);
+        List<Booking> newBookings = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+
+        Timestamp filterDate;
+        Integer filterMonth = -1;
+        Integer filterYear = -1;
+
+        if (!month.equals("Month (All)")) {
+            filterDate = Timestamp.valueOf("1900" + "-" + month + "-" + "01 " + "00:00:00");
+            cal.setTimeInMillis(filterDate.getTime());
+            filterMonth = cal.get(Calendar.MONTH);
+        }
+
+        if (!year.equals("Year (All)")) {
+            filterDate = Timestamp.valueOf(year + "-" + "01" + "-" + "01 " + "00:00:00");
+            cal.setTimeInMillis(filterDate.getTime());
+            filterYear = cal.get(Calendar.YEAR);
+        }
+
+        for (Booking b : allBookings) {
+            cal.setTimeInMillis(b.getBookingTime().getTime());
+            // Check booking is in the same month and year
+            if ( (cal.get(Calendar.MONTH) == filterMonth && cal.get(Calendar.YEAR) == filterYear) ||
+                 (cal.get(Calendar.MONTH) == filterMonth && year.equals("Year (All)"))                   ||
+                 (month.equals("Month (All)") && cal.get(Calendar.YEAR) == filterYear)                    ||
+                 (month.equals("Month (All)") && year.equals("Year (All)"))
+            ) {
+                newBookings.add(b);
+            }
+        }
+
+        return newBookings;
+    }
+
     /**
      * Gets the doctor that the patient is meeting with in the booking
      * @param doctorID
@@ -64,5 +111,10 @@ public class ViewBookingLogic implements IViewBooking {
     @Override
     public Doctor getDoctor(Integer doctorID) throws CustomException {
         return this.dataAccessLayer.getDoctor(doctorID);
+    }
+
+    @Override
+    public void updateBooking(Booking booking) throws CustomException {
+        this.dataAccessLayer.updateBooking(booking);
     }
 }
