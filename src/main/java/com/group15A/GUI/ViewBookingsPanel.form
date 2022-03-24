@@ -72,7 +72,7 @@
             </constraints>
             <properties>
               <foreground color="-65536"/>
-              <text value="Invalid month-year chosen"/>
+              <text value="Invalid date chosen"/>
             </properties>
           </component>
           <component id="65571" class="javax.swing.JLabel" binding="monthLabel">

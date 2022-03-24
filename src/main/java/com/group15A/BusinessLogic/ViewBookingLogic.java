@@ -66,9 +66,6 @@ public class ViewBookingLogic implements IViewBooking {
         if (!this.validator.isNum(year) && !this.validator.isNum(month) && !month.equals("Month (All)") && !year.equals("Year (All)")) {
             throw new CustomException("Month or Year aren't numbers", Arrays.asList(ErrorCode.WRONG_DATE));
         }
-        if(!((this.validator.isNum(year) && this.validator.isNum(month)) || (month.equals("Month (All)") && year.equals("Year (All)")))){
-            throw new CustomException("Invalid month-year chosen");
-        }
 
         List<Booking> allBookings = this.getBookings(patientID, pastBookingFlag);
         List<Booking> newBookings = new ArrayList<>();
