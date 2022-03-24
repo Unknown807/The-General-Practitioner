@@ -60,7 +60,7 @@ public class AddBookingLogic implements IAddBooking {
                 patient,
                 doctor,
                 bookingDateTime,
-                "Check-up"
+                type
         );
 
         // Show a new notification that the booking has been made to the user on the home panel
