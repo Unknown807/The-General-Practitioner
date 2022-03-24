@@ -58,7 +58,7 @@ public class LogInLogic implements ILogIn {
             throw new CustomException("Invalid Password", Arrays.asList(ErrorCode.WRONG_PASSWORD));
         }
 
-        dataAccessLayer.createLog(patientToLogIn, "Patient " + patientToLogIn.getFirstName() + " " + patientToLogIn.getLastName() + " has successfully logged in");
+        dataAccessLayer.createLog(patientToLogIn, "Patient " + patientToLogIn.getFirstName() + " " + patientToLogIn.getLastName() + " manually logged in, successfully");
 
         Session session = new Session(patientToLogIn, stayLoggedIn);
         session.saveToFile();

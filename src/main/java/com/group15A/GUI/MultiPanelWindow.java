@@ -2,6 +2,11 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.HomeLogic;
 import com.group15A.CustomExceptions.DatabaseException;
+import com.group15A.CustomExceptions.InvalidDataException;
+import com.group15A.CustomExceptions.NullDataException;
+import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.DataAccess.DataAccess;
+import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
@@ -36,6 +41,8 @@ public class MultiPanelWindow extends JFrame {
     private Map<PageType, BasePanel> cards;
     private Session session;
     private HomeLogic homeLogic;
+    DataAccess dataAccessLayer;
+    Patient patient;
 
     /**
      * Constructor for the MultiPanelWindow class
@@ -50,6 +57,17 @@ public class MultiPanelWindow extends JFrame {
 
         // Set session (if file exists) and creates pages
         refreshSession();
+
+        try {
+            dataAccessLayer = new DataAccess();
+            patient = dataAccessLayer.getPatient(session.getLoggedInPatientID());
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        } catch (PatientNotFoundException e) {
+            e.printStackTrace();
+        }
 
         // Set response to window being closed
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -78,6 +96,7 @@ public class MultiPanelWindow extends JFrame {
                 Session savedSession = Session.loadFromFile();
                 if (savedSession.isKeepLoggedIn()) {
                     this.setSession(savedSession);
+                    dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " automatically logged in, successfully");
                     pageToShow = PageType.HOME; // home page
                 }
             }
@@ -198,6 +217,7 @@ public class MultiPanelWindow extends JFrame {
                 homeLogic.logOut();
                 File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
                 sessionFile.delete();
+                dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + "closed the program and logged out");
             }
             catch (Exception e){
                 JOptionPane.showMessageDialog(
@@ -207,6 +227,17 @@ public class MultiPanelWindow extends JFrame {
                         JOptionPane.ERROR_MESSAGE
                 );
                 System.exit(0);
+            }
+        }
+        else{
+            try {
+                dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + " closed the program and stayed logged in");
+            } catch (NullDataException e) {
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();
+            } catch (DatabaseException e) {
+                e.printStackTrace();
             }
         }
 
