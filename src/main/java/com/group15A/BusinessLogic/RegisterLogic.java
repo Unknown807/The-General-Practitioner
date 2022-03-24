@@ -1,9 +1,6 @@
 package com.group15A.BusinessLogic;
 
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.CustomException;
-import com.group15A.CustomExceptions.InvalidDataException;
-import com.group15A.CustomExceptions.NullDataException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
@@ -60,6 +57,28 @@ public class RegisterLogic implements IRegister {
                 "Welcome to the GP, "+patient.getFirstName(),
                 "Your patient account has been created."
                 );
+    }
+
+    /**
+     * Create a log detailing that the given patient
+     * has been registered and added to the database
+     *
+     * Called when a patient successfully registers
+     *
+     * @param patient The patient who registered
+     * @throws InvalidDataException If the patient is invalid
+     * @throws NullDataException If the patient's information is missing
+     * @throws DatabaseException If there was a problem querrying the database
+     */
+    public void registerLog(Patient patient) throws InvalidDataException, NullDataException, DatabaseException {
+        try {
+            dataAccessLayer.createLog(
+                    patient,
+                    "Patient " + patient.getFirstName() + " " + patient.getLastName() + " has successfully registered with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + "."
+            );
+        } catch (DoctorNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
