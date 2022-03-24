@@ -133,7 +133,7 @@ public class ViewBookingsPanel extends BasePanel {
 
                 MessagePanel bookingMessage = messageListPanel.addMessage(
                         "",
-                        "With Dr. "+doctor.getFullName(),
+                        "With Dr. "+doctor.getFullName()+" ("+b.getType()+")",
                         message,
                         "Reschedule");
 
