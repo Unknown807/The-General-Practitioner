@@ -28,6 +28,8 @@ public class ViewBookingsPanel extends BasePanel {
     private JButton searchButton;
     private JComboBox yearComboBox;
     private JLabel dateErrorLabel;
+    private JLabel monthLabel;
+    private JLabel yearLabel;
 
     private ViewBookingLogic viewBookingLogic;
     private List<Booking> bookingsList;
@@ -122,9 +124,9 @@ public class ViewBookingsPanel extends BasePanel {
 
                     message = "Booking at "+
                             DataModification.getTime(b.getBookingTime())+
-                            " on "+DataModification.fullDate(b.getBookingTime())+
-                            ": Doctor assigned prescription: "+b.getPrescription()+
-                            ", details include: "+b.getDetails();
+                            " on "+DataModification.fullDate(b.getBookingTime())+"."+
+                            "Doctor assigned prescription: "+b.getPrescription()+
+                            "details include: "+b.getDetails();
                 } else {
                     message = "Booking at "+
                             DataModification.getTime(b.getBookingTime())+
