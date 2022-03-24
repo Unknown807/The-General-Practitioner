@@ -35,22 +35,26 @@ public class ViewBookingsPanel extends BasePanel {
 
     private MessageListPanel messageListPanel;
 
+    private Boolean pastBookingFlag = false;
+
     /**
      * Constructor for ViewBookingsPanel
      */
     public ViewBookingsPanel(MultiPanelWindow panelController)
     {
         super("My bookings", "viewBookingPanel", panelController);
-       // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
+        // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
+
+        dateErrorLabel.setVisible(false);
 
         messageListPanel = new MessageListPanel(
                 "My bookings",
                 "No bookings.",
                 true
         );
-        JWidgetShortcuts.addItemsToCombo(monthComboBox,1,12,1,"Month");
+        JWidgetShortcuts.addItemsToCombo(monthComboBox,1,12,1,"Month (All)");
         int year = 2022;
-        JWidgetShortcuts.addItemsToCombo(yearComboBox,2022,year+10,1,"Year");
+        JWidgetShortcuts.addItemsToCombo(yearComboBox,2022,year+10,1,"Year (All)");
         bookingsPanel.add(messageListPanel.getPanel());
 
         createActionListeners();
@@ -72,12 +76,18 @@ public class ViewBookingsPanel extends BasePanel {
         if (pair.getFirst().equals(ReceiveType.PATIENT_ID)) {
             Integer patientID = (Integer) pair.getSecond();
             try {
-                bookingsList = this.viewBookingLogic.getBookings(patientID);
+                bookingsList = this.viewBookingLogic.getBookings(patientID, pastBookingFlag);
                 messageListPanel.hideNoMessagesLabel();
                 this.displayBookings();
             } catch (CustomException e) {
                 JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
             }
+        } else if (pair.getFirst().equals(ReceiveType.NEW_BOOKINGS)) {
+            pastBookingFlag = false;
+
+        } else if (pair.getFirst().equals(ReceiveType.PAST_BOOKINGS)) {
+            pastBookingFlag = true;
+
         }
     }
 
@@ -95,24 +105,48 @@ public class ViewBookingsPanel extends BasePanel {
         messageListPanel.clearMessages();
         messageListPanel.showNoMessagesLabel();
 
+        String message;
+        Randomiser randomiser = new Randomiser();
+
         if(!bookingsList.isEmpty()){
             messageListPanel.hideNoMessagesLabel();
             for (Booking b : bookingsList) {
                 Doctor doctor = this.viewBookingLogic.getDoctor(b.getDoctorID());
 
+                if (pastBookingFlag) {
+                    if (b.getPrescription() == null) {
+                        b.setPrescription(randomiser.getRandPrescription());
+                        b.setDetails(randomiser.getRandDetails());
+                        this.viewBookingLogic.updateBooking(b);
+                    }
+
+                    message = "Booking at "+
+                            DataModification.getTime(b.getBookingTime())+
+                            " on "+DataModification.fullDate(b.getBookingTime())+
+                            ": Doctor assigned prescription: "+b.getPrescription()+
+                            ", details include: "+b.getDetails();
+                } else {
+                    message = "Booking at "+
+                            DataModification.getTime(b.getBookingTime())+
+                            " on "+DataModification.fullDate(b.getBookingTime());
+                }
+
                 MessagePanel bookingMessage = messageListPanel.addMessage(
                         "",
-                        "With Dr. "+doctor.getFullName()+" ("+b.getType()+")",
-                        "Booking at "+DataModification.getTime(b.getBookingTime())+" on "+DataModification.fullDate(b.getBookingTime()),
+                        "With Dr. "+doctor.getFullName(),
+                        message,
                         "Reschedule");
 
                 bookingLabelsList.add(bookingMessage.getMainPanel());
 
                 // Copied from HomePanel.java
-                bookingMessage.getButton().addActionListener(e -> {
-                    this.rescheduleBooking(b);
-                });
-
+                if (!pastBookingFlag) {
+                    bookingMessage.getButton().addActionListener(e -> {
+                        this.rescheduleBooking(b);
+                    });
+                } else {
+                    bookingMessage.getButton().setVisible(false);
+                }
             }
         }
     }
@@ -134,12 +168,20 @@ public class ViewBookingsPanel extends BasePanel {
      */
     private void filterBookings()
     {
-        //Test code
-        System.out.println(
-                monthComboBox.getSelectedItem().toString()
-                +", "+
-                yearComboBox.getSelectedItem().toString()
-        );
+        try {
+            bookingsList = this.viewBookingLogic.filterBookings(
+                    monthComboBox.getSelectedItem().toString(),
+                    yearComboBox.getSelectedItem().toString(),
+                    panelController.getSession().getLoggedInPatientID(),
+                    pastBookingFlag
+            );
+            dateErrorLabel.setVisible(false);
+            this.displayBookings();
+        } catch (DatabaseException e) {
+            JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
+        } catch (CustomException e) {
+            dateErrorLabel.setVisible(true);
+        }
     }
 
     /**

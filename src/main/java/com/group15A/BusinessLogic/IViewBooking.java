@@ -10,7 +10,11 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public interface IViewBooking {
-    List<Booking> getBookings(Integer patientID) throws Exception;
+    List<Booking> getBookings(Integer patientID, Boolean viewPastBooking) throws Exception;
+
+    List<Booking> filterBookings(String month, String year, Integer patientID, Boolean pastBookingFlag) throws Exception;
 
     Doctor getDoctor(Integer doctorID) throws Exception;
+
+    void updateBooking(Booking booking) throws Exception;
 }

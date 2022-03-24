@@ -132,6 +132,7 @@ public class HomePanel extends BasePanel {
     private void markAsRead(Notification notification) {
         try {
             this.homeLogic.readNotification(notification);
+            this.receiveData(null);
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
         }
@@ -171,6 +172,7 @@ public class HomePanel extends BasePanel {
         viewBookingsButton.addActionListener(e -> {
             panelController.showPage(
                     PageType.VIEW_BOOKINGS,
+                    new ReceivePair(ReceiveType.NEW_BOOKINGS, null),
                     new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
             );
         });
