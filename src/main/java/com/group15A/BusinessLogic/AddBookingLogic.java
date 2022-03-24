@@ -65,6 +65,9 @@ public class AddBookingLogic implements IAddBooking {
 
         // Show a new notification that the booking has been made to the user on the home panel
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
+
+        // Create a log to register the scheduling of a booking
+        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has scheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " on " + newBooking.getBookingTime());
     }
 
     private void correctBookingType(String type) throws CustomException {
@@ -115,7 +118,8 @@ public class AddBookingLogic implements IAddBooking {
         this.correctDateTimeFormat(hour, minute, date);
         this.correctBookingType(type);
 
-        String oldBookingTimestamp = DataModification.fullDate(booking.getBookingTime());
+        Timestamp oldBookingTime = booking.getBookingTime();
+        String oldBookingTimestamp = DataModification.fullDate(oldBookingTime);
 
         booking.setBookingTime(Timestamp.valueOf(date+" "+hour+":"+minute+":00"));
         booking.setType(type);
@@ -124,13 +128,16 @@ public class AddBookingLogic implements IAddBooking {
         Doctor doctor = this.getPatientDoctor(patient);
         this.isNewBooking(booking.getBookingTime(), patient);
 
-        this.dataAccessLayer.updateBooking(booking);
+        booking = this.dataAccessLayer.updateBooking(booking);
         this.dataAccessLayer.createNotification(
                 patient,
                 "Rescheduled Booking",
                 "Changed booking with Dr "+doctor.getFullName()+", from "+oldBookingTimestamp+
                         " to "+DataModification.fullDate(booking.getBookingTime())
         );
+
+        // Create a log to register the rescheduling of a booking
+        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has rescheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " from " + oldBookingTime + " to " + booking.getBookingTime());
     }
 
     private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {

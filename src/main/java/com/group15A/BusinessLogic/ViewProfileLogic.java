@@ -42,5 +42,6 @@ public class ViewProfileLogic implements IViewProfile {
 
         this.dataAccessLayer.changeDoctor(patient, newDoctor);
         this.dataAccessLayer.createNotification(patient, "Doctor Changed", "You changed your doctor from "+oldDoctor.getFullName()+" to "+newDoctor.getFullName());
+        this.dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " has changed their doctor from Dr. " +oldDoctor.getLastName() + " to Dr. " + newDoctor.getLastName());
     }
 }

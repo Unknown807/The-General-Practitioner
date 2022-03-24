@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.HomeLogic;
+import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
@@ -186,7 +187,6 @@ public class HomePanel extends BasePanel {
         });
 
         viewProfileButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
-
     }
 
     /**
@@ -194,7 +194,8 @@ public class HomePanel extends BasePanel {
      */
     private void logOutUser()
     {
-        Session.deleteSession();
+        homeLogic.logOut();
+
         panelController.refreshSession();
         panelController.showPage(PageType.LOGIN);
     }
