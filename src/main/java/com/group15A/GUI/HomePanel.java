@@ -132,6 +132,7 @@ public class HomePanel extends BasePanel {
     private void markAsRead(Notification notification) {
         try {
             this.homeLogic.readNotification(notification);
+            this.receiveData(null);
         } catch (CustomException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(homePanel);
         }
