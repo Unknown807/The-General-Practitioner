@@ -61,7 +61,8 @@ public class LogPanel extends BasePanel {
         messageListPanel.clearMessages();
         if(!userLogs.isEmpty()){
             messageListPanel.hideNoMessagesLabel();
-            for (Log log: userLogs) {
+            for (int i = userLogs.size()-1; i >= 0; i--) {
+                Log log = userLogs.get(i);
                 messageListPanel.addMessage(
                         "",
                         DataModification.shortDateTime(log.getTimestamp()),
