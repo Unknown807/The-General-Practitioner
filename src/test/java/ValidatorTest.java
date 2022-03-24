@@ -285,4 +285,14 @@ public class ValidatorTest extends TestCase {
         assertNull(this.validator.verifyDateBeforeToday(later));
     }
 
+    @Test
+    public void testVerifyBookingTypeFailureAndCorrectErrorCode() {
+        assertEquals(this.validator.verifyBookingType("WrongType"), ErrorCode.WRONG_BOOKING_TYPE);
+    }
+
+    @Test
+    public void testVerifyBookingTypeSuccess() {
+        assertNull(this.validator.verifyBookingType("Telephone Session"));
+    }
+
 }
