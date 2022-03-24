@@ -74,7 +74,7 @@ public class RegisterLogic implements IRegister {
         try {
             dataAccessLayer.createLog(
                     patient,
-                    "Patient " + patient.getFirstName() + " " + patient.getLastName() + " has successfully registered with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + "."
+                    "Patient " + patient.getFirstName() + " " + patient.getLastName() + " has successfully registered with Dr. " + dataAccessLayer.getDoctor(patient).getLastName()
             );
         } catch (DoctorNotFoundException e) {
             e.printStackTrace();
