@@ -180,7 +180,7 @@ public class MultiPanelWindow extends JFrame {
         try{
             setSession(Session.loadFromFile());
         } catch (Exception e) {
-            System.out.println("Session file not found.\n"+e.getMessage());
+            //System.out.println("Session file not found.\n"+e.getMessage());
         }
         createPages();
     }
