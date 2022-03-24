@@ -1,5 +1,7 @@
 package com.group15A.GUI;
 
+import com.group15A.BusinessLogic.HomeLogic;
+import com.group15A.CustomExceptions.DatabaseException;
 import com.group15A.Session;
 import com.group15A.Utils.PageType;
 import com.group15A.Utils.ReceivePair;
@@ -33,6 +35,7 @@ public class MultiPanelWindow extends JFrame {
     private JPanel panelCards;
     private Map<PageType, BasePanel> cards;
     private Session session;
+    private HomeLogic homeLogic;
 
     /**
      * Constructor for the MultiPanelWindow class
@@ -42,7 +45,6 @@ public class MultiPanelWindow extends JFrame {
      * and goes to a certain page if the session file is still stored
      */
     public MultiPanelWindow() {
-
         // Create session
         this.session = new Session(null, false);
 
@@ -84,6 +86,13 @@ public class MultiPanelWindow extends JFrame {
                 e.printStackTrace();
             }
         }
+
+        try {
+            homeLogic = new HomeLogic();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+
         showPage(pageToShow);
     }
 
@@ -186,6 +195,7 @@ public class MultiPanelWindow extends JFrame {
         // Delete session file if user doesn't want to stay logged in (i.e. log out user)
         if(!session.isKeepLoggedIn()) {
             try {
+                homeLogic.logOut();
                 File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
                 sessionFile.delete();
             }
