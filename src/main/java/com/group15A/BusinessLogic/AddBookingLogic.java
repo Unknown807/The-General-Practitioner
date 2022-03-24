@@ -67,7 +67,7 @@ public class AddBookingLogic implements IAddBooking {
         this.dataAccessLayer.createNotification(patient, "Created New Booking", "Created a booking on "+ DataModification.fullDate(bookingDateTime)+" with Dr "+doctor.getFullName());
 
         // Create a log to register the scheduling of a booking
-        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has scheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " on " + newBooking.getBookingTime());
+        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has scheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " on " + DataModification.shortDateTime(newBooking.getBookingTime()));
     }
 
     private void correctBookingType(String type) throws CustomException {
@@ -137,7 +137,7 @@ public class AddBookingLogic implements IAddBooking {
         );
 
         // Create a log to register the rescheduling of a booking
-        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has rescheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " from " + oldBookingTime + " to " + booking.getBookingTime());
+        this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has rescheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " from " + DataModification.shortDateTime(oldBookingTime) + " to " + DataModification.shortDateTime(booking.getBookingTime()));
     }
 
     private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {
