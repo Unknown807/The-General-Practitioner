@@ -7,6 +7,7 @@ import com.group15A.CustomExceptions.PatientNotFoundException;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 
 import java.util.List;
 
@@ -60,5 +61,20 @@ public class HomeLogic implements IHome {
     @Override
     public void readNotification(Notification notification) throws CustomException {
         this.dataAccessLayer.setNotificationSeen(notification);
+    }
+
+    /**
+     * Logs the log-out of the patient in the current session
+     */
+    public void logOut()
+    {
+        try {
+            Patient patient = getPatient(Session.loadFromFile().getLoggedInPatientID());
+            dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + " has logged out");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Session.deleteSession();
+        }
     }
 }

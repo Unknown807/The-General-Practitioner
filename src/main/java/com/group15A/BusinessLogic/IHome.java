@@ -14,4 +14,5 @@ public interface IHome {
     List<Notification> getNotifications(Patient patient) throws Exception;
     Patient getPatient(Integer patientID) throws Exception;
     void readNotification(Notification notification) throws Exception;
+    void logOut();
 }
