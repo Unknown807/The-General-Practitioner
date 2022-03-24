@@ -41,7 +41,7 @@ public class LogPanel extends BasePanel {
     {
         super("Activity logs", "loggingPanel", panelController);
 
-        messageListPanel = new MessageListPanel("My activity","No logs.", true);
+        messageListPanel = new MessageListPanel("My activity","No logs.", false);
         logsPanel.add(messageListPanel.getPanel());
 
         try{
