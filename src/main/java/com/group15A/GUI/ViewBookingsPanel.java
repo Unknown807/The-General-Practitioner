@@ -117,7 +117,7 @@ public class ViewBookingsPanel extends BasePanel {
                     if (b.getPrescription() == null) {
                         b.setPrescription(randomiser.getRandPrescription());
                         b.setDetails(randomiser.getRandDetails());
-                        // TODO: once values set, update them in db
+                        this.viewBookingLogic.updateBooking(b);
                     }
 
                     message = "Booking at "+
@@ -180,7 +180,6 @@ public class ViewBookingsPanel extends BasePanel {
         } catch (DatabaseException e) {
             JWidgetShortcuts.showDatabaseExceptionPopupAndExit(viewBookingsPanel);
         } catch (CustomException e) {
-            e.printStackTrace();
             dateErrorLabel.setVisible(true);
         }
     }
