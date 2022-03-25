@@ -153,9 +153,9 @@ public class DataAccess implements IDataAccess
         if(doctor==null)
             throw new NullDataException("Null doctor in the registerPatient method");
 
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the registerPatient method");
-        if(!validateDoctor(doctor))
+        if(isInvalidDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the registerPatient method");
 
         try {
@@ -231,9 +231,9 @@ public class DataAccess implements IDataAccess
             throw new NullDataException("Null patient in the updatePatient method");
         if(doctor==null)
             throw new NullDataException("Null doctor in the updatePatient method");
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the updatePatientFull method");
-        if(!validateDoctor(doctor))
+        if(isInvalidDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the updatePatientFull method");
 
         try {
@@ -299,7 +299,7 @@ public class DataAccess implements IDataAccess
     {
         if(patient==null)
             throw new NullDataException("Null patient in the getDoctor(patient) method overload");
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the getDoctor(patient) method overload");
 
         try {
@@ -427,7 +427,7 @@ public class DataAccess implements IDataAccess
     {
         if(doctor==null)
             throw new NullDataException("Null doctor in the getCertifications method");
-        if(!validateDoctor(doctor))
+        if(isInvalidDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the getCertifications method");
 
         try {
@@ -526,7 +526,7 @@ public class DataAccess implements IDataAccess
     {
         if(doctor==null)
             throw new NullDataException("Null doctor in the getBookings(doctor) method overload");
-        if(!validateDoctor(doctor))
+        if(isInvalidDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the getBookings(doctor) method overload");
 
         try {
@@ -554,7 +554,7 @@ public class DataAccess implements IDataAccess
     {
         if(patient==null)
             throw new NullDataException("Null patient in the getBookings(patient) method overload.");
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the getBookings(patient) method overload");
 
         try {
@@ -618,9 +618,9 @@ public class DataAccess implements IDataAccess
         if(isNullOrEmpty(type))
             throw new NullDataException("Null type in the createBooking method");
 
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the createBooking method");
-        if(!validateDoctor(doctor))
+        if(isInvalidDoctor(doctor))
             throw new InvalidDataException("Invalid doctor in the createBooking method");
 
         try {
@@ -657,7 +657,7 @@ public class DataAccess implements IDataAccess
     {
         if(booking==null)
             throw new NullDataException("Null booking in the updateBooking method");
-        if(!validateBooking(booking))
+        if(isInvalidBooking(booking))
             throw new InvalidDataException("Invalid booking the updateBooking method");
 
         try {
@@ -692,7 +692,7 @@ public class DataAccess implements IDataAccess
     {
         if(booking==null)
             throw new NullDataException("Null booking in the deleteBooking method");
-        if(!validateBooking(booking))
+        if(isInvalidBooking(booking))
             throw new InvalidDataException("Invalid booking in the deleteBooking method");
 
         try{
@@ -764,7 +764,7 @@ public class DataAccess implements IDataAccess
         if(isNullOrEmpty(message))
             throw new NullDataException("Null message in the createNotification method");
 
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the createNotification method");
 
         try {
@@ -798,7 +798,7 @@ public class DataAccess implements IDataAccess
     {
         if(patient==null)
             throw new NullDataException("Null patient in the getNotifications method");
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the getNotification method");
         try {
             String query = "CALL get_notifications_patient(?);";
@@ -948,7 +948,7 @@ public class DataAccess implements IDataAccess
     {
         if(patient==null)
             throw new NullDataException("Null patient in the getLogs method");
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the getLogs method");
         try {
             String query = "CALL get_logs_patient(?);";
@@ -1000,7 +1000,7 @@ public class DataAccess implements IDataAccess
         if(isNullOrEmpty(message))
             throw new NullDataException("Null message in the createLog method");
 
-        if(!validatePatient(patient))
+        if(isInvalidPatient(patient))
             throw new InvalidDataException("Invalid patient in the createLog method");
 
         try {
