@@ -125,9 +125,8 @@ public class DataAccess implements IDataAccess
             statement.setInt(1, patientID);
 
             ResultSet result = statement.executeQuery();
-            Patient patient = getPatientFromDB(result);
 
-            return patient;
+            return getPatientFromDB(result);
         } catch (PatientNotFoundException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -308,9 +307,8 @@ public class DataAccess implements IDataAccess
             statement.setInt(1, patient.getPatientID());
 
             ResultSet result = statement.executeQuery();
-            Doctor doctor = getDoctorFromDB(result);
 
-            return doctor;
+            return getDoctorFromDB(result);
         } catch (DoctorNotFoundException ex)
         {
             throw ex;
@@ -475,7 +473,8 @@ public class DataAccess implements IDataAccess
             ResultSet result = statement.executeQuery();
 
             result.next();
-            Booking booking = new Booking(
+
+            return new Booking(
                     result.getInt("id_booking"),
                     result.getInt("id_doctor"),
                     result.getInt("id_patient"),
@@ -485,8 +484,6 @@ public class DataAccess implements IDataAccess
                     result.getString("details"),
                     result.getString("prescription")
             );
-
-            return booking;
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not get booking from the database");
@@ -639,7 +636,7 @@ public class DataAccess implements IDataAccess
             return bookings.get(bookings.size()-1);
         } catch (Exception ex)
         {
-            System.err.println(ex);
+            ex.printStackTrace();
             throw new DatabaseException("Could not insert booking in the database");
         }
     }
@@ -676,7 +673,7 @@ public class DataAccess implements IDataAccess
             return getBooking(booking.getBookingID());
         } catch (Exception ex)
         {
-            System.err.println(ex);
+            ex.printStackTrace();
             throw new DatabaseException("Could not update booking in the database");
         }
     }
@@ -727,7 +724,8 @@ public class DataAccess implements IDataAccess
             ResultSet result = statement.executeQuery();
 
             result.next();
-            Notification notification = new Notification(
+
+            return new Notification(
                     result.getInt("id_notif"),
                     result.getInt("id_patient"),
                     result.getString("header"),
@@ -735,8 +733,6 @@ public class DataAccess implements IDataAccess
                     result.getTimestamp("booking_time"),
                     result.getBoolean("is_new")
             );
-
-            return notification;
         }catch (Exception ex)
         {
             throw new DatabaseException("Could not get notification from the database");
@@ -780,7 +776,7 @@ public class DataAccess implements IDataAccess
             return notifications.get(notifications.size()-1);
         } catch (Exception ex)
         {
-            System.err.println(ex);
+            ex.printStackTrace();
             throw new DatabaseException("Could not insert booking in the database");
         }
     }
@@ -917,8 +913,6 @@ public class DataAccess implements IDataAccess
      * Get all logs
      * @return The logs
      * @throws DatabaseException if there was a problem querying the database
-     * @throws NullDataException if a null value was sent as a parameter where a non-null value is expected
-     * @throws InvalidDataException if the data is invalid
      */
     @Override
     public List<Log> getLogs() throws DatabaseException
@@ -1015,7 +1009,7 @@ public class DataAccess implements IDataAccess
             return logs.get(logs.size()-1);
         } catch (Exception ex)
         {
-            System.err.println(ex);
+            ex.printStackTrace();
             throw new DatabaseException("Could not insert log in the database");
         }
     }
