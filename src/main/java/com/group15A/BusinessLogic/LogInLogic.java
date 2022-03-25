@@ -9,6 +9,7 @@ import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Contains backend functionality that relates to signing the user in
@@ -17,8 +18,8 @@ import java.util.Arrays;
  * @author Wenbo Wu
  */
 public class LogInLogic implements ILogIn {
-    private DataAccess dataAccessLayer;
-    private Validator validator;
+    private final DataAccess dataAccessLayer;
+    private final Validator validator;
 
     /**
      * The constructor for the LogInLogic class.
@@ -39,7 +40,7 @@ public class LogInLogic implements ILogIn {
      * @param email The email account
      * @param password The password
      * @param stayLoggedIn flag for saving session when user logs out, so no re-login required next time
-     * @throws Exception if there was an issue with the format of the email or password or with retrieving the
+     * @throws CustomException if there was an issue with the format of the email or password or with retrieving the
      * patient from the database
      */
     @Override
@@ -55,7 +56,7 @@ public class LogInLogic implements ILogIn {
         Patient patientToLogIn = this.dataAccessLayer.getPatient(email);
         
         if (!BCrypt.checkpw(password, patientToLogIn.getPassHash())) {
-            throw new CustomException("Invalid Password", Arrays.asList(ErrorCode.WRONG_PASSWORD));
+            throw new CustomException("Invalid Password", List.of(ErrorCode.WRONG_PASSWORD));
         }
 
         dataAccessLayer.createLog(patientToLogIn, "Patient " + patientToLogIn.getFirstName() + " " + patientToLogIn.getLastName() + " manually logged in, successfully");
