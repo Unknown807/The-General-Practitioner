@@ -12,10 +12,10 @@ import java.awt.*;
 public class JWidgetShortcuts {
 
     /**
-     * Adds a range of numbers as items in a given combobox,
+     * Adds a range of numbers as items in a given combo-box,
      * in order of first to last
      *
-     * @param comboBox The combobox which will have values added to it
+     * @param comboBox The combo-box which will have values added to it
      * @param first The first value to added (after unchosen)
      * @param last The last value to be added
      * @param inc the number of increments going from first to last
@@ -36,10 +36,10 @@ public class JWidgetShortcuts {
     }
 
     /**
-     * Adds an array of words as items in a given combobox,
+     * Adds an array of words as items in a given combo-box,
      * in the given or reversed order (as chosen)
      *
-     * @param comboBox The combobox which will have values added to it
+     * @param comboBox The combo-box which will have values added to it
      * @param words The collection of strings to add as items
      * @param reverse If true, add items in array in reverse, otherwise, add in given order
      * @param unchosen The first value to be shown
@@ -61,9 +61,9 @@ public class JWidgetShortcuts {
     }
 
     /**
-     * Adds an integer to a combobox,
+     * Adds an integer to a combo-box,
      * before prepending the number with a zero (0) if it's a single digit
-     * @param comboBox the combobox to add the item to
+     * @param comboBox the combo-box to add the item to
      * @param item the integer to add to the combo box
      */
     private static void addItemToCombo(JComboBox comboBox, int item)
@@ -74,7 +74,7 @@ public class JWidgetShortcuts {
     }
 
     /**
-     * Return a preset GridBagContraints styling that
+     * Return a preset GridBagConstraints styling that
      * aligns Components vertically and makes them
      * fill space on the horizontal axis.
      *
