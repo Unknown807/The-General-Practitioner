@@ -4,7 +4,6 @@ import com.group15A.Utils.ErrorCode;
 import org.apache.commons.validator.GenericValidator;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -216,6 +215,11 @@ public class Validator {
         return null;
     }
 
+    /**
+     * @param type the booking type selected in the dropdown in AddBookingPanel
+     * @return Error code if the selected booking type is not one of the strings from the dropdown,
+     * otherwise null, indicating no error
+     */
     public ErrorCode verifyBookingType(String type) {
         List<String> types = Arrays.asList(
             "Other", "Routine Checkup", "Emergency Checkup",
