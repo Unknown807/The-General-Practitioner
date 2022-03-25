@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 
 public class Doctor {
-    private Integer doctorID;
+    private final Integer doctorID;
     private String email;
     private String firstName;
     private String middleName;
