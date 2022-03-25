@@ -30,7 +30,7 @@ In the IDE of your choice, run the `/src/main/java/com/group15A/Main.java` class
 
 ## 📔 Existing data
 * The database contains some dummy data that you can test the application with.  
-* Here is a list of patient emails you can use to login (the password is **Password1*** for all of the following patients):
+* Here is a list of patient emails you can use to login (the password is `Password1*` for all of the following patients):
 ```
 - dneal@email.com
 - lhines@email.com
