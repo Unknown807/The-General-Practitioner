@@ -2,9 +2,7 @@ package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.LogLogic;
 import com.group15A.CustomExceptions.*;
-import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Log;
-import com.group15A.DataModel.Patient;
 import com.group15A.Utils.*;
 
 import javax.swing.*;
@@ -24,7 +22,7 @@ public class LogPanel extends BasePanel {
     private JButton homeButton;
     private JPanel contentPanel;
     private JPanel logsPanel;
-    private MessageListPanel messageListPanel;
+    private final MessageListPanel messageListPanel;
 
     private List<Log> userLogs;
     private LogLogic logLogic;
