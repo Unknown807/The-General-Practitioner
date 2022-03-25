@@ -2,7 +2,6 @@ package com.group15A.BusinessLogic;
 
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
-
 import java.util.List;
 
 /**
@@ -12,7 +11,10 @@ import java.util.List;
  */
 public interface IHome {
     List<Notification> getNotifications(Patient patient) throws Exception;
+
     Patient getPatient(Integer patientID) throws Exception;
+
     void readNotification(Notification notification) throws Exception;
+
     void logOut();
 }
