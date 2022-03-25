@@ -14,10 +14,11 @@
 
 ## ⚙️ Installation ##
 * Unzip the project
-* Run/import the `/TheGP_Database_9_Mar_Raw.sql` script with MySQL to create the local database
-* If there is an error with the imports, it is most likely due to missing Maven. Follow the steps in this link to fix the issue if encountered: <a href='https://stackoverflow.com/questions/8620127/maven-in-eclipse-step-by-step-installation'>StackOverflow answer</a>
+* Run/import the `/TheGP_Database_24_Mar_Raw.sql` script with MySQL to create the local database
 
-If running `/TheGP_Database_9_Mar_Raw.sql` gives a bug in MySQL, then try running `/TheGP_Database_9_Mar.sql`
+### ⚠️ Potential errors ###
+* When opening the project in an IDE, if there is **an error with the imports, it is likely due to missing Maven**. Follow the steps on this page to fix the issue if encountered: https://stackoverflow.com/a/13640110
+* If running `/TheGP_Database_24_Mar_Raw.sql` gives a bug in MySQL, then try running `/TheGP_Database_24_Mar.sql`
 
 ## 🛠️ Set up ##
 
@@ -29,17 +30,17 @@ If running `/TheGP_Database_9_Mar_Raw.sql` gives a bug in MySQL, then try runnin
 In the IDE of your choice, run the `/src/main/java/com/group15A/Main.java` class
 
 ## 📔 Existing data
-* The database contains some dummy data that you can test the application with.  
-* Here is a list of patient emails you can use to login (the password is `Password1*` for all of the following patients):
-```
-- dneal@email.com
-- lhines@email.com
-- lschaefer@email.com
-- jelly@email.com
-- hdrake@email.com
-- lrice@email.com
-- bdouglas@email.com
-- adennis@email.com
-- acarter@email.com
-- jedwards@email.com
-```
+The database contains some dummy data that you can test the application with.  
+Here is a list of patient emails you can use to login (the password for all of the following patients is `Password1*`):
+
+* `dneal@email.com`
+* `lhines@email.com`
+* `lschaefer@email.com`
+* `jelly@email.com`
+* `hdrake@email.com`
+* `lrice@email.com`
+* `bdouglas@email.com`
+* `adennis@email.com`
+* `acarter@email.com`
+* `jedwards@email.com`
+
