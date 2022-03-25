@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 public class DataModification
 {
     /**
+     * Capitalizes string
+     *
      * @return Capitalized version of given string (first letter uppercase and rest lowercase)
      */
     public static String capitalize(String string)
@@ -25,7 +27,7 @@ public class DataModification
 
     /**
      * Receive a timestamp and return a shortened string version in format:
-     * "dayName, dayNumber nonthName, yearNumber, hour:minute"
+     * "dayName, dayNumber monthName, yearNumber, hour:minute"
      *
      * @param timestamp The timestamp to be shortened
      * @return shortened timestamp string
@@ -36,6 +38,12 @@ public class DataModification
         return dateFormat.format(timestamp);
     }
 
+    /**
+     * Converts a timestamp to HH:mm format
+     *
+     * @param timestamp
+     * @return a string (hh:mm) from a timestamp (yyyy-mm-dd hh:mm:ss)
+     */
     public static String getTime(Timestamp timestamp)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
