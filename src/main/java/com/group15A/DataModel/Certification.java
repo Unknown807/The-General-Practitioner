@@ -11,8 +11,8 @@ import java.util.Objects;
  * @author Wenbo Wu
  */
 public class Certification {
-    private Integer doctorID;
-    private Integer certID;
+    private final Integer doctorID;
+    private final Integer certID;
     private String name;
     private String field;
     private Date dateObtained;
@@ -106,9 +106,5 @@ public class Certification {
 
     public Integer getDoctorID() {
         return doctorID;
-    }
-
-    public void setDoctorID(Integer doctorID) {
-        this.doctorID = doctorID;
     }
 }

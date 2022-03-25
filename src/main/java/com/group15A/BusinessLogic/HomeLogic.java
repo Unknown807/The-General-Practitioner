@@ -17,7 +17,7 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public class HomeLogic implements IHome {
-    private DataAccess dataAccessLayer;
+    private final DataAccess dataAccessLayer;
 
     /**
      * Constructor for home logic
@@ -40,7 +40,7 @@ public class HomeLogic implements IHome {
 
     /**
      * Get the patient from the integer id
-     * @param patientID
+     * @param patientID The id of the patient
      * @return the patient
      * @throws InvalidDataException if the data is invalid
      * @throws DatabaseException if issues connecting to the database

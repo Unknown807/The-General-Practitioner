@@ -16,12 +16,11 @@ import javax.swing.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * To allow for communication to the business layer and to take care of event handling
  *
- * addBookingPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * addBookingPanel is the actual panel that gets provided to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Filip Fois
@@ -113,8 +112,8 @@ public class AddBookingPanel extends BasePanel {
     }
 
     /**
-     * Populates the booking form with the booking to reschedule's information
-     * @param booking
+     * Populates the booking form with the information of the booking to be rescheduled
+     * @param booking The booking's information to use to populate the add booking page
      */
     private void populateBookingForm(Booking booking) {
         Timestamp timestamp = booking.getBookingTime();
@@ -140,7 +139,7 @@ public class AddBookingPanel extends BasePanel {
 
     /**
      * Switches between 'reschedule' and 'create' booking strings for descriptive labels
-     * @param newBookingPageText
+     * @param newBookingPageText The text that the components will display
      */
     private void updateBookingLabels(String newBookingPageText) {
         this.bookingTitle.setText(newBookingPageText);
@@ -175,7 +174,16 @@ public class AddBookingPanel extends BasePanel {
         createBookingButton.addActionListener(e -> this.createOrEditBooking());
     }
 
-
+    /**
+     * Reads inputs
+     *
+     * If successful:
+     * - calls createNewBooking or rescheduleBooking if a booking to be edited is not provided,
+     * - hide error label
+     * - Go to view booking page to show the booking that was just created
+     *
+     * Otherwise, shows different error messages depending on the thrown exception
+     */
     private void createOrEditBooking() {
         try {
 

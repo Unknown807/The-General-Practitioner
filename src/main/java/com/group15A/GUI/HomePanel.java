@@ -1,11 +1,9 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.HomeLogic;
-import com.group15A.BusinessLogic.LogInLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
-import com.group15A.Session;
 import com.group15A.Utils.*;
 
 import javax.swing.*;
@@ -14,7 +12,7 @@ import java.util.List;
 /**
  * To allow for communication to the business layer and to take care of event handling
  *
- * homePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * homePanel is the actual panel that gets provided to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
@@ -41,8 +39,8 @@ public class HomePanel extends BasePanel {
     private HomeLogic homeLogic;
     private List<Notification> notifList;
 
-    private MessageListPanel newMessageList;
-    private MessageListPanel oldMessageList;
+    private final MessageListPanel newMessageList;
+    private final MessageListPanel oldMessageList;
 
     /**
      * Constructor for the HomePanel class
@@ -80,13 +78,10 @@ public class HomePanel extends BasePanel {
     }
 
     /**
-     * TODO: Update documentation to match use of MessageListPanel
      * For each notification in `notifList`,
-     * if it's marked as new,
-     * then create a MessagePanel and add it
-     * to the list of notifications on the page
-     *
-     * Then display the number of new bookings
+     * if it's marked as new, add a message to the new MessageListPanel
+     * and assign an action to the "mark as read" button,
+     * otherwise, add it the old MessageListPanel
      */
     private void displayNotifications() {
         newMessageList.clearMessages();
@@ -169,22 +164,18 @@ public class HomePanel extends BasePanel {
      */
     @Override
     public void createActionListeners() {
-        logOutButton.addActionListener(e -> {logOutUser();});
-        viewBookingsButton.addActionListener(e -> {
-            panelController.showPage(
-                    PageType.VIEW_BOOKINGS,
-                    new ReceivePair(ReceiveType.NEW_BOOKINGS, null),
-                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
-            );
-        });
+        logOutButton.addActionListener(e -> logOutUser());
+        viewBookingsButton.addActionListener(e -> panelController.showPage(
+                PageType.VIEW_BOOKINGS,
+                new ReceivePair(ReceiveType.NEW_BOOKINGS, null),
+                new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+        ));
 
-        newBookingButton.addActionListener(e -> {
-            panelController.showPage(
-                    PageType.ADD_BOOKING,
-                    new ReceivePair(ReceiveType.RETURN_PAGE, PageType.HOME),
-                    new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
-            );
-        });
+        newBookingButton.addActionListener(e -> panelController.showPage(
+                PageType.ADD_BOOKING,
+                new ReceivePair(ReceiveType.RETURN_PAGE, PageType.HOME),
+                new ReceivePair(ReceiveType.PATIENT_ID, this.panelController.getSession().getLoggedInPatientID())
+        ));
 
         viewProfileButton.addActionListener(e -> this.panelController.showPage(PageType.VIEW_PROFILE));
     }

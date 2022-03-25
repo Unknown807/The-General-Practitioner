@@ -3,9 +3,7 @@ package com.group15A.GUI;
 import com.group15A.BusinessLogic.RegisterLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Doctor;
-import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
 import com.group15A.Utils.*;
@@ -19,7 +17,7 @@ import java.util.List;
 /**
  * To allow for communication to the business layer and to take care of event handling
 
- * registerPanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * registerPanel is the actual panel that gets provided to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
@@ -99,7 +97,6 @@ public class RegisterPanel extends BasePanel {
     public RegisterPanel(MultiPanelWindow panelController) {
         super("Register", "registerPanel", panelController);
 
-        // TODO: Implement setMargin on these buttons using LogInPanel.form instead of in this file.
         logInButton.setMargin(new Insets(0,0,0,0));
 
         JWidgetShortcuts.addItemsToCombo(dayCombo,1,31,1,"Day");
@@ -170,9 +167,12 @@ public class RegisterPanel extends BasePanel {
     {
         logInButton.addActionListener( e -> panelController.showPage(PageType.LOGIN));
         continueButton.addActionListener(e -> this.registerNewPatient());
-        chooseDoctorButton.addActionListener(e -> {
-            panelController.showPage(PageType.CHOOSE_DOCTOR, new ReceivePair(ReceiveType.RETURN_PAGE, PageType.REGISTER));
-        });
+        chooseDoctorButton.addActionListener(e ->
+                panelController.showPage(
+                        PageType.CHOOSE_DOCTOR,
+                        new ReceivePair(ReceiveType.RETURN_PAGE, PageType.REGISTER)
+                )
+        );
     }
 
     /**
@@ -235,6 +235,9 @@ public class RegisterPanel extends BasePanel {
         }
     }
 
+    /**
+     * Make all error labels invisible
+     */
     private void clearErrorLabels() {
         for (JLabel errorLabel : errorLabelCodes.values()) {
             errorLabel.setVisible(false);

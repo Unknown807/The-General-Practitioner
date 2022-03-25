@@ -6,8 +6,8 @@ package com.group15A.Utils;
  * @author Milovan Gveric
  */
 public class ReceivePair {
-    private ReceiveType first;
-    private Object second;
+    private final ReceiveType first;
+    private final Object second;
 
     /**
      * Constructor for ReceivePair

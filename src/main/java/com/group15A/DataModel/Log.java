@@ -10,10 +10,10 @@ import java.util.Objects;
  * @author Wenbo Wu
  */
 public class Log {
-    private Integer logID;
+    private final Integer logID;
     private String message;
     private Integer patientID;
-    private Timestamp timestamp;
+    private final Timestamp timestamp;
 
     /**
      * Constructor for a log
@@ -41,8 +41,6 @@ public class Log {
     public void setPatientID(Integer patientID) {this.patientID = patientID;}
 
     public Timestamp getTimestamp() {return timestamp;}
-
-    public void setTimestamp(Timestamp timestamp) {this.timestamp = timestamp;}
 
     /**
      * Method for equality testing

@@ -24,8 +24,8 @@ import java.util.*;
  * @author Wenbo Wu
  */
 public class RegisterLogic implements IRegister {
-    private DataAccess dataAccessLayer;
-    private Validator validator;
+    private final DataAccess dataAccessLayer;
+    private final Validator validator;
 
     /**
      * The constructor for the RegisterLogic class.
@@ -40,16 +40,15 @@ public class RegisterLogic implements IRegister {
     }
 
     /**
-     * TODO: Explain the thrown exceptions.
      * Create a notification detailing that the given patient
      * has been registered and added to the database
      *
      * Called when a patient successfully registers
      *
      * @param patient The patient that the notification is sent to
-     * @throws InvalidDataException
-     * @throws NullDataException
-     * @throws DatabaseException
+     * @throws InvalidDataException if the patient is invalid
+     * @throws NullDataException if the patient's information is missing
+     * @throws DatabaseException if there was an issue in querying the database
      */
     public void registerNotification(Patient patient) throws InvalidDataException, NullDataException, DatabaseException {
         dataAccessLayer.createNotification(
@@ -68,7 +67,7 @@ public class RegisterLogic implements IRegister {
      * @param patient The patient who registered
      * @throws InvalidDataException If the patient is invalid
      * @throws NullDataException If the patient's information is missing
-     * @throws DatabaseException If there was a problem querrying the database
+     * @throws DatabaseException If there was a problem querying the database
      */
     public void registerLog(Patient patient) throws InvalidDataException, NullDataException, DatabaseException {
         try {
@@ -134,17 +133,16 @@ public class RegisterLogic implements IRegister {
         try {
             dateConv = df.parse(DoB);
         } catch (ParseException e) {
-            throw new CustomException("Invalid date", Arrays.asList(ErrorCode.WRONG_DATE));
+            throw new CustomException("Invalid date", List.of(ErrorCode.WRONG_DATE));
         }
 
         // Hash password
         String passHash = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        Patient loggedInPatient = this.dataAccessLayer.registerPatient(
+        return this.dataAccessLayer.registerPatient(
                 new Patient(email, passHash, fName, mName, lName, dateConv, gender, phoneNo),
                 chosenDoctor
         );
 
-        return loggedInPatient;
     }
 }

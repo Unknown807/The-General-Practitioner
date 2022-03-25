@@ -13,7 +13,7 @@ import com.group15A.DataModel.Patient;
  * @author Milovan Gveric
  */
 public class ViewProfileLogic implements IViewProfile {
-    private DataAccess dataAccessLayer;
+    private final DataAccess dataAccessLayer;
 
     /**
      * Constructor for view profile logic
