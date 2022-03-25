@@ -5,9 +5,6 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
 
-import javax.print.Doc;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -22,22 +19,22 @@ public class DataAccessValidator
      * @param patient The patient to be checked
      * @return true if the patient is valid, false otherwise
      */
-    protected static boolean validatePatient(Patient patient)
+    protected static boolean isInvalidPatient(Patient patient)
     {
         if(patient.getPatientID()<0 && patient.getPatientID()!=-1)
-            return false;
+            return true;
         if(isNullOrEmpty(patient.getEmail()))
-            return false;
+            return true;
         if(patient.getPassHash()==null)
-            return false;
+            return true;
         if(isNullOrEmpty(patient.getFirstName()))
-            return false;
+            return true;
         if(isNullOrEmpty(patient.getLastName()))
-            return false;
+            return true;
         if(patient.getDob()==null || dateAfterToday(patient.getDob()))
-            return false;
+            return true;
 
-        return true;
+        return false;
     }
 
     /**
@@ -45,20 +42,20 @@ public class DataAccessValidator
      * @param doctor The doctor to be checked
      * @return true if the doctor is valid, false otherwise
      */
-    protected static boolean validateDoctor(Doctor doctor)
+    protected static boolean isInvalidDoctor(Doctor doctor)
     {
         if(doctor.getDoctorID()<0)
-            return false;
+            return true;
         if(isNullOrEmpty(doctor.getEmail()))
-            return false;
+            return true;
         if(isNullOrEmpty(doctor.getFirstName()))
-            return false;
+            return true;
         if(isNullOrEmpty(doctor.getLastName()))
-            return false;
+            return true;
         if(doctor.getDob()==null || dateAfterToday(doctor.getDob()))
-            return false;
+            return true;
 
-        return true;
+        return false;
     }
 
     /**
@@ -66,17 +63,17 @@ public class DataAccessValidator
      * @param booking The booking to be checked
      * @return true if the booking is valid, false otherwise
      */
-    protected static boolean validateBooking(Booking booking)
+    protected static boolean isInvalidBooking(Booking booking)
     {
         if(booking.getBookingID()<0)
-            return false;
+            return true;
         if(booking.getPatientID()<0)
-            return false;
+            return true;
         if(booking.getDoctorID()<0)
-            return false;
+            return true;
         if(booking.getBookingTime()==null)
-            return false;
-        return true;
+            return true;
+        return false;
     }
 
     /**
@@ -108,16 +105,6 @@ public class DataAccessValidator
     }
 
     /**
-     * Check if the given date is after today
-     * @param date The date
-     * @return true if the date is after today, false otherwise
-     */
-    private static boolean dateAfterToday(Timestamp date)
-    {
-        return date.after(new Timestamp(System.currentTimeMillis()));
-    }
-
-    /**
      * Check if the given string is null or empty
      * @param string The string to verify
      * @return true if the string is null or empty, false otherwise
@@ -130,6 +117,7 @@ public class DataAccessValidator
             return true;
         if(string.isBlank())
             return true;
+
 
         return false;
     }

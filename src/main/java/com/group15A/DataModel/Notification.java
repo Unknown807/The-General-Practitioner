@@ -11,11 +11,11 @@ import java.util.Objects;
  */
 public class Notification {
 
-    private Integer notifID;
-    private Integer patientID;
+    private final Integer notifID;
+    private final Integer patientID;
     private String message;
     private String header;
-    private Timestamp timestamp;
+    private final Timestamp timestamp;
     private boolean isNew;
 
     /**
@@ -42,10 +42,6 @@ public class Notification {
 
     public Integer getPatientID() {
         return patientID;
-    }
-
-    public void setPatientID(Integer patientID) {
-        this.patientID = patientID;
     }
 
     public String getMessage() {

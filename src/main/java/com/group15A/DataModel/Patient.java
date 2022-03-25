@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author Wenbo Wu
  */
 public class Patient implements Serializable {
-    private Integer patientID;
+    private final Integer patientID;
     private String email;
     private String passHash;
     private String firstName;

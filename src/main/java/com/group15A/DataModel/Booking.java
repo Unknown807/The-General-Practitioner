@@ -1,7 +1,5 @@
 package com.group15A.DataModel;
 
-import com.google.protobuf.DescriptorProtos;
-
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -13,11 +11,11 @@ import java.util.Objects;
  */
 public class Booking {
 
-    private Integer bookingID;
-    private Integer doctorID;
+    private final Integer bookingID;
+    private final Integer doctorID;
     private Integer patientID;
     private Timestamp bookingTime;
-    private Timestamp timestamp;
+    private final Timestamp timestamp;
     private String type;
     private String details;
     private String prescription;
@@ -31,7 +29,7 @@ public class Booking {
      * @param timestamp time booking has been created
      * @param type the type of the booking
      * @param details the details for the booking
-     * @param prescription
+     * @param prescription the prescription from the doctor
      */
     public Booking(Integer bookingID, Integer doctorID, Integer patientID, Timestamp bookingTime, Timestamp timestamp, String type, String details, String prescription) {
         this.bookingID = bookingID;
@@ -48,7 +46,6 @@ public class Booking {
 
     public Integer getDoctorID() {return doctorID;}
 
-    public void setDoctorID(Integer doctorID) {this.doctorID = doctorID;}
 
     public Integer getPatientID() {return patientID;}
 

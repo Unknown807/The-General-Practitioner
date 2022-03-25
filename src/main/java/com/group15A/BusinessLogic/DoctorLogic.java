@@ -14,7 +14,7 @@ import java.util.List;
  * @author Wenbo Wu
  */
 public class DoctorLogic implements IDoctor {
-    private DataAccess dataAccessLayer;
+    private final DataAccess dataAccessLayer;
 
     /**
      * Constructor for the doctor logic

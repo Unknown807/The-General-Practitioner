@@ -4,15 +4,10 @@ import com.group15A.DataModel.*;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +35,6 @@ public class DataAccessTest extends TestCase {
     }
 
 
-    @Test
     public void testCreatePatient()
     {
         Patient patientFromDb = null;
@@ -67,7 +61,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testCreatePatientExistingEmail()
     {
         Patient patientFromDb = null;
@@ -100,35 +93,30 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testCreatePatientNullEmail()
     {
         Patient patient = new Patient(null, "myPass", "Test", null, "Testing", new Date(), "Male", "08858271");
         assertTrue(testCreatePatientNullInfo(patient));
     }
 
-    @Test
     public void testCreatePatientNullPassword()
     {
         Patient patient = new Patient("mynewmail1@mail.com", null, "Test", null, "Testing", new Date(), "Male", "08858271");
         assertTrue(testCreatePatientNullInfo(patient));
     }
 
-    @Test
     public void testCreatePatientNullFirstName()
     {
         Patient patient = new Patient("mynewmail1@mail.com", "myPass", null, null, "Testing", new Date(), "Male", "08858271");
         assertTrue(testCreatePatientNullInfo(patient));
     }
 
-    @Test
     public void testCreatePatientNullLastName()
     {
         Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, null, new Date(), "Male", "08858271");
         assertTrue(testCreatePatientNullInfo(patient));
     }
 
-    @Test
     public void testCreatePatientNullDate()
     {
         Patient patient = new Patient("mynewmail1@mail.com", "myPass", "Test", null, "Testing", null, "Male", "08858271");
@@ -166,7 +154,6 @@ public class DataAccessTest extends TestCase {
         return false;
     }
 
-    @Test
     public void testGetPatient()
     {
         Patient patient = null;
@@ -199,7 +186,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testUpdatePatient()
     {
         Patient patient = null;
@@ -237,7 +223,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testChangeDoctor()
     {
         Patient patient = null;
@@ -273,7 +258,6 @@ public class DataAccessTest extends TestCase {
 
     }
 
-    @Test
     public void testGetDoctor()
     {
         Patient patient = null;
@@ -311,7 +295,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testCreateBooking()
     {
         try {
@@ -331,7 +314,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testUpdateBooking()
     {
         try {
@@ -354,7 +336,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testCreateNotification()
     {
         Notification notification = null;
@@ -383,7 +364,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testSetSeenNotification()
     {
         Notification notification = null;
@@ -412,7 +392,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testCreateLog()
     {
         Log log = null;
@@ -436,7 +415,6 @@ public class DataAccessTest extends TestCase {
         }
     }
 
-    @Test
     public void testGetLogs()
     {
         Patient patient = null;

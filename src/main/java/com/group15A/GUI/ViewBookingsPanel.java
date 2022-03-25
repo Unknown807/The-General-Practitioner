@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * To allow for communication to the business layer and to take care of event handling
+
+ * viewBookingPanel is the actual panel that gets provided to the multiPanelWindow cardLayout
+ * in order to show it in the UI
  *
+ * @author Milovan Gveric
  * @author Filip Fois
  */
 public class ViewBookingsPanel extends BasePanel {
@@ -35,17 +40,19 @@ public class ViewBookingsPanel extends BasePanel {
     private List<Booking> bookingsList;
     private List<JPanel> bookingLabelsList;
 
-    private MessageListPanel messageListPanel;
+    private final MessageListPanel messageListPanel;
 
     private Boolean pastBookingFlag = false;
 
     /**
      * Constructor for ViewBookingsPanel
+     *
+     * Set options for combo-boxes and
+     * sets up messageListPanel and logic class
      */
     public ViewBookingsPanel(MultiPanelWindow panelController)
     {
         super("My bookings", "viewBookingPanel", panelController);
-        // contentPanel.setBorder(new EmptyBorder(10,10,10,10));
 
         dateErrorLabel.setVisible(false);
 
@@ -104,12 +111,9 @@ public class ViewBookingsPanel extends BasePanel {
     }
 
     /**
-     * TODO: Update documentation to match use of MessageListPanel
-     * For each booking in `bookingList`,
-     * create a label containing information about the booking,
-     * then add it the `bookingLabelList` to be displayed
-     *
-     * The colour of each booking alternates
+     * For each notification in `notifList`,
+     * add a message to the new MessageListPanel
+     * and assign an action to the "Reschedule" button
      *
      * @throws CustomException when patient's doctor cannot be accessed
      */
@@ -151,11 +155,8 @@ public class ViewBookingsPanel extends BasePanel {
 
                 bookingLabelsList.add(bookingMessage.getMainPanel());
 
-                // Copied from HomePanel.java
                 if (!pastBookingFlag) {
-                    bookingMessage.getButton().addActionListener(e -> {
-                        this.rescheduleBooking(b);
-                    });
+                    bookingMessage.getButton().addActionListener(e -> this.rescheduleBooking(b));
                 } else {
                     bookingMessage.getButton().setVisible(false);
                 }
@@ -163,6 +164,11 @@ public class ViewBookingsPanel extends BasePanel {
         }
     }
 
+    /**
+     * Goes to add booking page to reschedule booking
+     *
+     * @param booking The booking to be rescheduled
+     */
     private void rescheduleBooking(Booking booking)
     {
         this.panelController.showPage(
@@ -174,9 +180,10 @@ public class ViewBookingsPanel extends BasePanel {
     }
 
     /**
-     * TODO: Implement
+     * Display only bookings within the given month and year
      *
-     * Display only bookings within the given month-year
+     * "Month (All)" and "Year (All)" can be mixed with each other
+     * and given months and years to, for example get bookings for all months in the year 2021
      */
     private void filterBookings()
     {
@@ -211,9 +218,8 @@ public class ViewBookingsPanel extends BasePanel {
     @Override
     public void createActionListeners()
     {
-        goHomeButton.addActionListener(e -> {panelController.showPage(PageType.HOME);});
-        searchButton.addActionListener(e -> {filterBookings();});
+        goHomeButton.addActionListener(e -> panelController.showPage(PageType.HOME));
+        searchButton.addActionListener(e -> filterBookings());
     }
-
 
 }

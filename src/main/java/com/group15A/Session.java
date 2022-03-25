@@ -75,11 +75,10 @@ public class Session implements Serializable {
         {
             return (Session) inStream.readObject();
         }
-        catch(Exception ex) {
-            throw ex;
-            /*System.err.println(ex.getMessage());
-            return null;*/
+        catch(FileNotFoundException e){
+            System.out.println("No session file found.");
         }
+        return null;
     }
 
     /**
@@ -92,6 +91,6 @@ public class Session implements Serializable {
         if(!directory.exists())
             directory.mkdir();
 
-        return directory.toString() + "/LoggedUser.bin";
+        return directory + "/LoggedUser.bin";
     }
 }

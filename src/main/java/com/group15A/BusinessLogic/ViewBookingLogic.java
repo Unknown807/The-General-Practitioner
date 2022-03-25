@@ -10,7 +10,6 @@ import com.group15A.Validator.Validator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,8 +19,8 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public class ViewBookingLogic implements IViewBooking {
-    private DataAccess dataAccessLayer;
-    private Validator validator;
+    private final DataAccess dataAccessLayer;
+    private final Validator validator;
 
     /**
      * Constructor for the view booking logic
@@ -35,6 +34,7 @@ public class ViewBookingLogic implements IViewBooking {
     /**
      * Gets all the bookings belonging to the patient
      * @param patientID
+     * @param pastBookingFlag flag to get either all past or future bookings
      * @return the list of all the patient's bookings
      * @throws CustomException if issues getting bookings, or with patient
      */
@@ -61,10 +61,19 @@ public class ViewBookingLogic implements IViewBooking {
         return patientNewBookings;
     }
 
+    /**
+     * Filters the past/future bookings based on month and year dropdown selections
+     * @param month could be integer (in string) or string: 'Month (All)'
+     * @param year could be integer (in string) or string: 'Year (All)'
+     * @param patientID
+     * @param pastBookingFlag flag to get either all past or future bookings
+     * @return the list of filtered bookings
+     * @throws CustomException if any issues with getBookings DAL method
+     */
     @Override
     public List<Booking> filterBookings(String month, String year, Integer patientID, Boolean pastBookingFlag) throws CustomException {
         if (!this.validator.isNum(year) && !this.validator.isNum(month) && !month.equals("Month (All)") && !year.equals("Year (All)")) {
-            throw new CustomException("Month or Year aren't numbers", Arrays.asList(ErrorCode.WRONG_DATE));
+            throw new CustomException("Month or Year aren't numbers", List.of(ErrorCode.WRONG_DATE));
         }
 
         List<Booking> allBookings = this.getBookings(patientID, pastBookingFlag);
@@ -72,8 +81,8 @@ public class ViewBookingLogic implements IViewBooking {
         Calendar cal = Calendar.getInstance();
 
         Timestamp filterDate;
-        Integer filterMonth = -1;
-        Integer filterYear = -1;
+        int filterMonth = -1;
+        int filterYear = -1;
 
         if (!month.equals("Month (All)")) {
             filterDate = Timestamp.valueOf("1900" + "-" + month + "-" + "01 " + "00:00:00");
@@ -113,6 +122,11 @@ public class ViewBookingLogic implements IViewBooking {
         return this.dataAccessLayer.getDoctor(doctorID);
     }
 
+    /**
+     * Updates the booking record in the database using a Booking instance
+     * @param booking the booking instance
+     * @throws CustomException if issues updating booking record
+     */
     @Override
     public void updateBooking(Booking booking) throws CustomException {
         this.dataAccessLayer.updateBooking(booking);
