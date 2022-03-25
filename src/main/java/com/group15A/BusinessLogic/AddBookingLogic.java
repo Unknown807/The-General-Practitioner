@@ -9,7 +9,6 @@ import com.group15A.Utils.DataModification;
 import com.group15A.Utils.ErrorCode;
 import com.group15A.Validator.Validator;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +19,8 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public class AddBookingLogic implements IAddBooking {
-    private Validator validator;
-    private DataAccess dataAccessLayer;
+    private final Validator validator;
+    private final DataAccess dataAccessLayer;
 
     /**
      * Constructor for the add booking logic
@@ -39,7 +38,6 @@ public class AddBookingLogic implements IAddBooking {
      * @param hour the hour the booking starts
      * @param minute the minute the booking starts
      * @param patientID which patient the booking relates to
-     * @return the finalised booking and its details
      * @throws CustomException If any issues connecting to the database or creating the new booking
      */
     @Override
@@ -47,13 +45,14 @@ public class AddBookingLogic implements IAddBooking {
         this.correctDateTimeFormat(hour, minute, date);
         this.correctBookingType(type);
 
+        // Checks if booking is not in the past
         String timestamp = date+" "+hour+":"+minute+":00";
         this.isImpossibleBooking(timestamp);
 
         Patient patient = this.dataAccessLayer.getPatient(patientID);
         Doctor doctor = this.getPatientDoctor(patient);
         Timestamp bookingDateTime = Timestamp.valueOf(timestamp);
-
+        // Checks if booking is unique
         this.isNewBooking(bookingDateTime, patient);
 
         Booking newBooking = this.dataAccessLayer.createBooking(
@@ -70,23 +69,39 @@ public class AddBookingLogic implements IAddBooking {
         this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has scheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " on " + DataModification.shortDateTime(newBooking.getBookingTime()));
     }
 
+    /**
+     * Checks that the booking type is one of the strings from the dropdown
+     * @param type the selected dropdown booking type
+     * @throws CustomException if booking type is incorrect
+     */
     private void correctBookingType(String type) throws CustomException {
         ErrorCode wrongType = this.validator.verifyBookingType(type);
 
         if (wrongType != null) {
-            throw new CustomException("Wrong booking type", Arrays.asList(wrongType));
+            throw new CustomException("Wrong booking type", List.of(wrongType));
         }
     }
 
+    /**
+     * Checks that a booking timestamp is in the past or not
+     * @param timestamp the passed in timestamp
+     * @throws CustomException if booking is in the past
+     */
     private void isImpossibleBooking(String timestamp) throws CustomException {
         ErrorCode impossibleDate = this.validator.verifyDateBeforeToday(timestamp);
 
         // Check that the booking is booked in the past
         if (impossibleDate != null) {
-            throw new CustomException("Can't book on a past date", Arrays.asList(impossibleDate));
+            throw new CustomException("Can't book on a past date", List.of(impossibleDate));
         }
     }
 
+    /**
+     * Checks if the patient hasn't already made the booking
+     * @param bookingDateTime the booking time
+     * @param patient the patient object
+     * @throws CustomException if booking is not unique
+     */
     private void isNewBooking(Timestamp bookingDateTime, Patient patient) throws CustomException {
         // Finally, check if booking with the same time had already been made
         if (!this.verifyBookingIsNew(bookingDateTime, patient)) {
@@ -94,6 +109,32 @@ public class AddBookingLogic implements IAddBooking {
         }
     }
 
+    /**
+     * Used by isNewBooking to check against all patient bookings for no matching booking
+     * @param bookingTime the booking to be checked
+     * @param patient
+     * @return true or false if booking is unique or not
+     * @throws CustomException if issues with getBookings from the DAL
+     */
+    private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {
+        List<Booking> allPatientBookings = this.dataAccessLayer.getBookings(patient);
+
+        for (Booking b : allPatientBookings) {
+            if (b.getBookingTime().equals(bookingTime)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if date + hour + minute is in the format: yyyy-mm-dd hh:mm:ss
+     * @param hour
+     * @param minute
+     * @param date yyyy-mm-dd format
+     * @throws CustomException if date+time does not match the mentioned format
+     */
     private void correctDateTimeFormat(String hour, String minute, String date) throws CustomException {
         ErrorCode timestampError = this.validator.verifyTimestamp(hour, minute);
         ErrorCode dateError = this.validator.verifyDate(date);
@@ -138,18 +179,6 @@ public class AddBookingLogic implements IAddBooking {
 
         // Create a log to register the rescheduling of a booking
         this.dataAccessLayer.createLog(patient, "Patient "+patient.getFirstName()+" "+patient.getLastName()+" has rescheduled a booking with Dr. " + dataAccessLayer.getDoctor(patient).getLastName() + " from " + DataModification.shortDateTime(oldBookingTime) + " to " + DataModification.shortDateTime(booking.getBookingTime()));
-    }
-
-    private Boolean verifyBookingIsNew(Timestamp bookingTime, Patient patient) throws CustomException {
-        List<Booking> allPatientBookings = this.dataAccessLayer.getBookings(patient);
-
-        for (Booking b : allPatientBookings) {
-            if (b.getBookingTime().equals(bookingTime)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
