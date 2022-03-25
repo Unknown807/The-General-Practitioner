@@ -1,6 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.HomeLogic;
+import com.group15A.BusinessLogic.MultiPanelWindowLogic;
 import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
@@ -37,9 +38,8 @@ public class MultiPanelWindow extends JFrame {
     private JPanel panelCards;
     private Map<PageType, BasePanel> cards;
     private Session session;
-    private HomeLogic homeLogic;
-    DataAccess dataAccessLayer;
-    Patient patient;
+    private MultiPanelWindowLogic multiPanelWindowLogic;
+    private Patient patient;
 
     /**
      * Constructor for the MultiPanelWindow class
@@ -56,12 +56,11 @@ public class MultiPanelWindow extends JFrame {
         refreshSession();
 
         try {
-            dataAccessLayer = new DataAccess();
-            patient = dataAccessLayer.getPatient(session.getLoggedInPatientID());
+            multiPanelWindowLogic = new MultiPanelWindowLogic();
+            patient = multiPanelWindowLogic.getPatient(session.getLoggedInPatientID());
         } catch (CustomException e) {
             System.out.println("No session file found.");
-        }
-        catch(NullPointerException e){
+        } catch(NullPointerException e){
             System.out.println("Patient not found.");
         }
 
@@ -89,7 +88,7 @@ public class MultiPanelWindow extends JFrame {
                 Session savedSession = Session.loadFromFile();
                 if (savedSession != null && savedSession.isKeepLoggedIn()) {
                     this.setSession(savedSession);
-                    dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " automatically logged in, successfully");
+                    this.multiPanelWindowLogic.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " automatically logged in, successfully");
                     pageToShow = PageType.HOME; // home page
                 }
             }
@@ -97,12 +96,6 @@ public class MultiPanelWindow extends JFrame {
             {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            homeLogic = new HomeLogic();
-        } catch (DatabaseException e) {
-            e.printStackTrace();
         }
 
         showPage(pageToShow);
@@ -163,7 +156,10 @@ public class MultiPanelWindow extends JFrame {
     public void refreshSession()
     {
         try{
-            setSession(Session.loadFromFile());
+            Session fromFile = Session.loadFromFile();
+            if (fromFile != null) {
+                setSession(fromFile);
+            }
         } catch (Exception e) {
             System.out.println("No session file found. Going to log-in page.");
         }
@@ -199,10 +195,10 @@ public class MultiPanelWindow extends JFrame {
         // Delete session file if user doesn't want to stay logged in (i.e. log out user)
         if(session != null && !session.isKeepLoggedIn()) {
             try {
-                homeLogic.logOut();
+                multiPanelWindowLogic.logOut();
                 File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
                 sessionFile.delete();
-                dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + "closed the program and logged out");
+                multiPanelWindowLogic.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + "closed the program and logged out");
             }
             catch (Exception e){
                 System.out.println("No session found to delete");
@@ -211,9 +207,9 @@ public class MultiPanelWindow extends JFrame {
         else{
             try {
                 if(patient != null) {
-                    dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " closed the program and stayed logged in");
+                    multiPanelWindowLogic.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " closed the program and stayed logged in");
                 }
-                } catch (NullDataException | InvalidDataException | DatabaseException e) {
+            } catch (CustomException e) {
                 e.printStackTrace();
             }
         }
