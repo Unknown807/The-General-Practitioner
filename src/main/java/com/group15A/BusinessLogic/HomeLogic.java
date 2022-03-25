@@ -17,7 +17,7 @@ import java.util.List;
  * @author Milovan Gveric
  */
 public class HomeLogic implements IHome {
-    private DataAccess dataAccessLayer;
+    private final DataAccess dataAccessLayer;
 
     /**
      * Constructor for home logic
