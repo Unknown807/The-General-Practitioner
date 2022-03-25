@@ -1,10 +1,7 @@
 package com.group15A.GUI;
 
 import com.group15A.BusinessLogic.HomeLogic;
-import com.group15A.CustomExceptions.DatabaseException;
-import com.group15A.CustomExceptions.InvalidDataException;
-import com.group15A.CustomExceptions.NullDataException;
-import com.group15A.CustomExceptions.PatientNotFoundException;
+import com.group15A.CustomExceptions.*;
 import com.group15A.DataAccess.DataAccess;
 import com.group15A.DataModel.Patient;
 import com.group15A.Session;
@@ -61,12 +58,11 @@ public class MultiPanelWindow extends JFrame {
         try {
             dataAccessLayer = new DataAccess();
             patient = dataAccessLayer.getPatient(session.getLoggedInPatientID());
-        } catch (DatabaseException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
-        } catch (PatientNotFoundException e) {
-            e.printStackTrace();
+        } catch (CustomException e) {
+            System.out.println("No session file found.");
+        }
+        catch(NullPointerException e){
+            System.out.println("Patient not found.");
         }
 
         // Set response to window being closed
@@ -79,22 +75,19 @@ public class MultiPanelWindow extends JFrame {
             }
         });
 
-        // Create pages
-        // createPages(); // Method called in the above 'refreshSession()'
-
         this.setContentPane(panelCards);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(
-                (int)(dimension.getWidth()*0.8), // Make window width 70% that of the screen
+                (int)(dimension.getWidth()*0.8), // Make window width 80% that of the screen
                 (int)(dimension.getHeight()*0.8) // Make window height 80% that of the screen
         );
 
         // Choose the page to be displayed when starting the program
         PageType pageToShow = PageType.LOGIN; // log in page
-        if(getSession().isKeepLoggedIn()) {
+        if(getSession() != null && getSession().isKeepLoggedIn()) {
             try {
                 Session savedSession = Session.loadFromFile();
-                if (savedSession.isKeepLoggedIn()) {
+                if (savedSession != null && savedSession.isKeepLoggedIn()) {
                     this.setSession(savedSession);
                     dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " automatically logged in, successfully");
                     pageToShow = PageType.HOME; // home page
@@ -135,9 +128,9 @@ public class MultiPanelWindow extends JFrame {
 
         this.cardLayout = (CardLayout) (panelCards.getLayout());
         for (PageType page: pages) {
-            BasePanel bspanel = this.cards.get(page);
-            bspanel.getPagePanel().setBorder(new EmptyBorder(20,20,20,20));
-           this.panelCards.add(bspanel.getPagePanel(), bspanel.getPanelFieldName());
+            BasePanel basePanel = this.cards.get(page);
+            basePanel.getPagePanel().setBorder(new EmptyBorder(20,20,20,20));
+           this.panelCards.add(basePanel.getPagePanel(), basePanel.getPanelFieldName());
         }
     }
 
@@ -165,14 +158,6 @@ public class MultiPanelWindow extends JFrame {
     }
 
     /**
-     * @return session has not been set (i.e. is empty)
-     */
-    public Boolean sessionIsEmpty()
-    {
-        return (getSession().getLoggedInPatientID() == -1);
-    }
-
-    /**
      * Set session based on content of session file
      */
     public void refreshSession()
@@ -180,7 +165,7 @@ public class MultiPanelWindow extends JFrame {
         try{
             setSession(Session.loadFromFile());
         } catch (Exception e) {
-            //System.out.println("Session file not found.\n"+e.getMessage());
+            System.out.println("No session file found. Going to log-in page.");
         }
         createPages();
     }
@@ -212,7 +197,7 @@ public class MultiPanelWindow extends JFrame {
     public void closeProgram()
     {
         // Delete session file if user doesn't want to stay logged in (i.e. log out user)
-        if(!session.isKeepLoggedIn()) {
+        if(session != null && !session.isKeepLoggedIn()) {
             try {
                 homeLogic.logOut();
                 File sessionFile = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString() + "/LoggedUser.bin");
@@ -220,23 +205,15 @@ public class MultiPanelWindow extends JFrame {
                 dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + "closed the program and logged out");
             }
             catch (Exception e){
-                JOptionPane.showMessageDialog(
-                        panelCards,
-                        "Could not delete session file.",
-                        "ERROR: Log out failed",
-                        JOptionPane.ERROR_MESSAGE
-                );
-                System.exit(0);
+                System.out.println("No session found to delete");
             }
         }
         else{
             try {
-                dataAccessLayer.createLog(patient,"Patient " + patient.getFirstName() + " " + patient.getLastName() + " closed the program and stayed logged in");
-            } catch (NullDataException e) {
-                e.printStackTrace();
-            } catch (InvalidDataException e) {
-                e.printStackTrace();
-            } catch (DatabaseException e) {
+                if(patient != null) {
+                    dataAccessLayer.createLog(patient, "Patient " + patient.getFirstName() + " " + patient.getLastName() + " closed the program and stayed logged in");
+                }
+                } catch (NullDataException | InvalidDataException | DatabaseException e) {
                 e.printStackTrace();
             }
         }
