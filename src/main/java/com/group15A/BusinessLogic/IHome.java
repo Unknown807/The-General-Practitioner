@@ -16,5 +16,5 @@ public interface IHome {
 
     void readNotification(Notification notification) throws Exception;
 
-    void logOut();
+    void logOut() throws Exception;
 }

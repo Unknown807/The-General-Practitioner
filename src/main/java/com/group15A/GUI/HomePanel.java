@@ -4,6 +4,7 @@ import com.group15A.BusinessLogic.HomeLogic;
 import com.group15A.CustomExceptions.CustomException;
 import com.group15A.DataModel.Notification;
 import com.group15A.DataModel.Patient;
+import com.group15A.Session;
 import com.group15A.Utils.*;
 
 import javax.swing.*;
@@ -185,7 +186,13 @@ public class HomePanel extends BasePanel {
      */
     private void logOutUser()
     {
-        homeLogic.logOut();
+        try {
+            homeLogic.logOut();
+        } catch(Exception e) {
+            System.out.println("Error logging out");
+        } finally {
+            Session.deleteSession();
+        }
 
         panelController.refreshSession();
         panelController.showPage(PageType.LOGIN);

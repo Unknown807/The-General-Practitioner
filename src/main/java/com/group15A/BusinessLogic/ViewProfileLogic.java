@@ -8,7 +8,8 @@ import com.group15A.DataModel.Doctor;
 import com.group15A.DataModel.Patient;
 
 /**
- * Contains backend functionality for changing a patient's doctor
+ * Contains backend functionality for changing a patient's doctor and viewing
+ * past bookings and activities
  *
  * @author Milovan Gveric
  */
