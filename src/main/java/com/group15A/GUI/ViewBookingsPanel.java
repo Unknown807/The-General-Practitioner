@@ -86,11 +86,21 @@ public class ViewBookingsPanel extends BasePanel {
             }
         } else if (pair.getFirst().equals(ReceiveType.NEW_BOOKINGS)) {
             pastBookingFlag = false;
+            this.updateBookingLabels("My current bookings");
 
         } else if (pair.getFirst().equals(ReceiveType.PAST_BOOKINGS)) {
             pastBookingFlag = true;
+            this.updateBookingLabels("My past bookings");
 
         }
+    }
+
+    /**
+     * Switches between 'My current bookings' and 'My past bookings' booking strings for descriptive labels
+     * @param newBookingPageText The text to change the titleLabel to
+     */
+    private void updateBookingLabels(String newBookingPageText) {
+        this.titleLabel.setText(newBookingPageText);
     }
 
     /**
