@@ -1,12 +1,18 @@
 package com.group15A.GUI;
 
-import com.group15A.Utils.ErrorCode;
-
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 
 /**
+ * A JPanel containing information for a message
+ *
+ * Used in MessageListPanel
+ *
+ * Contains the following optional components:
+ * - header label
+ * - subheading label
+ * - message text panel
+ * - button
  */
 public class MessagePanel
 {
@@ -18,6 +24,17 @@ public class MessagePanel
     public JButton button;
     public JPanel messagePanel;
 
+    /**
+     * The constructor for the MessagePanel class
+     *
+     * If the string for a given component's text is blank,
+     * make the component invisible
+     *
+     * @param heading The text for the message heading label
+     * @param subheading The text for the message subheading label
+     * @param message The text for the message text pane
+     * @param buttonText The text for the message button
+     */
     public MessagePanel(String heading, String subheading, String message, String buttonText)
     {
         HashMap<JComponent, String> widgets = new HashMap<>() {{
