@@ -7,7 +7,8 @@
 * <a href='mailto:ww221@kent.ac.uk'>Wenbo Wu</a>
 
 ## 📦 Prerequisites ##
-* IntelliJ (or another Java IDE)  
+* IntelliJ (or another Java IDE)
+    *  **IntelliJ is required to modify the GUI**. The GUI is created using **IntelliJ's GUI Designer** tool, which produces a `.form` file that is linked with it's `.java` class of the same name.
 * MySQL (version 14.14, Distrib 5.7.36)  
 * Java SDK (version 16)
 * Maven
