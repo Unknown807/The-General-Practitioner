@@ -15,10 +15,11 @@ import javax.swing.*;
 /**
  * To allow for communication to the business layer and to take care of event handling
  *
- * viewProfilePanel is the actual panel that gets passed to the multiPanelWindow cardLayout
+ * viewProfilePanel is the actual panel that gets provided to the multiPanelWindow cardLayout
  * in order to show it in the UI
  *
  * @author Milovan Gveric
+ * @author Filip Fois
  */
 public class ViewProfilePanel extends BasePanel {
     private JPanel viewProfilePanel;
@@ -40,7 +41,7 @@ public class ViewProfilePanel extends BasePanel {
     /**
      * Constructor for the ProfilePanel class
      *
-     * Creates action listeners for widgets
+     * Creates action listeners for widgets and set up viewProfileLogic object
      *
      * @param panelController the instance of multiPanelWindow in order for
      *                        events from this panel to call showPage
@@ -97,12 +98,10 @@ public class ViewProfilePanel extends BasePanel {
     public void createActionListeners() {
         backButton.addActionListener(e -> this.panelController.showPage(PageType.HOME));
 
-        changeDoctorButton.addActionListener(e -> {
-            this.panelController.showPage(
-                    PageType.CHOOSE_DOCTOR,
-                    new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_PROFILE)
-            );
-        });
+        changeDoctorButton.addActionListener(e -> this.panelController.showPage(
+                PageType.CHOOSE_DOCTOR,
+                new ReceivePair(ReceiveType.RETURN_PAGE, PageType.VIEW_PROFILE)
+        ));
 
         viewActivityButton.addActionListener(e -> this.panelController.showPage(PageType.LOG));
 
