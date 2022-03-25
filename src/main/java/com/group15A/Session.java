@@ -75,6 +75,10 @@ public class Session implements Serializable {
         {
             return (Session) inStream.readObject();
         }
+        catch(FileNotFoundException e){
+            System.out.println("No session file found.");
+        }
+        return null;
     }
 
     /**
